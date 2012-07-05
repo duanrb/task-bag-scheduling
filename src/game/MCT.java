@@ -2,6 +2,11 @@ package game;
 
 public class MCT extends GenericGame {
 
+	public MCT() {
+		super();
+
+	}
+	
 	public MCT(int iClass, int iSite) {
 		super(iClass, iSite);
 

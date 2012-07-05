@@ -11,7 +11,6 @@ public class StorageSufferage extends GenericStorage {
 	 * calculate the final distribution and allocation
 	 * 
 	 */
-
 	@Override
 	public void init() {
 		for (int i = 0; i < iClass; i++) {

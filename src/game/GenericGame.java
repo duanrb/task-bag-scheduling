@@ -280,28 +280,16 @@ public class GenericGame {
 				+ ". ");
 
 	}
+	
+	public GenericGame() {
+		super();
+	}
 
 	public GenericGame(int iClass, int iSite) {
 		super();
 		this.iSite = iSite;
 		this.iClass = iClass;
-		dmPrediction = new double[iClass][iSite];
-		iaLength = new int[iClass];
-		daBandwidth = new double[iSite];
-		daDataSize = new double[iClass];
-		iaCurrentLength = new int[iClass];
-		dmWeight = new double[iClass][iSite];
-		dmAlloc = new double[iClass][iSite];
-		dmDist = new double[iClass][iSite];
-		dmSacrifice = new double[iClass][iSite];
-		dmRankResource = new double[iClass][iSite];
-		dmRankClass = new double[iSite][iClass];
-		dmPricePerActivity = new double[iClass][iSite];
-		daPrice = new double[iSite];
-		iaCPU = new int[iSite];
-		dmProcessRate = new double[iClass][iSite];
-		dmExeTime = new double[iClass][iSite];
-		dmCost = new double[iClass][iSite];
+		init();
 	}
 
 	/**
@@ -328,33 +316,79 @@ public class GenericGame {
 		this.setICPUinit(game.iaCPU);
 	}
 	
-
-
 	/**
-	 * init the environment varaible
+	 * init the environment variable
 	 * 
 	 */
-	public void init() {
+	public void init(int iClass, int iSite) {
+		this.iSite = iSite;
+		this.iClass = iClass;
+		this.init();
 	}
 
 	/**
-	 * comp the final results
+	 * init the environment variable
+	 * 
+	 */
+	public void init() {
+		dmPrediction = new double[iClass][iSite];
+		iaLength = new int[iClass];
+		daBandwidth = new double[iSite];
+		daDataSize = new double[iClass];
+		iaCurrentLength = new int[iClass];
+		dmWeight = new double[iClass][iSite];
+		dmAlloc = new double[iClass][iSite];
+		dmOldAlloc = new double[iClass][iSite];
+		dmDist = new double[iClass][iSite];
+		dmOldDist = new double[iClass][iSite];
+		dmSacrifice = new double[iClass][iSite];
+		dmRankResource = new double[iClass][iSite];
+		dmRankClass = new double[iSite][iClass];
+		dmPricePerActivity = new double[iClass][iSite];
+		daPrice = new double[iSite];
+		iaCPU = new int[iSite];
+		dmProcessRate = new double[iClass][iSite];
+		dmExeTime = new double[iClass][iSite];
+		dmCost = new double[iClass][iSite];
+	}
+	
+	public void init(GenericGame gg)
+	{
+		init(gg.iClass, gg.iSite);
+		setDmPrediction(gg.dmPrediction);
+		setIaLength(gg.iaLength);
+		setIaCurrentLength(gg.iaLength);
+		setDaPrice(gg.daPrice);
+		setIaCPU(gg.iaCPU);
+		setICPUinit(gg.iaCPU);
+	}
+	
+	/**
+	 * schedule the final results
 	 * 
 	 * return execution time
 	 */
 	public double schedule() {
 		return 0;
 	}
+	
+	/**
+	 * schedule the final results
+	 * 
+	 * return execution time
+	 */
+	public void scheduleOnce() {
+	}
 
 	/**
-	 * comp the weights of activites on site
+	 * calculate the weights of activities on site
 	 * 
 	 */
 	public void calculateWeight() {
 	}
 
 	/**
-	 * comp the weights of activites on site
+	 * calculate the initial distribution of activities on site
 	 * 
 	 */
 	public void calculateInitDist() {
@@ -429,7 +463,10 @@ public class GenericGame {
 	}
 
 	public void setIaLength(int[] iaLength) {
-		this.iaLength = iaLength;
+		for (int j = 0; j < iClass; j++) {
+			this.iaLength[j] = iaLength[j];
+			iaCurrentLength[j] = iaLength[j];
+		}
 	}
 
 	public int getIClass() {

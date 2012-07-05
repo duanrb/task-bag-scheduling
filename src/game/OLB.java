@@ -2,6 +2,11 @@ package game;
 
 public class OLB extends GenericGame {
 
+	public OLB() {
+		super();
+
+	}
+	
 	public OLB(int iClass, int iSite) {
 		super(iClass, iSite);
 

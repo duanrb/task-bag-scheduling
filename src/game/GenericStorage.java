@@ -40,6 +40,20 @@ public class GenericStorage extends GenericGame {
 	 * Unreleased activity
 	 */
 	Vector<ReleaseStorage> vUnreleased = new Vector<ReleaseStorage>();
+	
+	
+	public GenericStorage(int iClass, int iSite) {
+		super(iClass, iSite);
+		daStorageWeight = new double[iClass];
+		daStorageLimit = new double[iSite];
+		daStorageInput = new double[iClass];
+		daStorageOutput = new double[iClass];
+		daStorageUsed = new double[iSite];
+	}
+	
+	public GenericStorage() {
+		super();
+	}
 
 	void releaseAllStorage(int activityclass) {
 		for (int i = 0; i < iSite; i++) {
@@ -161,14 +175,7 @@ public class GenericStorage extends GenericGame {
 	public void compStorageWeight() {
 	}
 
-	public GenericStorage(int iClass, int iSite) {
-		super(iClass, iSite);
-		daStorageWeight = new double[iClass];
-		daStorageLimit = new double[iSite];
-		daStorageInput = new double[iClass];
-		daStorageOutput = new double[iClass];
-		daStorageUsed = new double[iSite];
-	}
+
 
 	public double[] getDaStorageLimit() {
 		return daStorageLimit;
@@ -225,5 +232,17 @@ public class GenericStorage extends GenericGame {
 	public void setVUnreleased(Vector<ReleaseStorage> unreleased) {
 		vUnreleased = unreleased;
 	}
+
+	@Override
+	public void init() {
+		super.init();
+		daStorageWeight = new double[iClass];
+		daStorageLimit = new double[iSite];
+		daStorageUsed = new double[iSite];
+		daStorageInput = new double[iClass];
+		daStorageOutput = new double[iClass];
+	}
+	
+	
 
 }

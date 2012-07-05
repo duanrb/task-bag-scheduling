@@ -2,6 +2,10 @@ package game;
 
 public class MaxMin extends GenericGame {
 
+	public MaxMin() {
+		super();
+	}
+	
 	public MaxMin(int iClass, int iSite) {
 		super(iClass, iSite);
 	}
