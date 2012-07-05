@@ -13,7 +13,7 @@ public class Test {
 				System.out.println(test[i][j]);
 			}
 		}
-		System.out.print("helo");
+		System.out.print("hello");
 	}
 
 }
