@@ -7,12 +7,11 @@ public class StorageSufferage extends GenericStorage {
 
 	}
 
-
 	@Override
 	public void calculateWeight() {
 		double[] daPredictionByClass = new double[iClass];
 		double tmp = 0;
-		/* comp prediction by Class */
+		/* calculate prediction by Class */
 		for (int i = 0; i < iClass; i++) {
 			tmp = 0;
 			for (int j = 0; j < iSite; j++) {
@@ -21,7 +20,7 @@ public class StorageSufferage extends GenericStorage {
 			daPredictionByClass[i] = tmp;
 		}
 
-		/* comp weight */
+		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
 			// System.out.print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
@@ -40,7 +39,7 @@ public class StorageSufferage extends GenericStorage {
 
 	@Override
 	public void calculateInitDist() {
-		/* comp processing rate of each site */
+		/* calculate processing rate of each site */
 		double tmp = 0, rest = 0;
 		double[] daProcRateByClass = new double[iClass];
 		for (int i = 0; i < iClass; i++) {
@@ -138,7 +137,7 @@ public class StorageSufferage extends GenericStorage {
 	}
 
 	public void compAllocation() {
-		/* comp processing rate of each site */
+		/* calculate processing rate of each site */
 		double tmp = 0;
 		double[] daRelativeWeightBySite = new double[iSite];
 		for (int i = 0; i < iSite; i++) {

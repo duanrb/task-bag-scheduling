@@ -109,7 +109,7 @@ public class GameQuick extends GenericGame {
 	public void calculateWeight() {
 		double[] daPredictionByClass = new double[iClass];
 		double tmp = 0;
-		/* comp prediction by Class */
+		/* calculate prediction by Class */
 		for (int i = 0; i < iClass; i++) {
 			tmp = 0;
 			for (int j = 0; j < iSite; j++) {
@@ -118,7 +118,7 @@ public class GameQuick extends GenericGame {
 			daPredictionByClass[i] = tmp;
 		}
 
-		/* comp weight */
+		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
 			System.out.print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
@@ -186,7 +186,7 @@ public class GameQuick extends GenericGame {
 	}
 
 	public void calculateAlloc() {
-		/* comp processing rate of each site */
+		/* calculate processing rate of each site */
 		double tmp = 0;
 		double[] daRelativeWeightBySite = new double[iSite];
 		for (int i = 0; i < iSite; i++) {

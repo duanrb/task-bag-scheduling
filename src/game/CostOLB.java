@@ -6,34 +6,12 @@ public class CostOLB extends GenericGame {
 		super(iClass, iSite);
 
 	}
-
-	/**
-	 * calculate the initial distribution and allocation
-	 * 
-	 */
-	@Override
-	public void init() {
-		for (int i = 0; i < iClass; i++) {
-			iaLength[i] = 0;
-			for (int j = 0; j < iSite; j++) {
-				dmPrediction[i][j] = 0;
-				dmWeight[i][j] = 0;
-				dmAlloc[i][j] = 0;
-				dmDist[i][j] = 0;
-			}
-		}
-		iAllCPU = 0;
-		for (int j = 0; j < iSite; j++) {
-			daPrice = new double[j];
-			iAllCPU += iaCPU[j];
-		}
-	}
-
+	
 	@Override
 	public void calculateWeight() {
 		double[] daPredictionByClass = new double[iClass];
 		double tmp = 0;
-		/* comp prediction by Class */
+		/* calculate prediction by Class */
 		for (int i = 0; i < iClass; i++) {
 			tmp = 0;
 			for (int j = 0; j < iSite; j++) {
@@ -42,7 +20,7 @@ public class CostOLB extends GenericGame {
 			daPredictionByClass[i] = tmp;
 		}
 
-		/* comp weight */
+		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
 			// System.out.print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
@@ -61,7 +39,7 @@ public class CostOLB extends GenericGame {
 
 	@Override
 	public void calculateInitDist() {
-		/* comp processing rate of each site */
+		/* calculate processing rate of each site */
 		double tmp = 0, rest = 0;
 		double[] daProcRateByClass = new double[iClass];
 		for (int i = 0; i < iClass; i++) {
@@ -159,7 +137,7 @@ public class CostOLB extends GenericGame {
 	}
 
 	public void compAllocation() {
-		/* comp processing rate of each site */
+		/* calculate processing rate of each site */
 		double tmp = 0;
 		double[] daRelativeWeightBySite = new double[iSite];
 		for (int i = 0; i < iSite; i++) {

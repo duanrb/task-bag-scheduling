@@ -10,7 +10,7 @@ public class Sufferage extends GenericGame {
 	public void calculateWeight() {
 		double[] daPredictionByClass = new double[iClass];
 		double tmp = 0;
-		/* comp prediction by Class */
+		/* calculate prediction by Class */
 		for (int i = 0; i < iClass; i++) {
 			tmp = 0;
 			for (int j = 0; j < iSite; j++) {
@@ -19,7 +19,7 @@ public class Sufferage extends GenericGame {
 			daPredictionByClass[i] = tmp;
 		}
 
-		/* comp weight */
+		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
 			// System.out.print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
@@ -38,7 +38,7 @@ public class Sufferage extends GenericGame {
 
 	@Override
 	public void calculateInitDist() {
-		/* comp processing rate of each site */
+		/* calculate processing rate of each site */
 		double tmp = 0, rest = 0;
 		double[] daProcRateByClass = new double[iClass];
 		for (int i = 0; i < iClass; i++) {
@@ -136,7 +136,7 @@ public class Sufferage extends GenericGame {
 	}
 
 	public void compAllocation() {
-		/* comp processing rate of each site */
+		/* calculate processing rate of each site */
 		double tmp = 0;
 		double[] daRelativeWeightBySite = new double[iSite];
 		for (int i = 0; i < iSite; i++) {
@@ -301,7 +301,7 @@ public class Sufferage extends GenericGame {
 	}
 
 	/**
-	 * Sort reosurces for each class and get one sorted matrix back
+	 * Sort resources for each class and get one sorted matrix back
 	 */
 	public void sortClass() {
 		/* compute cost per acitivity */
@@ -338,13 +338,12 @@ public class Sufferage extends GenericGame {
 		calculateWeight();
 
 		dmMinMakespan = new double[iClass][iSite][iCPUMaxNum];
-
 		dmMinminCost = new double[iSite][iCPUMaxNum];
 		dmMinminTime = new double[iSite][iCPUMaxNum];
 
 		double[] daMinminTimeBySite = new double[iSite];
+		
 		// find the current cheapest site for the acitvities.
-
 		initMinMakespan();
 		while (getRestLength() > 0) {
 			chooseMaxSufferage();
@@ -392,7 +391,6 @@ public class Sufferage extends GenericGame {
 
 	int getRestLength() {
 		int sum = 0;
-		// init array
 		for (int j = 0; j < iClass; j++) {
 			sum += iaCurrentLength[j];
 		}

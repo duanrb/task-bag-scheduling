@@ -116,7 +116,7 @@ public class GameStorage extends GenericStorage {
 	public void calculateWeight() {
 		double[] daPredictionByClass = new double[iClass];
 		double tmp = 0;
-		/* comp prediction by Class */
+		/* calculate prediction by Class */
 		for (int i = 0; i < iClass; i++) {
 			tmp = 0;
 			for (int j = 0; j < iSite; j++) {
@@ -125,7 +125,7 @@ public class GameStorage extends GenericStorage {
 			daPredictionByClass[i] = tmp;
 		}
 
-		/* comp weight */
+		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
 			print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
@@ -139,12 +139,12 @@ public class GameStorage extends GenericStorage {
 	@Override
 	public void compStorageWeight() {
 		double sum = 0;
-		/* comp */
+		/* calculate*/
 		for (int i = 0; i < iClass; i++) {
 			sum += 1 / (daStorageInput[i] + daStorageOutput[i]);
 		}
 
-		/* comp weight */
+		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
 			print("StorageWeight[" + i + "]");
 			daStorageWeight[i] = 1 / (daStorageInput[i] + daStorageOutput[i])
@@ -156,7 +156,7 @@ public class GameStorage extends GenericStorage {
 
 	@Override
 	public void calculateInitDist() {
-		/* comp processing rate of each site */
+		/* calculate processing rate of each site */
 		double tmp = 0;
 		double[] daProcRateByClass = new double[iClass];
 		println("-----------ProcessRate-----------");
@@ -188,7 +188,7 @@ public class GameStorage extends GenericStorage {
 	}
 
 	public void compDistribution() {
-		/* comp processing rate of each site */
+		/* calculate processing rate of each site */
 		double tmp = 0;
 		double[] daProcRateByClass = new double[iClass];
 		for (int i = 0; i < iClass; i++) {
@@ -220,7 +220,7 @@ public class GameStorage extends GenericStorage {
 	boolean bStorageProblem[];
 
 	public void compAllocation() {
-		/* comp processing rate of each site */
+		/* calculate processing rate of each site */
 		double tmp = 0;
 		bStorageViolation = false;
 		double[] daRelativeWeightBySite = new double[iSite];

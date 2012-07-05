@@ -23,13 +23,13 @@ public class CostMinMin2 extends GenericGame {
 		/* sort reosurces and init cost per activities */
 		sortResources();
 
-		/* comp weight */
+		/* calculate weight */
 		calculateWeight();
 
-		/* comp first distribution */
+		/* calculatefirst distribution */
 		calculateInitDist();
 
-		/* comp final result */
+		/* calculatefinal result */
 		return compFinalResult();
 
 	}
@@ -56,7 +56,7 @@ public class CostMinMin2 extends GenericGame {
 	public void calculateWeight() {
 		double[] daPredictionByClass = new double[iClass];
 		double tmp = 0;
-		/* comp prediction by Class */
+		/* calculate prediction by Class */
 		for (int i = 0; i < iClass; i++) {
 			tmp = 0;
 			for (int j = 0; j < iSite; j++) {
@@ -65,7 +65,7 @@ public class CostMinMin2 extends GenericGame {
 			daPredictionByClass[i] = tmp;
 		}
 
-		/* comp weight */
+		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
 			System.out.print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
@@ -84,7 +84,7 @@ public class CostMinMin2 extends GenericGame {
 
 	@Override
 	public void calculateInitDist() {
-		/* comp processing rate of each site */
+		/* calculate processing rate of each site */
 		double tmp = 0, rest = 0;
 		double[] daProcRateByClass = new double[iClass];
 		for (int i = 0; i < iClass; i++) {
@@ -180,7 +180,7 @@ public class CostMinMin2 extends GenericGame {
 	}
 
 	public void compAllocation() {
-		/* comp processing rate of each site */
+		/* calculate processing rate of each site */
 		double tmp = 0;
 		double[] daRelativeWeightBySite = new double[iSite];
 		for (int i = 0; i < iSite; i++) {
