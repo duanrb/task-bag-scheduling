@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
  *
  *  
  * author: Rubing Duan
- *
+ * version: 1.0
  * */
 
 public class CommGameQuick extends GenericGame {
