@@ -212,7 +212,8 @@ public class GameQuickTest {
 			GameQuickTest wo = new GameQuickTest();
 			GameQuick  gq = (GameQuick) wo.test3();
 			long tw1 = System.currentTimeMillis();
-			double t1 = gq.schedule();
+			gq.schedule();
+			double t1 = gq.getDTotalExecutionTime();
 			System.out.println("Makespan GQ = " +  gq.getDFinalMakespan());
 			
 			System.out.println("AlgExeTime= "
