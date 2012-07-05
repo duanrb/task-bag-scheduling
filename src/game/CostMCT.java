@@ -605,10 +605,8 @@ public class CostMCT extends GenericGame {
 	}
 
 	public static void main(String[] args) {
-		MCT workflowOptimization = new MCT(2, 2);
-		workflowOptimization.test2();
-		MinMin minmin = new MinMin(2, 2);
-		minmin.test2();
+		MCT mct = new MCT(2, 2);
+		mct.test2();
 	}
 
 }

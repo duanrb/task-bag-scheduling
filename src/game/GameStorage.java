@@ -15,10 +15,6 @@ public class GameStorage extends GenericStorage {
 
 	}
 
-	public GameStorage() {
-		super();
-	}
-
 	Vector phasesResult = new Vector();
 
 	boolean bNextPhase = true;
@@ -104,7 +100,7 @@ public class GameStorage extends GenericStorage {
 		System.out.println("Fairness  = " + calculateFairness());
 		System.out.println("Game Time = " + dTotalExecutionTime);
 		System.out.println("Game Cost = " + dCost);
-		System.out.println("Makespan  = " + currentMakespan);
+		System.out.println("Makespan  = " + dFinalMakespan);
 		System.out.println("Stage     = " + iStage);
 		return dTotalExecutionTime;
 	}
@@ -351,7 +347,6 @@ public class GameStorage extends GenericStorage {
 		return result;
 	}
 
-	double dFinalMakespan;
 
 	double[] daMaxMakespan;
 

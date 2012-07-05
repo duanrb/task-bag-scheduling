@@ -204,7 +204,66 @@ public class GenericGame {
 	 * : intermediate data
 	 */
 	int iMinSite, iMinCPU, iMinClass;
+	
+	public GenericGame() {
+		super();
+	}
 
+	public GenericGame(int iClass, int iSite) {
+		super();
+		this.iClass = iClass;
+		this.iSite = iSite;
+		init();
+	}
+
+	
+	/**
+	 * init the environment variable
+	 */
+	public void init(int iClass, int iSite) {
+		this.iSite = iSite;
+		this.iClass = iClass;
+		init();
+	}
+	
+	public void init(){
+		dmPrediction = new double[iClass][iSite];
+		iaLength = new int[iClass];
+		daBandwidth = new double[iSite];
+		daDataSize = new double[iClass];
+		iaCurrentLength = new int[iClass];
+		dmWeight = new double[iClass][iSite];
+		dmAlloc = new double[iClass][iSite];
+		dmOldAlloc = new double[iClass][iSite];
+		dmDist = new double[iClass][iSite];
+		dmOldDist = new double[iClass][iSite];
+		dmSacrifice = new double[iClass][iSite];
+		dmRankResource = new double[iClass][iSite];
+		dmRankClass = new double[iSite][iClass];
+		dmPricePerActivity = new double[iClass][iSite];
+		daPrice = new double[iSite];
+		iaCPU = new int[iSite];
+		dmProcessRate = new double[iClass][iSite];
+		dmExeTime = new double[iClass][iSite];
+		dmCost = new double[iClass][iSite];
+		
+		dmMinminTime = new double[iClass][iSite];
+	}
+	/**
+	 * init the environment variable
+	 */
+	public void init(GenericGame gg)
+	{
+		init(gg.iClass, gg.iSite);
+		setDeadline(gg.dDeadline);
+		setDmPrediction(gg.dmPrediction);
+		setIaLength(gg.iaLength);
+		setIaCurrentLength(gg.iaLength);
+		setDaPrice(gg.daPrice);
+		setIaCPU(gg.iaCPU);
+		setICPUinit(gg.iaCPU);
+	}
+	
 	/**
 	 * 
 	 * @return fairness value (standard derivation)
@@ -280,21 +339,9 @@ public class GenericGame {
 				+ ". ");
 
 	}
-	
-	public GenericGame() {
-		super();
-	}
-
-	public GenericGame(int iClass, int iSite) {
-		super();
-		this.iSite = iSite;
-		this.iClass = iClass;
-		init();
-	}
 
 	/**
 	 * reset allocation and distribution
-	 * 
 	 */
 	public void reset() {
 		for (int i = 0; i < iClass; i++) {
@@ -306,62 +353,7 @@ public class GenericGame {
 
 	}
 
-	public void initEnv(GenericGame game) {
-		this.setDeadline(game.dDeadline);
-		this.setDmPrediction(game.dmPrediction);
-		this.setIaLength(game.iaLength);
-		this.setIaCurrentLength(game.iaLength);
-		this.setDaPrice(game.daPrice);
-		this.setIaCPU(game.iaCPU);
-		this.setICPUinit(game.iaCPU);
-	}
 	
-	/**
-	 * init the environment variable
-	 * 
-	 */
-	public void init(int iClass, int iSite) {
-		this.iSite = iSite;
-		this.iClass = iClass;
-		this.init();
-	}
-
-	/**
-	 * init the environment variable
-	 * 
-	 */
-	public void init() {
-		dmPrediction = new double[iClass][iSite];
-		iaLength = new int[iClass];
-		daBandwidth = new double[iSite];
-		daDataSize = new double[iClass];
-		iaCurrentLength = new int[iClass];
-		dmWeight = new double[iClass][iSite];
-		dmAlloc = new double[iClass][iSite];
-		dmOldAlloc = new double[iClass][iSite];
-		dmDist = new double[iClass][iSite];
-		dmOldDist = new double[iClass][iSite];
-		dmSacrifice = new double[iClass][iSite];
-		dmRankResource = new double[iClass][iSite];
-		dmRankClass = new double[iSite][iClass];
-		dmPricePerActivity = new double[iClass][iSite];
-		daPrice = new double[iSite];
-		iaCPU = new int[iSite];
-		dmProcessRate = new double[iClass][iSite];
-		dmExeTime = new double[iClass][iSite];
-		dmCost = new double[iClass][iSite];
-	}
-	
-	public void init(GenericGame gg)
-	{
-		init(gg.iClass, gg.iSite);
-		setDmPrediction(gg.dmPrediction);
-		setIaLength(gg.iaLength);
-		setIaCurrentLength(gg.iaLength);
-		setDaPrice(gg.daPrice);
-		setIaCPU(gg.iaCPU);
-		setICPUinit(gg.iaCPU);
-	}
 	
 	/**
 	 * schedule the final results

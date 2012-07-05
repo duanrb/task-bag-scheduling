@@ -7,29 +7,6 @@ public class StorageOLB extends GenericStorage {
 
 	}
 
-	/**
-	 * calculate the final distribution and allocation
-	 * 
-	 */
-
-	@Override
-	public void init() {
-		for (int i = 0; i < iClass; i++) {
-			iaLength[i] = 0;
-			for (int j = 0; j < iSite; j++) {
-				dmPrediction[i][j] = 0;
-				dmWeight[i][j] = 0;
-				dmAlloc[i][j] = 0;
-				dmDist[i][j] = 0;
-			}
-		}
-
-		for (int j = 0; j < iSite; j++) {
-			daPrice = new double[j];
-			iAllCPU += iaCPU[j];
-		}
-	}
-
 	@Override
 	public void calculateWeight() {
 		double[] daPredictionByClass = new double[iClass];

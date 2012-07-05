@@ -1,6 +1,9 @@
 package game;
 
 public class GameQuick extends GenericGame {
+	
+	double[] daMaxMakespan;
+	boolean bNextPhase = true;
 
 	public GameQuick() {
 		super();
@@ -10,7 +13,7 @@ public class GameQuick extends GenericGame {
 		super(iClass, iSite);
 	}
 
-	boolean bNextPhase = true;
+	
 
 	/**
 	 * calculate the final distribution and allocation and consider multiple phases
@@ -208,9 +211,7 @@ public class GameQuick extends GenericGame {
 		}
 	}
 
-	double dFinalMakespan;
 
-	double[] daMaxMakespan;
 
 	public double calculateFinalResult() {
 		daMaxMakespan = new double[iClass];

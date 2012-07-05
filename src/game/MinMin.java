@@ -1,38 +1,10 @@
 package game;
 
 public class MinMin extends GenericGame {
-
-	public MinMin() {
-		super();
-
-	}
 	
 	public MinMin(int iClass, int iSite) {
 		super(iClass, iSite);
 
-	}
-
-	/**
-	 * calculate the final distribution and allocation
-	 * 
-	 */
-
-	@Override
-	public void init() {
-		for (int i = 0; i < iClass; i++) {
-			iaLength[i] = 0;
-			for (int j = 0; j < iSite; j++) {
-				dmPrediction[i][j] = 0;
-				dmWeight[i][j] = 0;
-				dmAlloc[i][j] = 0;
-				dmDist[i][j] = 0;
-			}
-		}
-
-		for (int j = 0; j < iSite; j++) {
-			daPrice = new double[j];
-			iAllCPU += iaCPU[j];
-		}
 	}
 
 	@Override
@@ -517,23 +489,7 @@ public class MinMin extends GenericGame {
 	}
 
 	public void test2() {
-		this.iClass = 3;
-		this.iSite = 3;
-
-		dmPrediction = new double[iClass][iSite];
-		iaLength = new int[iClass];
-		iaCurrentLength = new int[iClass];
-		dmWeight = new double[iClass][iSite];
-		dmAlloc = new double[iClass][iSite];
-		dmDist = new double[iClass][iSite];
-		dmRankResource = new double[iClass][iSite];
-		dmRankClass = new double[iSite][iClass];
-		dmPricePerActivity = new double[iClass][iSite];
-		daPrice = new double[iSite];
-		iaCPU = new int[iSite];
-		dmProcessRate = new double[iClass][iSite];
-		dmExeTime = new double[iClass][iSite];
-		dmCost = new double[iClass][iSite];
+		this.init(3,3);
 
 		iaLength[0] = 10000;
 		iaLength[1] = 10000;

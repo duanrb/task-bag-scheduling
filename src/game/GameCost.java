@@ -6,24 +6,6 @@ public class GameCost extends GenericGame {
 	}
 
 	@Override
-	public void init() {
-		for (int i = 0; i < iClass; i++) {
-			iaLength[i] = 0;
-			for (int j = 0; j < iSite; j++) {
-				dmPrediction[i][j] = 0;
-				dmWeight[i][j] = 0;
-				dmAlloc[i][j] = 0;
-				dmDist[i][j] = 0;
-			}
-		}
-
-		for (int j = 0; j < iSite; j++) {
-			daPrice = new double[j];
-			iAllCPU += iaCPU[j];
-		}
-	}
-
-	@Override
 	public void calculateWeight() {
 		double[] daPredictionByClass = new double[iClass];
 		double tmp = 0;
@@ -382,7 +364,7 @@ public class GameCost extends GenericGame {
 		if (!compFinalResult()) {
 			GameQuick opt = new GameQuick(this.iClass, this.iSite);
 			opt.setBPrint(this.bPrint);
-			opt.initEnv(this);
+			opt.init(this);
 			opt.schedule();
 			if (opt.dDeadline >= opt.dFinalMakespan) {
 				this.dCost = opt.dCost;
@@ -407,7 +389,7 @@ public class GameCost extends GenericGame {
 
 		/* get first */
 		GameQuick optInit = new GameQuick(this.iClass, this.iSite);
-		optInit.initEnv(this);
+		optInit.init(this);
 		optInit.scheduleOnce();
 		this.setDmDistribution(optInit.dmDist);
 
@@ -415,7 +397,7 @@ public class GameCost extends GenericGame {
 		compExecTime();
 		if (!compFinalResult()) {
 			GameQuick opt = new GameQuick(this.iClass, this.iSite);
-			opt.initEnv(this);
+			opt.init(this);
 			opt.schedule();
 			if (opt.dDeadline > opt.dFinalMakespan) {
 				this.dCost = opt.dCost;
@@ -584,7 +566,7 @@ public class GameCost extends GenericGame {
 			System.out
 					.println("----------------QUICK OPTIMIZATION--------------");
 			GameQuick opt = new GameQuick(wo.iClass, wo.iSite);
-			opt.initEnv(wo);
+			opt.init(wo);
 			long tw8 = System.currentTimeMillis();
 			opt.schedule();
 			System.out.println("Cost%     = " + opt.dCost / wo.dCost * 100);
@@ -597,7 +579,7 @@ public class GameCost extends GenericGame {
 
 			System.out.println("----------------OLB--------------");
 			OLB olb = new OLB(wo.iClass, wo.iSite);
-			olb.initEnv(wo);
+			olb.init(wo);
 			long tolb = System.currentTimeMillis();
 			olb.olbStart();
 			System.out.println("Cost%     = " + olb.dCost / wo.dCost * 100);
@@ -610,7 +592,7 @@ public class GameCost extends GenericGame {
 
 			System.out.println("----------------OLB(Cost)--------------");
 			CostOLB colb = new CostOLB(wo.iClass, wo.iSite);
-			colb.initEnv(wo);
+			colb.init(wo);
 			long tw2 = System.currentTimeMillis();
 			colb.minOLBCost();
 			System.out.println("Cost%     = " + colb.dCost / wo.dCost * 100);
@@ -623,7 +605,7 @@ public class GameCost extends GenericGame {
 
 			System.out.println("----------------MCT--------------");
 			MCT mct = new MCT(wo.iClass, wo.iSite);
-			mct.initEnv(wo);
+			mct.init(wo);
 			long tmct = System.currentTimeMillis();
 			mct.minct();
 			System.out.println("Cost%     = " + mct.dCost / wo.dCost * 100);
@@ -636,7 +618,7 @@ public class GameCost extends GenericGame {
 
 			System.out.println("----------------MCT(Cost)--------------");
 			CostMCT cmct = new CostMCT(wo.iClass, wo.iSite);
-			cmct.initEnv(wo);
+			cmct.init(wo);
 			long tw4 = System.currentTimeMillis();
 			cmct.minCTCost();
 			System.out.println("Cost%     = " + cmct.dCost / wo.dCost * 100);
@@ -649,7 +631,7 @@ public class GameCost extends GenericGame {
 
 			System.out.println("----------------MinMin--------------");
 			MinMin minmin = new MinMin(wo.iClass, wo.iSite);
-			minmin.initEnv(wo);
+			minmin.init(wo);
 			long tw9 = System.currentTimeMillis();
 			minmin.minmin();
 			System.out.println("Cost%     = " + minmin.dCost / wo.dCost * 100);
@@ -662,7 +644,7 @@ public class GameCost extends GenericGame {
 
 			System.out.println("----------------MinMin(Cost)--------------");
 			CostMinMin minminc = new CostMinMin(wo.iClass, wo.iSite);
-			minminc.initEnv(wo);
+			minminc.init(wo);
 			long tw3 = System.currentTimeMillis();
 			minminc.minMinCost();
 			System.out.println("Cost%     = " + minminc.dCost / wo.dCost * 100);
@@ -675,7 +657,7 @@ public class GameCost extends GenericGame {
 
 			System.out.println("----------------MaxMin--------------");
 			MaxMin max = new MaxMin(wo.iClass, wo.iSite);
-			max.initEnv(wo);
+			max.init(wo);
 			long tmax = System.currentTimeMillis();
 			max.maxmin();
 			System.out.println("Cost%     = " + max.dCost / wo.dCost * 100);
@@ -688,7 +670,7 @@ public class GameCost extends GenericGame {
 
 			System.out.println("----------------MaxMin(Cost)--------------");
 			CostMaxMin mat = new CostMaxMin(wo.iClass, wo.iSite);
-			mat.initEnv(wo);
+			mat.init(wo);
 			long tw5 = System.currentTimeMillis();
 			mat.maxmin();
 			System.out.println("Cost%     = " + mat.dCost / wo.dCost * 100);
@@ -701,7 +683,7 @@ public class GameCost extends GenericGame {
 
 			System.out.println("----------------Sufferage--------------");
 			Sufferage suff = new Sufferage(wo.iClass, wo.iSite);
-			suff.initEnv(wo);
+			suff.init(wo);
 			long tsuff = System.currentTimeMillis();
 			suff.minSufferage();
 			System.out.println("Cost%     = " + suff.dCost / wo.dCost * 100);
@@ -714,7 +696,7 @@ public class GameCost extends GenericGame {
 
 			System.out.println("----------------Sufferage(Cost)--------------");
 			CostSufferage minsuff = new CostSufferage(wo.iClass, wo.iSite);
-			minsuff.initEnv(wo);
+			minsuff.init(wo);
 			long tw6 = System.currentTimeMillis();
 			minsuff.minSufferage();
 			System.out.println("Cost%     = " + minsuff.dCost / wo.dCost * 100);
@@ -727,7 +709,7 @@ public class GameCost extends GenericGame {
 
 			System.out.println("----------------MET--------------");
 			MET met = new MET(wo.iClass, wo.iSite);
-			met.initEnv(wo);
+			met.init(wo);
 			long tmet = System.currentTimeMillis();
 			met.minet();
 			System.out.println("Cost%     = " + met.dCost / wo.dCost * 100);
@@ -740,7 +722,7 @@ public class GameCost extends GenericGame {
 
 			System.out.println("----------------MET(Cost)--------------");
 			CostMET cmet = new CostMET(wo.iClass, wo.iSite);
-			cmet.initEnv(wo);
+			cmet.init(wo);
 			long tw7 = System.currentTimeMillis();
 			cmet.minETCost();
 			System.out.println("Cost%     = " + cmet.dCost / wo.dCost * 100);
@@ -770,7 +752,7 @@ public class GameCost extends GenericGame {
 		System.out
 				.println("----------------WORKFLOW OPTIMIZATION--------------");
 		GameQuick opt = new GameQuick(wo.iClass, wo.iSite);
-		opt.initEnv(wo);
+		opt.init(wo);
 		opt.setBPrint(false);
 		long tw8 = System.currentTimeMillis();
 		opt.schedule();

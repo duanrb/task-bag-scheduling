@@ -12,28 +12,6 @@ public class MCT extends GenericGame {
 
 	}
 
-	/**
-	 * calculate the final distribution and allocation
-	 * 
-	 */
-	@Override
-	public void init() {
-		for (int i = 0; i < iClass; i++) {
-			iaLength[i] = 0;
-			for (int j = 0; j < iSite; j++) {
-				dmPrediction[i][j] = 0;
-				dmWeight[i][j] = 0;
-				dmAlloc[i][j] = 0;
-				dmDist[i][j] = 0;
-			}
-		}
-
-		for (int j = 0; j < iSite; j++) {
-			daPrice = new double[j];
-			iAllCPU += iaCPU[j];
-		}
-	}
-
 	@Override
 	public void calculateWeight() {
 		double[] daPredictionByClass = new double[iClass];
@@ -304,7 +282,9 @@ public class MCT extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			// System.out.print("PricePerActivity[" + i + "] ");
 			for (int j = 0; j < iSite; j++) {
-				dmPricePerActivity[i][j] = daPrice[j] * dmPrediction[i][j];
+				dmPricePerActivity[i][j] = 
+						daPrice[j] * 
+						dmPrediction[i][j];
 				// System.out.print(j + ":" + dmPricePerActivity[i][j] + ", ");
 			}
 			// System.out.println();
@@ -492,23 +472,8 @@ public class MCT extends GenericGame {
 	}
 
 	public void test2() {
-		this.iClass = 3;
-		this.iSite = 3;
-
-		dmPrediction = new double[iClass][iSite];
-		iaLength = new int[iClass];
-		iaCurrentLength = new int[iClass];
-		dmWeight = new double[iClass][iSite];
-		dmAlloc = new double[iClass][iSite];
-		dmDist = new double[iClass][iSite];
-		dmRankResource = new double[iClass][iSite];
-		dmRankClass = new double[iSite][iClass];
-		dmPricePerActivity = new double[iClass][iSite];
-		daPrice = new double[iSite];
-		iaCPU = new int[iSite];
-		dmProcessRate = new double[iClass][iSite];
-		dmExeTime = new double[iClass][iSite];
-		dmCost = new double[iClass][iSite];
+		this.init(3,3);
+		
 
 		iaLength[0] = 10000;
 		iaLength[1] = 10000;
@@ -544,18 +509,9 @@ public class MCT extends GenericGame {
 	}
 
 	public void test3() {
-		this.iClass = 100;
-		this.iSite = 100;
+		this.init(100,100);
 
-		dmPrediction = new double[iClass][iSite];
-		iaLength = new int[iClass];
-		dmWeight = new double[iClass][iSite];
-		dmAlloc = new double[iClass][iSite];
-		dmDist = new double[iClass][iSite];
-		daPrice = new double[iSite];
-		iaCPU = new int[iSite];
-		dmProcessRate = new double[iClass][iSite];
-		dmExeTime = new double[iClass][iSite];
+		
 
 		for (int j = 0; j < iClass; j++) {
 			iaLength[j] = Math.round(Math.round(100000 * Math.random()));
@@ -563,6 +519,7 @@ public class MCT extends GenericGame {
 		for (int j = 0; j < iSite; j++) {
 			iaCPU[j] = 64;
 		}
+		this.setIaCPU(iaCPU);
 
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
@@ -571,7 +528,7 @@ public class MCT extends GenericGame {
 		}
 
 		for (int j = 0; j < iSite; j++) {
-			daPrice = new double[j];
+			daPrice[j] = 1+Math.random() * 10;
 			iAllCPU += iaCPU[j];
 		}
 
@@ -580,8 +537,8 @@ public class MCT extends GenericGame {
 	}
 
 	public static void main(String[] args) {
-		MCT workflowOptimization = new MCT(2, 2);
-		workflowOptimization.test2();
+		MCT mct = new MCT(2, 2);
+		mct.test3();
 		MinMin minmin = new MinMin(2, 2);
 		minmin.test2();
 	}
