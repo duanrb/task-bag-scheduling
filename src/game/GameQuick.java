@@ -1,8 +1,6 @@
 package game;
 
-import java.util.Vector;
 
-import org.apache.log4j.Logger;
 
 public class GameQuick extends GenericGame {
 
