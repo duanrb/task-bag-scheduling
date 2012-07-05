@@ -2,6 +2,12 @@ package game;
 
 import org.apache.log4j.Logger;
 
+/**
+ * 
+ * author: rubing duan
+ * 
+ * */
+
 public class CommGameQuick extends GenericGame {
 	
 	public CommGameQuick(int iClass, int iSite) {
