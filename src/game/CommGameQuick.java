@@ -12,7 +12,7 @@ public class CommGameQuick extends GenericGame {
 	 * calculate the final distribution and allocation and consider multiple phases
 	 */
 	@Override
-	public double schedule() {
+	public void schedule() {
 
 		calculateWeight();
 		calculateInitDist();
@@ -33,8 +33,7 @@ public class CommGameQuick extends GenericGame {
 			/* prepare data for fairness evaluation */
 			for (int i = 0; i < iClass; i++) {
 				if (iaCurrentLength[i] == 0 & tmpLength[i] > 0) {
-					vFairness.add(currentMakespan);// lastPhaseMakespan+daMaxMakespan[i]
-													// );
+					vFairness.add(currentMakespan);
 				}
 				tmpLength[i] = iaCurrentLength[i];  
 			}
@@ -42,8 +41,7 @@ public class CommGameQuick extends GenericGame {
 		
 		for (int i = 0; i < iClass; i++) {
 			if (tmpLength[i] > 0) {
-				vFairness.add(currentMakespan);// lastPhaseMakespan+daMaxMakespan[i]
-												// );
+				vFairness.add(currentMakespan);
 			}
 			tmpLength[i] = iaCurrentLength[i];
 		}
@@ -81,7 +79,6 @@ public class CommGameQuick extends GenericGame {
 		System.out.println("Makespan  = " + currentMakespan);
 		System.out.println("Stage     = " + iStage);
 
-		return dTotalExecutionTime;
 	}
 
 	/**
@@ -140,8 +137,7 @@ public class CommGameQuick extends GenericGame {
 			for (int j = 0; j < iSite; j++) {
 				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i])
 						* iaCurrentLength[i];
-				// System.out.println("0Distribution["+i+"]["+j+"] = "+
-				// dmDistribution[i][j]);
+				// System.out.println("0Distribution["+i+"]["+j+"] = "+ dmDistribution[i][j]);
 			}
 		}
 	}
@@ -155,8 +151,7 @@ public class CommGameQuick extends GenericGame {
 			for (int j = 0; j < iSite; j++) {
 				dmProcessRate[i][j] = dmAlloc[i][j] / dmPrediction[i][j];
 				tmp += dmProcessRate[i][j];
-				// System.out.println("ProcessRate["+i+"]["+j+"] = "+
-				// dmProcessRate[i][j]);
+				// System.out.println("ProcessRate["+i+"]["+j+"] = "+ dmProcessRate[i][j]);
 			}
 			daProcRateByClass[i] = tmp;
 		}

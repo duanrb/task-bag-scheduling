@@ -20,7 +20,7 @@ public class GameQuick extends GenericGame {
 	 * 
 	 */
 	@Override
-	public double schedule() {
+	public void schedule() {
 
 		calculateWeight();
 		calculateInitDist();
@@ -90,7 +90,6 @@ public class GameQuick extends GenericGame {
 		System.out.println("Makespan  = " + currentMakespan);
 		System.out.println("Stage     = " + iStage);
 
-		return dTotalExecutionTime;
 	}
 
 	/**

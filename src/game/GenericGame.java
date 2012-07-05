@@ -360,10 +360,9 @@ public class GenericGame {
 	 * 
 	 * return execution time
 	 */
-	public double schedule() {
-		return 0;
+	public void schedule() {
 	}
-	
+		
 	/**
 	 * schedule the final results
 	 * 

@@ -24,7 +24,7 @@ public class GameStorage extends GenericStorage {
 	 * 
 	 */
 	@Override
-	public double schedule() {
+	public void schedule() {
 
 		calculateWeight();
 		compStorageWeight();
@@ -102,7 +102,6 @@ public class GameStorage extends GenericStorage {
 		System.out.println("Game Cost = " + dCost);
 		System.out.println("Makespan  = " + dFinalMakespan);
 		System.out.println("Stage     = " + iStage);
-		return dTotalExecutionTime;
 	}
 
 	public void optimizeOnce() {

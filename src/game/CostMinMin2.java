@@ -16,7 +16,7 @@ public class CostMinMin2 extends GenericGame {
 	 * 
 	 */
 	@Override
-	public double schedule() {
+	public void schedule() {
 		/* init all variable */
 		init();
 
@@ -30,7 +30,7 @@ public class CostMinMin2 extends GenericGame {
 		calculateInitDist();
 
 		/* calculatefinal result */
-		return compFinalResult();
+		compFinalResult();
 
 	}
 
@@ -218,7 +218,7 @@ public class CostMinMin2 extends GenericGame {
 
 	}
 
-	public double compFinalResult() {
+	public void compFinalResult() {
 		do {
 			iStage++;
 			compAllocation();
@@ -227,7 +227,7 @@ public class CostMinMin2 extends GenericGame {
 				/* deadline can not be satisfied */
 				if (!bDeadline) {
 					System.out.println("THE DEADLINE CAN NOT BE SATISFIED!");
-					return 0;
+					return;
 				} else {
 					System.out.println("\nNEW ROUND WITHOUT CHECKING:");
 					dEval = 1;
@@ -262,7 +262,6 @@ public class CostMinMin2 extends GenericGame {
 		}
 		System.out.println("Stage = " + iStage);
 
-		return 0;
 	}
 
 	public void compExecTime() {
