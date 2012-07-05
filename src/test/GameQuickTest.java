@@ -213,12 +213,15 @@ public class GameQuickTest {
 			GameQuick  gq = (GameQuick) wo.test3();
 			long tw1 = System.currentTimeMillis();
 			double t1 = gq.schedule();
+			System.out.println("Makespan GQ = " +  gq.getDFinalMakespan());
+			
 			System.out.println("AlgExeTime= "
 					+ (System.currentTimeMillis() - tw1));
 			System.out.println("Makespan% = " + 100);
 			System.out.println();
+			
 
-			OLB mt = new OLB();
+			OLB mt = new OLB(gq.getIClass(),gq.getISite());
 			mt.init(gq);
 			long tw2 = System.currentTimeMillis();
 			double t2 = mt.olbStart();
@@ -244,7 +247,7 @@ public class GameQuickTest {
 					+ (System.currentTimeMillis() - tw4));
 			System.out.println();
 
-			MinMin minmin = new MinMin();
+			MinMin minmin = new MinMin(gq.getIClass(),gq.getISite());
 			minmin.init(gq);
 			long tw3 = System.currentTimeMillis();
 			double t3 = minmin.minmin();
@@ -270,7 +273,7 @@ public class GameQuickTest {
 					+ (System.currentTimeMillis() - tw5));
 			System.out.println();
 
-			Sufferage minsuff = new Sufferage();
+			Sufferage minsuff = new Sufferage(gq.getIClass(),gq.getISite());
 			minsuff.init(gq);
 			long tw6 = System.currentTimeMillis();
 			double t6 = minsuff.minSufferage();
@@ -283,7 +286,7 @@ public class GameQuickTest {
 					+ (System.currentTimeMillis() - tw6));
 			System.out.println();
 
-			MET met = new MET();
+			MET met = new MET(gq.getIClass(),gq.getISite());
 			met.init(gq);
 			long tw7 = System.currentTimeMillis();
 			double t7 = met.minet();
@@ -316,7 +319,7 @@ public class GameQuickTest {
 	public static void main(String[] args) {
 		GameQuickTest test = new GameQuickTest();
 		
-		test.testCvg();
+		test.testFinal();
 	}
 
 }

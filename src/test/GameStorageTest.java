@@ -119,8 +119,8 @@ public class GameStorageTest {
 	}
 
 	public GameStorage test3storage() {
-		GameStorage gs = new GameStorage();
-		gs.init(10,10);
+		GameStorage gs = new GameStorage(10,10);
+		gs.setBPrint(false);
 
 		int heteroTask = 10;
 		int heteroMachine = 10;
@@ -129,7 +129,7 @@ public class GameStorageTest {
 
 		int[] iaLength = new int[10];
 		for (int j = 0; j < 10; j++) {
-			iaLength[j] = 1000 + (int) (Math.random() * 1000);
+			iaLength[j] = 10 + (int) (Math.random() * 10);
 		}
 		gs.setIaLength(iaLength);
 		
@@ -138,8 +138,9 @@ public class GameStorageTest {
 		double[] daStorageInput = new double[10];
 		double[] daStorageOutput = new double[10];
 		double[] daStorageUsed = new double[10];
+		
 		for (int j = 0; j < 10; j++) {
-			iaCPU[j] = 64 + (int) (Math.random() * 64);
+			iaCPU[j] = 16 + (int) (Math.random() * 16);
 			daStorageLimit[j] = Math.random() * heteroStorage + 1;
 			daStorageInput[j] = Math.random() * heteroSpaceNeed + 1;
 			daStorageOutput[j] = 0;
@@ -234,72 +235,74 @@ public class GameStorageTest {
 	public static void main(String[] args) {
 		GameStorageTest gst = new GameStorageTest();
 		
-		GameStorage wo = gst.test3storage();
-		wo.setBPrint(false);
-		wo.schedule();
+		GameStorage gs = gst.test3storage();
+		gs.setBPrint(false);
+		gs.schedule();
+		System.out.println("Makespan GS = " + gs.getDFinalMakespan());
 
 		System.out.println("----------------MinMin--------------");
-		StorageMinMin minmin = new StorageMinMin(wo.getIClass(), wo.getISite());
+		StorageMinMin minmin = new StorageMinMin(gs.getIClass(), gs.getISite());
 		minmin.setBPrint(false);
-		minmin.initializeStorageEnv(wo);
+		minmin.initializeStorageEnv(gs);
 		long tw9 = System.currentTimeMillis();
 		minmin.minmin();
-		System.out.println("Cost%     = " + minmin.getDCost() / wo.getDCost() * 100);
-		System.out.println("Time%     = " + minmin.getDTime() / wo.getDTime() * 100);
-		System.out.println("Makespan% = " + minmin.getDFinalMakespan()
-				/ wo.getDFinalMakespan() * 100);
+		System.out.println("Cost%     = " + minmin.getDCost() / gs.getDCost() * 100);
+		System.out.println("Time%     = " + minmin.getDTime() / gs.getDTime() * 100);
+		System.out.println("Makespan% = " + minmin.getDFinalMakespan());
+		
+			//	/ wo.getDFinalMakespan() * 100);
 		System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw9));
 		System.out.println();
 
 		System.out.println("----------------MaxMin--------------");
-		StorageMaxmin maxmin = new StorageMaxmin(wo.getIClass(), wo.getISite());
+		StorageMaxmin maxmin = new StorageMaxmin(gs.getIClass(), gs.getISite());
 		maxmin.setBPrint(false);
-		maxmin.initializeStorageEnv(wo);
+		maxmin.initializeStorageEnv(gs);
 		long tw1 = System.currentTimeMillis();
 		maxmin.maxmin();
-		System.out.println("Cost%     = " + maxmin.getDCost() / wo.getDCost() * 100);
-		System.out.println("Time%     = " + maxmin.getDTime() / wo.getDTime() * 100);
+		System.out.println("Cost%     = " + maxmin.getDCost() / gs.getDCost() * 100);
+		System.out.println("Time%     = " + maxmin.getDTime() / gs.getDTime() * 100);
 		System.out.println("Makespan% = " + maxmin.getDFinalMakespan()
-				/ wo.getDFinalMakespan() * 100);
+				/ gs.getDFinalMakespan() * 100);
 		System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw1));
 		System.out.println();
 
 		System.out.println("----------------Sufferage--------------");
-		StorageSufferage sufferage = new StorageSufferage(wo.getIClass(), wo.getISite());
+		StorageSufferage sufferage = new StorageSufferage(gs.getIClass(), gs.getISite());
 		sufferage.setBPrint(false);
-		sufferage.initializeStorageEnv(wo);
+		sufferage.initializeStorageEnv(gs);
 		long tw2 = System.currentTimeMillis();
 		sufferage.minSufferage();
-		System.out.println("Cost%     = " + sufferage.getDCost() / wo.getDCost() * 100);
-		System.out.println("Time%     = " + sufferage.getDTime() / wo.getDTime() * 100);
+		System.out.println("Cost%     = " + sufferage.getDCost() / gs.getDCost() * 100);
+		System.out.println("Time%     = " + sufferage.getDTime() / gs.getDTime() * 100);
 		System.out.println("Makespan% = " + sufferage.getDFinalMakespan()
-				/ wo.getDFinalMakespan() * 100);
+				/ gs.getDFinalMakespan() * 100);
 		System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw2));
 		System.out.println();
 
 		System.out.println("----------------MCT--------------");
-		StorageMCT mct = new StorageMCT(wo.getIClass(), wo.getISite());
+		StorageMCT mct = new StorageMCT(gs.getIClass(), gs.getISite());
 		mct.setBPrint(false);
-		mct.initializeStorageEnv(wo);
+		mct.initializeStorageEnv(gs);
 		long tw3 = System.currentTimeMillis();
 		mct.minct();
-		System.out.println("Cost%     = " + mct.getDCost() / wo.getDCost() * 100);
-		System.out.println("Time%     = " + mct.getDTime() / wo.getDTime() * 100);
+		System.out.println("Cost%     = " + mct.getDCost() / gs.getDCost() * 100);
+		System.out.println("Time%     = " + mct.getDTime() / gs.getDTime() * 100);
 		System.out.println("Makespan% = " + mct.getDFinalMakespan()
-				/ wo.getDFinalMakespan() * 100);
+				/ gs.getDFinalMakespan() * 100);
 		System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw3));
 		System.out.println();
 
 		System.out.println("----------------OLB--------------");
-		StorageOLB olb = new StorageOLB(wo.getIClass(), wo.getISite());
+		StorageOLB olb = new StorageOLB(gs.getIClass(), gs.getISite());
 		olb.setBPrint(false);
-		olb.initializeStorageEnv(wo);
+		olb.initializeStorageEnv(gs);
 		long tw4 = System.currentTimeMillis();
 		olb.olbStart();
-		System.out.println("Cost%     = " + olb.getDCost() / wo.getDCost() * 100);
-		System.out.println("Time%     = " + olb.getDTime() / wo.getDTime() * 100);
+		System.out.println("Cost%     = " + olb.getDCost() / gs.getDCost() * 100);
+		System.out.println("Time%     = " + olb.getDTime() / gs.getDTime() * 100);
 		System.out.println("Makespan% = " + olb.getDFinalMakespan()
-				/ wo.getDFinalMakespan() * 100);
+				/ gs.getDFinalMakespan() * 100);
 		System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw4));
 		System.out.println();
 	}
