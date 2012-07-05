@@ -3,9 +3,9 @@ package game;
 import org.apache.log4j.Logger;
 
 /**
- * 
- * author: rubing duan
- * 
+ *
+ *  
+ * author: Rubing Duan
  * */
 
 public class CommGameQuick extends GenericGame {
