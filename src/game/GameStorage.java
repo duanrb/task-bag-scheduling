@@ -2,10 +2,7 @@ package game;
 
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
-
 public class GameStorage extends GenericStorage {
-	private final static Logger logger = Logger.getLogger(GameStorage.class);
 
 	public GameStorage(int iClass, int iSite) {
 		super(iClass, iSite);

@@ -1,7 +1,5 @@
 package game;
 
-
-
 public class GameQuick extends GenericGame {
 
 	public GameQuick() {
@@ -391,9 +389,4 @@ public class GameQuick extends GenericGame {
 		println("FinalExeTime = " + finalExeTime);
 
 	}
-
-//===========================================================================
-	
-
-
 }

@@ -5,7 +5,7 @@ import java.util.Vector;
 
 /**
  * 
- * @author rubing
+ * @author Rubing Duan
  * 
  */
 
