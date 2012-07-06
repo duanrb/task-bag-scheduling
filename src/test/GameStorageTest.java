@@ -15,7 +15,7 @@ public class GameStorageTest {
 		wo.setBPrint(true);
 		
 		int[] iaLength = {1000000,100000};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {100,100};
 		wo.setIaCPU(iaCPU);
@@ -31,7 +31,7 @@ public class GameStorageTest {
 		wo.setBPrint(true);
 
 		int[] iaLength = {10000,10000,10000};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {100,100,100};
 		wo.setIaCPU(iaCPU);
@@ -57,7 +57,7 @@ public class GameStorageTest {
 		wo.setBPrint(true);
 
 		int[] iaLength = {10000,10000,10000};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {100,100,100};
 		wo.setIaCPU(iaCPU);
@@ -82,7 +82,7 @@ public class GameStorageTest {
 		wo.setBPrint(true);
 
 		int[] iaLength = {100,100};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 		
 		int[] iaCPU = {10,10};
 		wo.setIaCPU(iaCPU);
@@ -124,14 +124,14 @@ public class GameStorageTest {
 
 		int heteroTask = 10;
 		int heteroMachine = 10;
-		int heteroStorage = 1000000;
-		int heteroSpaceNeed = 100;
+		double heteroStorage = 1000000000;
+		double heteroSpaceNeed = 100;
 
 		int[] iaLength = new int[10];
 		for (int j = 0; j < 10; j++) {
-			iaLength[j] = 10 + (int) (Math.random() * 10);
+			iaLength[j] = 1000 + (int) (Math.random() * 1000);
 		}
-		gs.setIaLength(iaLength);
+		gs.setIaTask(iaLength);
 		
 		int[] iaCPU = new int[10];
 		double[] daStorageLimit = new double[10];
@@ -141,8 +141,8 @@ public class GameStorageTest {
 		
 		for (int j = 0; j < 10; j++) {
 			iaCPU[j] = 16 + (int) (Math.random() * 16);
-			daStorageLimit[j] = Math.random() * heteroStorage + 1;
-			daStorageInput[j] = Math.random() * heteroSpaceNeed + 1;
+			daStorageLimit[j] = Math.random() * heteroStorage + heteroStorage/2;
+			daStorageInput[j] = Math.random() * heteroSpaceNeed + heteroSpaceNeed/2;
 			daStorageOutput[j] = 0;
 			daStorageUsed[j] = 0;
 		}
@@ -168,6 +168,7 @@ public class GameStorageTest {
 		for (int j = 0; j < 10; j++) {
 			daPrice[j] = 1 + Math.random() * 10;
 		}
+		gs.setDaPrice(daPrice);
 
 		return gs;
 	}
@@ -177,7 +178,7 @@ public class GameStorageTest {
 		wo.setBPrint(true);
 
 		int[] iaLength = {100,100};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {10,10};
 		wo.setIaCPU(iaCPU);
@@ -207,7 +208,7 @@ public class GameStorageTest {
 		wo.setBPrint(true);
 
 		int[] iaLength = {4,6};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {2,2};
 		wo.setIaCPU(iaCPU);
@@ -231,11 +232,9 @@ public class GameStorageTest {
 		
 		wo.schedule();
 	}
-
-	public static void main(String[] args) {
-		GameStorageTest gst = new GameStorageTest();
-		
-		GameStorage gs = gst.test3storage();
+	
+	public void testFinal() {
+		GameStorage gs = test3storage();
 		gs.setBPrint(false);
 		gs.schedule();
 		System.out.println("Makespan GS = " + gs.getDFinalMakespan());
@@ -305,5 +304,12 @@ public class GameStorageTest {
 				/ gs.getDFinalMakespan() * 100);
 		System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw4));
 		System.out.println();
+	}
+	
+
+	public static void main(String[] args) {
+		GameStorageTest gst = new GameStorageTest();
+		gst.testFinal();
+		
 	}
 }

@@ -9,7 +9,7 @@ public class CommGameQuickTest {
 		wo.setBPrint(true);
 
 		int[] iaLength = {50,200};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {10,10};
 		wo.setIaCPU(iaCPU);

@@ -16,7 +16,7 @@ public class GameQuickTest {
 		wo.setBPrint(true);
 		
 		int[] iaLength = {1000000,100000};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {100,100};
 		wo.setIaCPU(iaCPU);
@@ -32,7 +32,7 @@ public class GameQuickTest {
 		wo.setBPrint(true);
 
 		int[] iaLength = {50,100};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {10,10};
 		wo.setIaCPU(iaCPU);
@@ -48,7 +48,7 @@ public class GameQuickTest {
 		wo.setBPrint(true);
 
 		int[] iaLength = {10000,10000,10000};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {100,100,100};
 		wo.setIaCPU(iaCPU);
@@ -73,7 +73,7 @@ public class GameQuickTest {
 		wo.setBPrint(true);
 
 		int[] iaLength = {10000,10000,10000};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {100,100,100};
 		wo.setIaCPU(iaCPU);
@@ -105,7 +105,7 @@ public class GameQuickTest {
 		for (int j = 0; j < wo.getIClass(); j++) {
 			iaLength[j] = 10000 + (int) (Math.random() * 10000);
 		}
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 		
 		int[] iaCPU = new int[wo.getISite()];
 		for (int j = 0; j < wo.getISite(); j++) {
@@ -132,7 +132,7 @@ public class GameQuickTest {
 		wo.setBPrint(true);
 
 		int[] iaLength = {100,100};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 		
 		int[] iaCPU = {10,10};
 		wo.setIaCPU(iaCPU);
@@ -158,7 +158,7 @@ public class GameQuickTest {
 
 
 		int[] iaLength = {1,1,1};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {1,1,1};
 		wo.setIaCPU(iaCPU);
@@ -178,7 +178,7 @@ public class GameQuickTest {
 		wo.setBPrint(true);
 
 		int[] iaLength = {1,1,1,1};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {1,1,1,1};
 		wo.setIaCPU(iaCPU);

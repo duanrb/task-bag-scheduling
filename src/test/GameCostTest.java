@@ -22,7 +22,7 @@ public class GameCostTest {
 		wo.setBPrint(true);
 		
 		int[] iaLength = {1000,1000};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {32,32};
 		wo.setIaCPU(iaCPU);
@@ -44,7 +44,7 @@ public class GameCostTest {
 		wo.setBPrint(true);
 		
 		int[] iaLength = {1000,1000,1000};
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {100,100,100};
 		wo.setIaCPU(iaCPU);
@@ -78,7 +78,7 @@ public class GameCostTest {
 		for (int j = 0; j < iClass; j++) {
 			iaLength[j] = 1000;// + Math.round(Math.round(10000 * Math.random()));
 		}
-		wo.setIaLength(iaLength);
+		wo.setIaTask(iaLength);
 
 		double[] iaSpeedCPU = new double[iSite];
 		double[] daPrice = new double[iSite];
