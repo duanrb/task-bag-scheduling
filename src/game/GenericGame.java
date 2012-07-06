@@ -255,6 +255,7 @@ public class GenericGame {
 	public void init(GenericGame gg)
 	{
 		init(gg.iClass, gg.iSite);
+		setBPrint(gg.bPrint);
 		setDeadline(gg.dDeadline);
 		setDmPrediction(gg.dmPrediction);
 		setIaLength(gg.iaLength);
@@ -541,7 +542,6 @@ public class GenericGame {
 		if (bPrint == true) {
 			System.out.print(string);
 		}
-
 	}
 
 	public void println(String string) {

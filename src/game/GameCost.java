@@ -81,7 +81,6 @@ public class GameCost extends GenericGame {
 		}
 	}
 
-	boolean bDeadline = true;
 
 	public boolean compDistribution() {
 		bDeadline = true;
@@ -92,7 +91,7 @@ public class GameCost extends GenericGame {
 		double lastAllocation;
 
 		for (int i = 0; i < iClass; i++) {
-			print(iStage + "Distribution[" + i + "]");
+			print(iStage + " Distribution[" + i + "]");
 			tmp = 0;
 			rest = iaLength[i];
 			for (int j = 0; j < iSite; j++) {
@@ -176,8 +175,7 @@ public class GameCost extends GenericGame {
 		for (int i = 0; i < iSite; i++) {
 			tmp = 0;
 			for (int j = 0; j < iClass; j++) {
-				tmp += dmPrediction[j][i] * dmWeight[j][i]
-						* dmDist[j][i];
+				tmp += dmPrediction[j][i] * dmWeight[j][i] * dmDist[j][i];
 			}
 			// System.out.println("RelativeValue["+i+"] = "+ tmp);
 			daRelativeWeightBySite[i] = tmp;
@@ -186,9 +184,7 @@ public class GameCost extends GenericGame {
 		for (int i = 0; i < iSite; i++) {
 			for (int j = 0; j < iClass; j++) {
 				if (daRelativeWeightBySite[i] != 0) {
-					dmAlloc[j][i] = (dmDist[j][i]
-							* dmPrediction[j][i] * dmWeight[j][i] * iaCPU[i])
-							/ daRelativeWeightBySite[i];
+					dmAlloc[j][i] = (dmDist[j][i] * dmPrediction[j][i] * dmWeight[j][i] * iaCPU[i]) / daRelativeWeightBySite[i];
 				} else {
 					dmAlloc[j][i] = -1;
 				}
@@ -204,7 +200,7 @@ public class GameCost extends GenericGame {
 		}
 
 		for (int i = 0; i < iClass; i++) {
-			print(iStage + "Allocation[" + i + "]");
+			print(iStage + " Allocation[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				print(dmAlloc[i][j] + ", ");
 			}
@@ -265,7 +261,7 @@ public class GameCost extends GenericGame {
 		}
 		println("==================Cost&Time=====================");
 		compExecTime();
-		System.out.println("Stage = " + iStage);
+		println("Stage = " + iStage);
 		return true;
 	}
 
@@ -317,8 +313,8 @@ public class GameCost extends GenericGame {
 			println();
 		}
 		dFinalMakespan = dDeadline;
-		System.out.println("My Time = " + dTime);
-		System.out.println("My Cost = " + dCost);
+		println("My Time = " + dTime);
+		println("My Cost = " + dCost);
 	}
 
 	/**
@@ -330,7 +326,7 @@ public class GameCost extends GenericGame {
 			print("PricePerActivity[" + i + "] ");
 			for (int j = 0; j < iSite; j++) {
 				dmPricePerActivity[i][j] = daPrice[j] * dmPrediction[i][j];
-				print(j + ":" + dmPricePerActivity[i][j] + ", ");
+				print( dmPricePerActivity[i][j] + ", ");
 			}
 			println();
 		}
@@ -353,7 +349,8 @@ public class GameCost extends GenericGame {
 
 	}
 
-	public void minCost() {
+	@Override
+	public void schedule() {
 
 		iStage = 0;
 		sortResources();
@@ -363,22 +360,23 @@ public class GameCost extends GenericGame {
 		compExecTime();
 		if (!compFinalResult()) {
 			GameQuick opt = new GameQuick(this.iClass, this.iSite);
-			opt.setBPrint(this.bPrint);
 			opt.init(this);
 			opt.schedule();
 			if (opt.dDeadline >= opt.dFinalMakespan) {
 				this.dCost = opt.dCost;
 				this.dTime = opt.dTime;
 				this.dFinalMakespan = opt.dFinalMakespan;
-				System.out.println("SUCCESSFULLY COMPLETE!");
+				println("SUCCESSFULLY COMPLETE!");
 			} else {
 				System.out.println("FAILED!!! ");
 			}
 
 		} else {
-			System.out.println("FIND THE SOLUTION!!");
+			println("FIND THE SOLUTION!!");
 		}
-		System.out.println("Deadline =" + dDeadline);
+		println("Deadline =" + dDeadline);
+		
+		System.out.println("Stage     = " + iStage);
 	}
 
 	public void minCostWithWorkflowOptimization() {

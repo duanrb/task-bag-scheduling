@@ -72,7 +72,7 @@ public class GameQuick extends GenericGame {
 		}
 
 		/* compute summed execution time */
-		System.out.println("iAllCPU = " + iAllCPU);
+		println("iAllCPU = " + iAllCPU);
 		if (lastPhaseMakespan > 0) {
 			dTotalExecutionTime = lastPhaseMakespan * iAllCPU;
 		}
@@ -119,12 +119,12 @@ public class GameQuick extends GenericGame {
 
 		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
-			System.out.print("Weight[" + i + "]");
+			print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				dmWeight[i][j] = 1 / (dmPrediction[i][j] * daPredictionByClass[i]);
-				System.out.print(dmWeight[i][j] + ", ");
+				print(dmWeight[i][j] + ", ");
 			}
-			System.out.println();
+			println();
 		}
 	}
 
@@ -135,13 +135,13 @@ public class GameQuick extends GenericGame {
 		double[] daProcRateByClass = new double[iClass];
 		for (int i = 0; i < iClass; i++) {
 			tmp = 0;
-			// System.out.print("ProcessRate["+i+"]");
+			// print("ProcessRate["+i+"]");
 			for (int j = 0; j < iSite; j++) {
 				dmProcessRate[i][j] = iaCPU[j] / dmPrediction[i][j];
 				tmp += dmProcessRate[i][j];
-				// System.out.print(dmProcessRate[i][j] + ", ");
+				// print(dmProcessRate[i][j] + ", ");
 			}
-			// System.out.println();
+			// println();
 			daProcRateByClass[i] = tmp;
 		}
 
@@ -150,7 +150,7 @@ public class GameQuick extends GenericGame {
 			for (int j = 0; j < iSite; j++) {
 				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i])
 						* iaCurrentLength[i];
-				// System.out.println("0Distribution["+i+"]["+j+"] = "+
+				// println("0Distribution["+i+"]["+j+"] = "+
 				// dmDistribution[i][j]);
 			}
 		}
@@ -165,22 +165,22 @@ public class GameQuick extends GenericGame {
 			for (int j = 0; j < iSite; j++) {
 				dmProcessRate[i][j] = dmAlloc[i][j] / dmPrediction[i][j];
 				tmp += dmProcessRate[i][j];
-				// System.out.println("ProcessRate["+i+"]["+j+"] = "+
+				// println("ProcessRate["+i+"]["+j+"] = "+
 				// dmProcessRate[i][j]);
 			}
 			daProcRateByClass[i] = tmp;
 		}
 
 		for (int i = 0; i < iClass; i++) {
-			System.out.print(iStage + "Distribution[" + i + "]");
+			print(iStage + " Distribution[" + i + "]");
 			
 			for (int j = 0; j < iSite; j++) {
 				dmOldDist[i][j] = dmDist[i][j];
 				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i]) * iaCurrentLength[i];
 				
-				System.out.print(dmDist[i][j] + ", ");
+				print(dmDist[i][j] + ", ");
 			}
-			System.out.println();
+			println();
 		}
 	}
 
@@ -193,20 +193,20 @@ public class GameQuick extends GenericGame {
 			for (int j = 0; j < iClass; j++) {
 				tmp += dmPrediction[j][i] * dmWeight[j][i] * dmDist[j][i];
 			}
-			// System.out.println("RelativeValue["+i+"] = "+ tmp);
+			// println("RelativeValue["+i+"] = "+ tmp);
 			daRelativeWeightBySite[i] = tmp;
 		}
 
 		for (int i = 0; i < iSite; i++) {
-			System.out.print(iStage + "Allocation[" + i + "]");
+			print(iStage + " Allocation[" + i + "]");
 			for (int j = 0; j < iClass; j++) {
 
 				dmAlloc[j][i] = (dmDist[j][i] * dmPrediction[j][i] * dmWeight[j][i] * iaCPU[i])	
 						/ daRelativeWeightBySite[i];
 				
-				System.out.print(dmAlloc[j][i] + ", ");
+				print(dmAlloc[j][i] + ", ");
 			}
-			System.out.println();
+			println();
 		}
 	}
 
@@ -312,7 +312,7 @@ public class GameQuick extends GenericGame {
 		}
 
 		if (counterForNextPhase > 1) {
-			System.out.println("===need next phase=== counterForNextPhase="+counterForNextPhase);
+			println("===need next phase=== counterForNextPhase="+counterForNextPhase);
 			bNextPhase = true;
 			// reorganize iaCurrentLength
 			for (int i = 0; i < iClass; i++) {
@@ -354,7 +354,7 @@ public class GameQuick extends GenericGame {
 			bNextPhase = false;
 
 		}
-		System.out.println("Final Makespan = "+ dMinMaxMakespan);
+		println("Final Makespan = "+ dMinMaxMakespan);
 		return dMinMaxMakespan;
 	}
 
@@ -365,7 +365,7 @@ public class GameQuick extends GenericGame {
 		dTime = 0;
 		dCost = 0;
 		for (int i = 0; i < iClass; i++) {
-			// System.out.print("Time["+i+"]");
+			// print("Time["+i+"]");
 			newExeTime = 0;
 			for (int j = 0; j < iSite; j++) {
 				newExeTime = (dmDist[i][j] * dmPrediction[i][j])
@@ -379,9 +379,9 @@ public class GameQuick extends GenericGame {
 				dTime += newExeTime;
 				dEval += dmExeTime[i][j] - newExeTime;
 				dmExeTime[i][j] = newExeTime;
-				// System.out.print(dmExeTime[i][j]+", ");
+				// print(dmExeTime[i][j]+", ");
 			}
-			// System.out.println();
+			// println();
 		}
 		
 		vExeTime.add(dTime);

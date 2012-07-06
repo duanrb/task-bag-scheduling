@@ -55,7 +55,7 @@ public class GameCostTest {
 		wo.setDDeadline(11);
 		
 		double[][] dmPrediction = {
-				{1,1.1,1},
+				{1,1.1,1.1},
 				{1.1,1,1.1},
 				{1.1,1.1,1},
 				};
@@ -65,36 +65,39 @@ public class GameCostTest {
 	}
 
 	public GameCost test3() {
-		GameCost wo = new GameCost(100,100);
-		wo.setBPrint(true);
 		int heteroMachine = 10;
 		int heteroTask = 10;
-
-
-		wo.setDDeadline(1800);
+		int iClass=10, iSite =10;
 		
-		int[] iaLength = new int[100];
-		for (int j = 0; j < 100; j++) {
-			iaLength[j] = 10000;// + Math.round(Math.round(10000 * Math.random()));
-		}
+		GameCost wo = new GameCost(iClass,iSite);
+		wo.setBPrint(false);
 
-		double[] iaSpeedCPU = new double[100];
-		double[] daPrice = new double[100];
-		int[] iaCPU = new int[100];
-		for (int j = 0; j < 100; j++) {
-			iaCPU[j] = 100;// + (int) (Math.random() * 64);
+		wo.setDDeadline(18000);
+		
+		int[] iaLength = new int[iClass];
+		for (int j = 0; j < iClass; j++) {
+			iaLength[j] = 1000;// + Math.round(Math.round(10000 * Math.random()));
+		}
+		wo.setIaLength(iaLength);
+
+		double[] iaSpeedCPU = new double[iSite];
+		double[] daPrice = new double[iSite];
+		int[] iaCPU = new int[iSite];
+		for (int j = 0; j < iSite; j++) {
+			iaCPU[j] = 10;// + (int) (Math.random() * 64);
 			iaSpeedCPU[j] = Math.random() * heteroMachine + 1;
 			daPrice[j] = 10 + Math.round(Math.round(100 * Math.random()));
 		}
-		wo.setIaLength(iaLength);
 		wo.setDaPrice(daPrice);
+		wo.setIaCPU(iaCPU);
 		
 		
 		double tmpPrediciton;
-		double[][] dmPrediction = new double[100][100];
-		for (int i = 0; i < 100; i++) {
+		double[][] dmPrediction = new double[iClass][iSite];
+		for (int i = 0; i < iClass; i++) {
+			
 			tmpPrediciton = 1 + Math.random() * heteroTask;
-			for (int j = 0; j < 100; j++) {
+			for (int j = 0; j < iSite; j++) {
 				dmPrediction[i][j] = tmpPrediciton * iaSpeedCPU[j]
 						* (Math.random() + 0.5);
 			}
@@ -108,30 +111,24 @@ public class GameCostTest {
 		for (int s = 0; s < 1; s++) {
 			GameCostTest gct = new GameCostTest();
 			GameCost wo = gct.test3();
+			System.out.println("----------------COST OPTIMIZATION--------------");
 			long tw1 = System.currentTimeMillis();
-			wo.minCost();
-			System.out
-					.println("----------------COST OPTIMIZATION--------------");
+			wo.schedule();
 			System.out.println("Cost      = " + wo.getDCost());
 			System.out.println("Time      = " + wo.getDTime());
-			System.out.println("AlgExeTime= "
-					+ (System.currentTimeMillis() - tw1));
-			System.out.println("Makespan% = " + wo.getDFinalMakespan()
-					/ wo.getDDeadline() * 100);
+			System.out.println("AlgExeTime= "+ (System.currentTimeMillis() - tw1));
+			System.out.println("Makespan% = " + wo.getDFinalMakespan() / wo.getDDeadline() * 100);
 			System.out.println();
 
-			System.out
-					.println("----------------QUICK OPTIMIZATION--------------");
+			System.out.println("----------------QUICK OPTIMIZATION--------------");
 			GameQuick opt = new GameQuick(wo.getIClass(), wo.getISite());
 			opt.init(wo);
 			long tw8 = System.currentTimeMillis();
 			opt.schedule();
 			System.out.println("Cost%     = " + opt.getDCost() / wo.getDCost() * 100);
 			System.out.println("Time%     = " + opt.getDTime() / wo.getDTime() * 100);
-			System.out.println("Makespan% = " + opt.getDFinalMakespan()
-					/ wo.getDFinalMakespan() * 100);
-			System.out.println("AlgExeTime= "
-					+ (System.currentTimeMillis() - tw8));
+			System.out.println("Makespan% = " + opt.getDFinalMakespan()	/ wo.getDFinalMakespan() * 100);
+			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw8));
 			System.out.println();
 
 			System.out.println("----------------OLB--------------");
@@ -141,8 +138,7 @@ public class GameCostTest {
 			olb.olbStart();
 			System.out.println("Cost%     = " + olb.getDCost() / wo.getDCost() * 100);
 			System.out.println("Time%     = " + olb.getDTime() / wo.getDTime() * 100);
-			System.out.println("Makespan% = " + olb.getDFinalMakespan()
-					/ wo.getDFinalMakespan() * 100);
+			System.out.println("Makespan% = " + olb.getDFinalMakespan() / wo.getDFinalMakespan() * 100);
 			System.out.println("AlgExeTime= "
 					+ (System.currentTimeMillis() - tolb));
 			System.out.println();
@@ -298,16 +294,14 @@ public class GameCostTest {
 		GameCost wo = gct.test3();
 		long tw1 = System.currentTimeMillis();
 		wo.setBPrint(false);
-		wo.minCost();
+		wo.schedule();
 		System.out.println("----------------COST OPTIMIZATION--------------");
 		System.out.println("Cost      = " + wo.getDCost());
 		System.out.println("Time      = " + wo.getDTime());
 		System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw1));
-		System.out.println("Makespan% = " + wo.getDFinalMakespan() / wo.getDDeadline()
-				* 100);
+		System.out.println("Makespan% = " + wo.getDFinalMakespan() / wo.getDDeadline() * 100);
 
-		System.out
-				.println("----------------WORKFLOW OPTIMIZATION--------------");
+		System.out.println("----------------WORKFLOW OPTIMIZATION--------------");
 		GameQuick opt = new GameQuick(wo.getIClass(), wo.getISite());
 		opt.init(wo);
 		opt.setBPrint(false);
@@ -328,6 +322,7 @@ public class GameCostTest {
 
 	public static void main(String[] args) {
 		GameCostTest co = new GameCostTest();
-		co.testCvg();
+		co.testFinal();
+		
 	}
 }
