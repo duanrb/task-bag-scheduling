@@ -148,7 +148,7 @@ public class GenericStorage extends GenericGame {
 		this.setDaStorageLimit(game.daStorageLimit);
 		this.setDmPrediction(game.dmPrediction);
 		this.setDaPrice(game.daPrice);
-		this.setIaLength(game.iaTask);
+		this.setIaTask(game.iaTask);
 		this.setIaCurrentLength(game.iaTask);
 		this.setIaCPU(game.iaCPU);
 		this.setICPUinit(game.iaCPU);

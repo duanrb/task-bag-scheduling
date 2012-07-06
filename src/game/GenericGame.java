@@ -256,7 +256,7 @@ public class GenericGame {
 		setBPrint(gg.bPrint);
 		setDeadline(gg.dDeadline);
 		setDmPrediction(gg.dmPrediction);
-		setIaLength(gg.iaTask);
+		setIaTask(gg.iaTask);
 		setIaCurrentLength(gg.iaTask);
 		setDaPrice(gg.daPrice);
 		setIaCPU(gg.iaCPU);
@@ -448,7 +448,7 @@ public class GenericGame {
 		return iaTask;
 	}
 
-	public void setIaLength(int[] iaLength) {
+	public void setIaTask(int[] iaLength) {
 		for (int j = 0; j < iClass; j++) {
 			this.iaTask[j] = iaLength[j];
 			iaQueuedTask[j] = iaLength[j];
