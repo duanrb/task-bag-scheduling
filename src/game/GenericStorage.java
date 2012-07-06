@@ -143,6 +143,7 @@ public class GenericStorage extends GenericGame {
 	}
 	
 	public void initializeStorageEnv(GenericStorage game) {
+		this.setBPrint(game.bPrint);
 		this.setDaStorageInput(game.daStorageInput);
 		this.setDaStorageOutput(game.daStorageOutput);
 		this.setDaStorageLimit(game.daStorageLimit);

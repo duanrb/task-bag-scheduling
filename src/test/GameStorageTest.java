@@ -124,7 +124,7 @@ public class GameStorageTest {
 
 		int heteroTask = 10;
 		int heteroMachine = 10;
-		double heteroStorage = 1000000000;
+		double heteroStorage = 100000;
 		double heteroSpaceNeed = 100;
 
 		int[] iaLength = new int[10];
@@ -241,10 +241,9 @@ public class GameStorageTest {
 
 		System.out.println("----------------MinMin--------------");
 		StorageMinMin minmin = new StorageMinMin(gs.getIClass(), gs.getISite());
-		minmin.setBPrint(false);
 		minmin.initializeStorageEnv(gs);
 		long tw9 = System.currentTimeMillis();
-		minmin.minmin();
+		minmin.schedule();
 		System.out.println("Cost%     = " + minmin.getDCost() / gs.getDCost() * 100);
 		System.out.println("Time%     = " + minmin.getDTime() / gs.getDTime() * 100);
 		System.out.println("Makespan% = " + minmin.getDFinalMakespan());
@@ -255,40 +254,34 @@ public class GameStorageTest {
 
 		System.out.println("----------------MaxMin--------------");
 		StorageMaxmin maxmin = new StorageMaxmin(gs.getIClass(), gs.getISite());
-		maxmin.setBPrint(false);
 		maxmin.initializeStorageEnv(gs);
 		long tw1 = System.currentTimeMillis();
 		maxmin.maxmin();
 		System.out.println("Cost%     = " + maxmin.getDCost() / gs.getDCost() * 100);
 		System.out.println("Time%     = " + maxmin.getDTime() / gs.getDTime() * 100);
-		System.out.println("Makespan% = " + maxmin.getDFinalMakespan()
-				/ gs.getDFinalMakespan() * 100);
+		System.out.println("Makespan% = " + maxmin.getDFinalMakespan() / gs.getDFinalMakespan() * 100);
 		System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw1));
 		System.out.println();
 
 		System.out.println("----------------Sufferage--------------");
 		StorageSufferage sufferage = new StorageSufferage(gs.getIClass(), gs.getISite());
-		sufferage.setBPrint(false);
 		sufferage.initializeStorageEnv(gs);
 		long tw2 = System.currentTimeMillis();
 		sufferage.minSufferage();
 		System.out.println("Cost%     = " + sufferage.getDCost() / gs.getDCost() * 100);
 		System.out.println("Time%     = " + sufferage.getDTime() / gs.getDTime() * 100);
-		System.out.println("Makespan% = " + sufferage.getDFinalMakespan()
-				/ gs.getDFinalMakespan() * 100);
+		System.out.println("Makespan% = " + sufferage.getDFinalMakespan() / gs.getDFinalMakespan() * 100);
 		System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw2));
 		System.out.println();
 
 		System.out.println("----------------MCT--------------");
 		StorageMCT mct = new StorageMCT(gs.getIClass(), gs.getISite());
-		mct.setBPrint(false);
 		mct.initializeStorageEnv(gs);
 		long tw3 = System.currentTimeMillis();
 		mct.minct();
 		System.out.println("Cost%     = " + mct.getDCost() / gs.getDCost() * 100);
 		System.out.println("Time%     = " + mct.getDTime() / gs.getDTime() * 100);
-		System.out.println("Makespan% = " + mct.getDFinalMakespan()
-				/ gs.getDFinalMakespan() * 100);
+		System.out.println("Makespan% = " + mct.getDFinalMakespan()	/ gs.getDFinalMakespan() * 100);
 		System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw3));
 		System.out.println();
 
@@ -300,8 +293,7 @@ public class GameStorageTest {
 		olb.olbStart();
 		System.out.println("Cost%     = " + olb.getDCost() / gs.getDCost() * 100);
 		System.out.println("Time%     = " + olb.getDTime() / gs.getDTime() * 100);
-		System.out.println("Makespan% = " + olb.getDFinalMakespan()
-				/ gs.getDFinalMakespan() * 100);
+		System.out.println("Makespan% = " + olb.getDFinalMakespan() / gs.getDFinalMakespan() * 100);
 		System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw4));
 		System.out.println();
 	}

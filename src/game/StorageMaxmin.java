@@ -441,9 +441,8 @@ public class StorageMaxmin extends GenericStorage {
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
 				for (int k = 0; k < iaCPU[j]; k++) {
-					if (tmpMinMakespan > dmMinMakespan[i][j][k]
-							&& getAvailableStorage(j, dmMinminTime[j][k]) >= daStorageInput[i]
-									+ daStorageOutput[i]) {
+					if (tmpMinMakespan > dmMinMakespan[i][j][k]	
+							&& getAvailableStorage(j, dmMinminTime[j][k]) >= daStorageInput[i] + daStorageOutput[i]) {
 						iTmpMinClass = i;
 						iTmpMinSite = j;
 						iTmpMinCPU = k;
