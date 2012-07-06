@@ -5,51 +5,51 @@ import java.util.Vector;
 
 public class GenericGame {
 	/**
-	 * prediction of execution time of activities on grid sites
+	 * prediction of execution time of tasks on grid sites
 	 */
 	double[][] dmPrediction;
 
 	/**
-	 * number of activities
+	 * number of tasks
 	 */
 	int[] iaTask;
 
 	/**
-	 * number of queued activities
+	 * number of queued tasks
 	 */
 	int[] iaQueuedTask;
 
 	/**
-	 * weight of activities on grid sites
+	 * weight of tasks on sites
 	 */
 	double[][] dmWeight;
 
 	/**
-	 * allocation of processors of grid sites for activities, result of game
+	 * allocation of processors of grid sites for tasks, result of game
 	 */
 	double[][] dmAlloc;
 
 	/**
-	 * old allocation of processors of grid sites for activities, result of game
+	 * old allocation of processors of grid sites for tasks, result of game
 	 */
 	double[][] dmOldAlloc;
 	/**
-	 * distribution of activities on grid sites, result of game
+	 * distribution of tasks on grid sites, result of game
 	 */
 	double[][] dmDist;
 	
 	/**
-	 * old distribution of activities on grid sites, result of game
+	 * old distribution of tasks on grid sites, result of game
 	 */
 	double[][] dmOldDist;
 
 	/**
-	 * distribution of activities on grid sites, result of game
+	 * distribution of tasks on grid sites, result of game
 	 */
 	double[][] dmExeTime;
 
 	/**
-	 * cost of activities on grid sites, result of game
+	 * cost of tasks on grid sites, result of game
 	 */
 	double[][] dmCost;
 
@@ -119,7 +119,7 @@ public class GenericGame {
 	double dDeadline;
 
 	/**
-	 * processing rate of activities on grid sites
+	 * processing rate of tasks on grid sites
 	 */
 	double[][] dmProcessRate;
 
@@ -367,14 +367,14 @@ public class GenericGame {
 	}
 
 	/**
-	 * calculate the weights of activities on site
+	 * calculate the weights of tasks on site
 	 * 
 	 */
 	public void calculateWeight() {
 	}
 
 	/**
-	 * calculate the initial distribution of activities on site
+	 * calculate the initial distribution of tasks on site
 	 * 
 	 */
 	public void calculateInitDist() {

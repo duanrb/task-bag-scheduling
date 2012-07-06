@@ -50,7 +50,7 @@ public class GameCost extends GenericGame {
 			println();
 			daProcRateByClass[i] = tmp;
 		}
-		/* distribute activities according to the sort */
+		/* distribute tasks according to the sort */
 		int k;
 		for (int i = 0; i < iClass; i++) {
 			print("0Distribution[" + i + "]");
@@ -86,7 +86,7 @@ public class GameCost extends GenericGame {
 		bDeadline = true;
 		boolean bUsedNewResource = false;
 		double tmp = 0, rest = 0;
-		/* distribute activities according to the sort */
+		/* distribute tasks according to the sort */
 		int k;
 		double lastAllocation;
 
@@ -135,7 +135,7 @@ public class GameCost extends GenericGame {
 		bDeadline = true;
 		boolean bUsedNewResource = false;
 		double tmp = 0, rest = 0;
-		/* distribute activities according to the sort */
+		/* distribute tasks according to the sort */
 		int k;
 		double lastAllocation;
 		for (int i = 0; i < iClass; i++) {

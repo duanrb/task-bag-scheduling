@@ -58,7 +58,7 @@ public class MCT extends GenericGame {
 			// System.out.println();
 			daProcRateByClass[i] = tmp;
 		}
-		/* distribute activities according to the sort */
+		/* distribute tasks according to the sort */
 		int k;
 		for (int i = 0; i < iClass; i++) {
 			// System.out.print("0Distribution[" + i + "]");
@@ -96,7 +96,7 @@ public class MCT extends GenericGame {
 		bDeadline = true;
 		boolean bUsedNewResource = false;
 		double tmp = 0, rest = 0;
-		/* distribute activities according to the sort */
+		/* distribute tasks according to the sort */
 		int k;
 		double lastAllocation;
 		for (int i = 0; i < iClass; i++) {
