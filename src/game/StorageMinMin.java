@@ -173,7 +173,7 @@ public class StorageMinMin extends GenericStorage {
 		// }
 	}
 
-	public void compFinalResult() {
+	public void calculateFinalResult() {
 		do {
 			iStage++;
 			compAllocation();
@@ -333,7 +333,7 @@ public class StorageMinMin extends GenericStorage {
 
 	}
 
-	public double minmin() {
+	public void schedule() {
 		sortResources();
 		sortClass();
 		calculateWeight();
@@ -351,7 +351,7 @@ public class StorageMinMin extends GenericStorage {
 
 			if (iMinSite < 0) {// find the the solution
 				System.out.println("FAILED to find a solution!!!");
-				return -1;
+				return;
 			}
 
 			updateMin();
@@ -405,7 +405,6 @@ public class StorageMinMin extends GenericStorage {
 		dFinalMakespan = tmpTime;
 		dCost = sumCost;
 		dTime = sumTime;
-		return sumTime;
 
 	}
 
@@ -437,9 +436,8 @@ public class StorageMinMin extends GenericStorage {
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
 				for (int k = 0; k < iaCPU[j]; k++) {
-					if ( getAvailableStorage(j, dmMinminTime[j][k]) >= 
-						daStorageInput[i] + daStorageOutput[i] && 
-						tmpMinMakespan > dmMinMakespan[i][j][k]) {
+					if ( tmpMinMakespan > dmMinMakespan[i][j][k] 
+							&& getAvailableStorage(j, dmMinminTime[j][k]) >= 	daStorageInput[i] + daStorageOutput[i] ) {
 						iMinClass = i;
 						iMinSite = j;
 						iMinCPU = k;
@@ -516,7 +514,7 @@ public class StorageMinMin extends GenericStorage {
 		for (int j = 0; j < iSite; j++) {
 			iAllCPU += iaCPU[j];
 		}
-		minmin();
+		schedule();
 	}
 
 	public void test2() {
@@ -569,7 +567,7 @@ public class StorageMinMin extends GenericStorage {
 		}
 
 		// System.out.println("=============MINMIN===================");
-		minmin();
+		schedule();
 	}
 
 	public void test3() {
@@ -605,7 +603,7 @@ public class StorageMinMin extends GenericStorage {
 		}
 
 		// System.out.println("=============MINMIN===================");
-		minmin();
+		schedule();
 	}
 
 	public void storageTest() {
@@ -653,7 +651,7 @@ public class StorageMinMin extends GenericStorage {
 		daStorageOutput[1] = 2;
 
 		// System.out.println("=============MINMIN===================");
-		minmin();
+		schedule();
 	}
 
 	public static void main(String[] args) {
