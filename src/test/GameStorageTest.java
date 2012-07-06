@@ -246,9 +246,7 @@ public class GameStorageTest {
 		minmin.schedule();
 		System.out.println("Cost%     = " + minmin.getDCost() / gs.getDCost() * 100);
 		System.out.println("Time%     = " + minmin.getDTime() / gs.getDTime() * 100);
-		System.out.println("Makespan% = " + minmin.getDFinalMakespan());
-		
-			//	/ wo.getDFinalMakespan() * 100);
+		System.out.println("Makespan% = " + minmin.getDFinalMakespan() / gs.getDFinalMakespan() * 100);
 		System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw9));
 		System.out.println();
 
