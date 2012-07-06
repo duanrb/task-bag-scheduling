@@ -4,6 +4,9 @@ import java.util.Vector;
 
 public class GameStorage extends GenericStorage {
 
+	boolean bNextPhase = true;
+	boolean bStorageProblem[];
+	
 	public GameStorage(int iClass, int iSite) {
 		super(iClass, iSite);
 		bStorageProblem = new boolean[iSite];
@@ -15,10 +18,6 @@ public class GameStorage extends GenericStorage {
 
 	}
 
-	Vector phasesResult = new Vector();
-
-	boolean bNextPhase = true;
-
 	/**
 	 * calculate the final distribution and allocation
 	 * 
@@ -27,7 +26,7 @@ public class GameStorage extends GenericStorage {
 	public void schedule() {
 
 		calculateWeight();
-		compStorageWeight();
+		calculateStorageWeight();
 		sortStorageRequirement();
 		calculateInitDist();
 		compExecTime();
@@ -37,7 +36,7 @@ public class GameStorage extends GenericStorage {
 
 		double[] tmpLength = new double[iClass];
 		for (int i = 0; i < iClass; i++) {
-			tmpLength[i] = iaCurrentLength[i];
+			tmpLength[i] = iaQueuedTask[i];
 		}
 
 		while (bNextPhase) {
@@ -55,11 +54,11 @@ public class GameStorage extends GenericStorage {
 
 			/* prepare data for fairness evaluation */
 			for (int i = 0; i < iClass; i++) {
-				if (iaCurrentLength[i] == 0 & tmpLength[i] > 0) {
+				if (iaQueuedTask[i] == 0 & tmpLength[i] > 0) {
 					vFairness.add(currentMakespan);// lastPhaseMakespan+daMaxMakespan[i]
 					// );
 				}
-				tmpLength[i] = iaCurrentLength[i];
+				tmpLength[i] = iaQueuedTask[i];
 			}
 		}
 
@@ -68,7 +67,7 @@ public class GameStorage extends GenericStorage {
 				vFairness.add(currentMakespan);// lastPhaseMakespan+daMaxMakespan[i]
 				// );
 			}
-			tmpLength[i] = iaCurrentLength[i];
+			tmpLength[i] = iaQueuedTask[i];
 		}
 
 		dFinalMakespan = currentMakespan;
@@ -136,7 +135,7 @@ public class GameStorage extends GenericStorage {
 	}
 
 	@Override
-	public void compStorageWeight() {
+	public void calculateStorageWeight() {
 		double sum = 0;
 		/* calculate*/
 		for (int i = 0; i < iClass; i++) {
@@ -179,7 +178,7 @@ public class GameStorage extends GenericStorage {
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
 				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i])
-						* iaCurrentLength[i];
+						* iaQueuedTask[i];
 				println("Distribution[" + i + "][" + j + "] = " + dmDist[i][j]);
 			}
 
@@ -205,7 +204,7 @@ public class GameStorage extends GenericStorage {
 			print(iStage + "Distribution[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i])
-						* iaCurrentLength[i];
+						* iaQueuedTask[i];
 				print(dmDist[i][j] + ", ");
 			}
 			println();
@@ -214,9 +213,8 @@ public class GameStorage extends GenericStorage {
 
 	/**
 	 * compute the allocation of the stage
-	 * 
 	 */
-	boolean bStorageProblem[];
+	
 
 	public void compAllocation() {
 		/* calculate processing rate of each site */
@@ -465,17 +463,17 @@ public class GameStorage extends GenericStorage {
 			// reorganize iaCurrentLength
 			for (int i = 0; i < iClass; i++) {
 				if (dMinMaxMakespan == daMaxMakespan[i]) {
-					iaCurrentLength[i] = 0;
+					iaQueuedTask[i] = 0;
 				} else {
 					for (int j = 0; j < iSite; j++) {
 						if (dmAlloc[i][j] != 0) {
-							iaCurrentLength[i] = iaCurrentLength[i]
+							iaQueuedTask[i] = iaQueuedTask[i]
 									- (int) Math.floor(dMinMaxMakespan
 											* dmAlloc[i][j]
 											/ dmPrediction[i][j]);
 						}
-						if (iaCurrentLength[i] < 0) {
-							iaCurrentLength[i] = 0;
+						if (iaQueuedTask[i] < 0) {
+							iaQueuedTask[i] = 0;
 						}
 					}
 				}
@@ -486,7 +484,7 @@ public class GameStorage extends GenericStorage {
 			/* the last run check */
 			int tmpNumAct = 0;
 			for (int i = 0; i < iClass; i++) {
-				tmpNumAct += iaCurrentLength[i];
+				tmpNumAct += iaQueuedTask[i];
 			}
 			if (tmpNumAct == 0) {
 				bNextPhase = false;

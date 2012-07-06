@@ -16,13 +16,13 @@ public class CommGameQuick extends GenericGame {
 
 		calculateWeight();
 		calculateInitDist();
-		compExecTime();
+		calculateExecTime();
 		double currentMakespan = 0;
 		double lastPhaseMakespan = 0;
 
 		double[] tmpLength = new double[iClass];
 		for (int i = 0; i < iClass; i++) {
-			tmpLength[i] = iaCurrentLength[i];
+			tmpLength[i] = iaQueuedTask[i];
 		}
 
 		while (bNextPhase) {
@@ -32,10 +32,10 @@ public class CommGameQuick extends GenericGame {
 
 			/* prepare data for fairness evaluation */
 			for (int i = 0; i < iClass; i++) {
-				if (iaCurrentLength[i] == 0 & tmpLength[i] > 0) {
+				if (iaQueuedTask[i] == 0 & tmpLength[i] > 0) {
 					vFairness.add(currentMakespan);
 				}
-				tmpLength[i] = iaCurrentLength[i];  
+				tmpLength[i] = iaQueuedTask[i];  
 			}
 		}
 		
@@ -43,7 +43,7 @@ public class CommGameQuick extends GenericGame {
 			if (tmpLength[i] > 0) {
 				vFairness.add(currentMakespan);
 			}
-			tmpLength[i] = iaCurrentLength[i];
+			tmpLength[i] = iaQueuedTask[i];
 		}
 
 		dFinalMakespan = currentMakespan;
@@ -88,7 +88,7 @@ public class CommGameQuick extends GenericGame {
 
 		calculateWeight();
 		calculateInitDist();
-		compExecTime();
+		calculateExecTime();
 		calculateFinalResult();
 	}
 
@@ -136,7 +136,7 @@ public class CommGameQuick extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
 				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i])
-						* iaCurrentLength[i];
+						* iaQueuedTask[i];
 				// System.out.println("0Distribution["+i+"]["+j+"] = "+ dmDistribution[i][j]);
 			}
 		}
@@ -160,7 +160,7 @@ public class CommGameQuick extends GenericGame {
 			System.out.print(iStage + "Distribution[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i])
-						* iaCurrentLength[i];
+						* iaQueuedTask[i];
 				System.out.print(dmDist[i][j] + ", ");
 			}
 			System.out.println();
@@ -207,7 +207,7 @@ public class CommGameQuick extends GenericGame {
 
 			calculateDist();
 
-			compExecTime();
+			calculateExecTime();
 
 			for (int i = 0; i < iClass; i++) {
 				for (int j = 0; j < iSite; j++) {
@@ -302,17 +302,17 @@ public class CommGameQuick extends GenericGame {
 			// reorganize iaCurrentLength
 			for (int i = 0; i < iClass; i++) {
 				if (dMinMaxMakespan == daMaxMakespan[i]) {
-					iaCurrentLength[i] = 0;
+					iaQueuedTask[i] = 0;
 				} else {
 					for (int j = 0; j < iSite; j++) {
 						if (dmAlloc[i][j] != 0) {
-							iaCurrentLength[i] = iaCurrentLength[i]
+							iaQueuedTask[i] = iaQueuedTask[i]
 									- (int) Math.floor(dMinMaxMakespan
 											* dmAlloc[i][j]
 											/ dmPrediction[i][j]);
 						}
-						if (iaCurrentLength[i] < 0) {
-							iaCurrentLength[i] = 0;
+						if (iaQueuedTask[i] < 0) {
+							iaQueuedTask[i] = 0;
 						}
 					}
 				}
@@ -323,7 +323,7 @@ public class CommGameQuick extends GenericGame {
 			/* the last run check */
 			int tmpNumAct = 0;
 			for (int i = 0; i < iClass; i++) {
-				tmpNumAct += iaCurrentLength[i];
+				tmpNumAct += iaQueuedTask[i];
 			}
 			if (tmpNumAct == 0) {
 				bNextPhase = false;
@@ -334,7 +334,7 @@ public class CommGameQuick extends GenericGame {
 			reset();
 			calculateWeight();
 			calculateInitDist();
-			compExecTime();
+			calculateExecTime();
 		} else {
 			bNextPhase = false;
 
@@ -343,7 +343,7 @@ public class CommGameQuick extends GenericGame {
 		return dMinMaxMakespan;
 	}
 
-	public void compExecTime() {
+	public void calculateExecTime() {
 		double newExeTime;
 		double finalExeTime = 0;
 		dEval = 0;

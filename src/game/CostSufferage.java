@@ -4,7 +4,6 @@ public class CostSufferage extends GenericGame {
 
 	public CostSufferage(int iClass, int iSite) {
 		super(iClass, iSite);
-
 	}
 
 	@Override
@@ -15,7 +14,7 @@ public class CostSufferage extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			tmp = 0;
 			for (int j = 0; j < iSite; j++) {
-				tmp += dmPricePerActivity[i][j];
+				tmp += dmPricePerTask[i][j];
 			}
 			daPredictionByClass[i] = tmp;
 		}
@@ -25,10 +24,10 @@ public class CostSufferage extends GenericGame {
 			// System.out.print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				/* the weight is 1(maximum), when the site is free */
-				if (dmPricePerActivity[i][j] == 0) {
+				if (dmPricePerTask[i][j] == 0) {
 					dmWeight[i][j] = 1;
 				} else {
-					dmWeight[i][j] = dmPricePerActivity[i][j]
+					dmWeight[i][j] = dmPricePerTask[i][j]
 							/ daPredictionByClass[i];
 				}
 				// System.out.print(dmWeight[i][j] + ", ");
@@ -58,7 +57,7 @@ public class CostSufferage extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			// System.out.print("0Distribution[" + i + "]");
 			tmp = 0;
-			rest = iaLength[i];
+			rest = iaTask[i];
 			for (int j = 0; j < iSite; j++) {
 				if (rest != 0) {
 					// the first site to distribute
@@ -97,7 +96,7 @@ public class CostSufferage extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			// System.out.print(iStage + "Distribution[" + i + "]");
 			tmp = 0;
-			rest = iaLength[i];
+			rest = iaTask[i];
 			for (int j = 0; j < iSite; j++) {
 				if (rest != 0) {
 					// the first site to distribute
@@ -277,7 +276,7 @@ public class CostSufferage extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			// System.out.print("PricePerActivity[" + i + "] ");
 			for (int j = 0; j < iSite; j++) {
-				dmPricePerActivity[i][j] = daPrice[j] * dmPrediction[i][j];
+				dmPricePerTask[i][j] = daPrice[j] * dmPrediction[i][j];
 				// System.out.print(j + ":" + dmPricePerActivity[i][j] + ", ");
 			}
 			// System.out.println();
@@ -287,7 +286,7 @@ public class CostSufferage extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			// init array
 			for (int j = 0; j < iSite; j++) {
-				array[j][0] = dmPricePerActivity[i][j];
+				array[j][0] = dmPricePerTask[i][j];
 				array[j][1] = j;
 			}
 			QuickSort.sort(array, 0, iSite - 1);
@@ -309,7 +308,7 @@ public class CostSufferage extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			// System.out.print("PricePerActivity[" + i + "] ");
 			for (int j = 0; j < iSite; j++) {
-				dmPricePerActivity[i][j] = daPrice[j] * dmPrediction[i][j];
+				dmPricePerTask[i][j] = daPrice[j] * dmPrediction[i][j];
 				// System.out.print(j + ":" + dmPricePerActivity[i][j] + ", ");
 			}
 			// System.out.println();
@@ -400,7 +399,7 @@ public class CostSufferage extends GenericGame {
 		int sum = 0;
 		// init array
 		for (int j = 0; j < iClass; j++) {
-			sum += iaCurrentLength[j];
+			sum += iaQueuedTask[j];
 		}
 		return sum;
 	}
@@ -448,7 +447,7 @@ public class CostSufferage extends GenericGame {
 
 		for (int i = 0; i < iClass; i++) {
 			/* Find the first small and second small */
-			if (iaCurrentLength[i] > 0) {
+			if (iaQueuedTask[i] > 0) {
 				for (int j = 0; j < iSite; j++) {
 					for (int k = 0; k < iaCPU[j]; k++) {
 						if (tmpMinMakespan > dmMinMakespan[i][j][k]
@@ -487,14 +486,14 @@ public class CostSufferage extends GenericGame {
 
 	void updateMin() {
 		dmMinminTime[iMinSite][iMinCPU] += dmPrediction[iMinClass][iMinSite];
-		dmMinminCost[iMinSite][iMinCPU] += dmPricePerActivity[iMinClass][iMinSite];
+		dmMinminCost[iMinSite][iMinCPU] += dmPricePerTask[iMinClass][iMinSite];
 
 		for (int i = 0; i < iClass; i++) {
 			dmMinMakespan[i][iMinSite][iMinCPU] += dmPrediction[iMinClass][iMinSite];
 		}
 
-		iaCurrentLength[iMinClass]--;
-		if (iaCurrentLength[iMinClass] == 0) {
+		iaQueuedTask[iMinClass]--;
+		if (iaQueuedTask[iMinClass] == 0) {
 			for (int j = 0; j < iSite; j++) {
 				for (int k = 0; k < iaCPU[j]; k++) {
 					dmMinMakespan[iMinClass][j][k] = Double.MAX_VALUE;
@@ -509,14 +508,14 @@ public class CostSufferage extends GenericGame {
 		this.iClass = 2;
 		this.iSite = 2;
 		dmPrediction = new double[iClass][iSite];
-		iaLength = new int[iClass];
-		iaCurrentLength = new int[iClass];
+		iaTask = new int[iClass];
+		iaQueuedTask = new int[iClass];
 		dmWeight = new double[iClass][iSite];
 		dmAlloc = new double[iClass][iSite];
 		dmDist = new double[iClass][iSite];
 		dmRankResource = new double[iClass][iSite];
 		dmRankClass = new double[iSite][iClass];
-		dmPricePerActivity = new double[iClass][iSite];
+		dmPricePerTask = new double[iClass][iSite];
 		daPrice = new double[iSite];
 		iaCPU = new int[iSite];
 		dmProcessRate = new double[iClass][iSite];
@@ -524,10 +523,10 @@ public class CostSufferage extends GenericGame {
 		dmCost = new double[iClass][iSite];
 		this.iClass = 2;
 		this.iSite = 2;
-		iaLength[0] = 2;
-		iaLength[1] = 2;
-		iaCurrentLength[0] = 2;
-		iaCurrentLength[1] = 2;
+		iaTask[0] = 2;
+		iaTask[1] = 2;
+		iaQueuedTask[0] = 2;
+		iaQueuedTask[1] = 2;
 
 		iCPUMaxNum = 2;
 
@@ -550,26 +549,26 @@ public class CostSufferage extends GenericGame {
 		this.iSite = 3;
 
 		dmPrediction = new double[iClass][iSite];
-		iaLength = new int[iClass];
-		iaCurrentLength = new int[iClass];
+		iaTask = new int[iClass];
+		iaQueuedTask = new int[iClass];
 		dmWeight = new double[iClass][iSite];
 		dmAlloc = new double[iClass][iSite];
 		dmDist = new double[iClass][iSite];
 		dmRankResource = new double[iClass][iSite];
 		dmRankClass = new double[iSite][iClass];
-		dmPricePerActivity = new double[iClass][iSite];
+		dmPricePerTask = new double[iClass][iSite];
 		daPrice = new double[iSite];
 		iaCPU = new int[iSite];
 		dmProcessRate = new double[iClass][iSite];
 		dmExeTime = new double[iClass][iSite];
 		dmCost = new double[iClass][iSite];
 
-		iaLength[0] = 10000;
-		iaLength[1] = 10000;
-		iaLength[2] = 10000;
-		iaCurrentLength[0] = 10000;
-		iaCurrentLength[1] = 10000;
-		iaCurrentLength[2] = 10000;
+		iaTask[0] = 10000;
+		iaTask[1] = 10000;
+		iaTask[2] = 10000;
+		iaQueuedTask[0] = 10000;
+		iaQueuedTask[1] = 10000;
+		iaQueuedTask[2] = 10000;
 
 		iaCPU[0] = 10;
 		iaCPU[1] = 10;
@@ -602,7 +601,7 @@ public class CostSufferage extends GenericGame {
 		this.iSite = 100;
 
 		dmPrediction = new double[iClass][iSite];
-		iaLength = new int[iClass];
+		iaTask = new int[iClass];
 		dmWeight = new double[iClass][iSite];
 		dmAlloc = new double[iClass][iSite];
 		dmDist = new double[iClass][iSite];
@@ -612,7 +611,7 @@ public class CostSufferage extends GenericGame {
 		dmExeTime = new double[iClass][iSite];
 
 		for (int j = 0; j < iClass; j++) {
-			iaLength[j] = Math.round(Math.round(100000 * Math.random()));
+			iaTask[j] = Math.round(Math.round(100000 * Math.random()));
 		}
 		for (int j = 0; j < iSite; j++) {
 			iaCPU[j] = 64;

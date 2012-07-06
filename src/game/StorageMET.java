@@ -15,7 +15,7 @@ public class StorageMET extends GenericStorage {
 		for (int i = 0; i < iClass; i++) {
 			tmp = 0;
 			for (int j = 0; j < iSite; j++) {
-				tmp += dmPricePerActivity[i][j];
+				tmp += dmPricePerTask[i][j];
 			}
 			daPredictionByClass[i] = tmp;
 		}
@@ -25,10 +25,10 @@ public class StorageMET extends GenericStorage {
 			// System.out.print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				/* the weight is 1(maximum), when the site is free */
-				if (dmPricePerActivity[i][j] == 0) {
+				if (dmPricePerTask[i][j] == 0) {
 					dmWeight[i][j] = 1;
 				} else {
-					dmWeight[i][j] = dmPricePerActivity[i][j]
+					dmWeight[i][j] = dmPricePerTask[i][j]
 							/ daPredictionByClass[i];
 				}
 				// System.out.print(dmWeight[i][j] + ", ");
@@ -58,7 +58,7 @@ public class StorageMET extends GenericStorage {
 		for (int i = 0; i < iClass; i++) {
 			// System.out.print("0Distribution[" + i + "]");
 			tmp = 0;
-			rest = iaLength[i];
+			rest = iaTask[i];
 			for (int j = 0; j < iSite; j++) {
 				if (rest != 0) {
 					// the first site to distribute
@@ -97,7 +97,7 @@ public class StorageMET extends GenericStorage {
 		for (int i = 0; i < iClass; i++) {
 			// System.out.print(iStage + "Distribution[" + i + "]");
 			tmp = 0;
-			rest = iaLength[i];
+			rest = iaTask[i];
 			for (int j = 0; j < iSite; j++) {
 				if (rest != 0) {
 					// the first site to distribute
@@ -277,7 +277,7 @@ public class StorageMET extends GenericStorage {
 		for (int i = 0; i < iClass; i++) {
 			// System.out.print("PricePerActivity[" + i + "] ");
 			for (int j = 0; j < iSite; j++) {
-				dmPricePerActivity[i][j] = daPrice[j] * dmPrediction[i][j];
+				dmPricePerTask[i][j] = daPrice[j] * dmPrediction[i][j];
 				// System.out.print(j + ":" + dmPricePerActivity[i][j] + ", ");
 			}
 			// System.out.println();
@@ -315,10 +315,10 @@ public class StorageMET extends GenericStorage {
 		while (getRestLength() > 0) {
 			for (int k = 0; k < iClass; k++) {
 				iMinClass = k;
-				for (int i = 0; i < iaLength[k]; i++) {
+				for (int i = 0; i < iaTask[k]; i++) {
 					findFastestMachine();
-					iaCurrentLength[k]--;
-					if (iaCurrentLength[k] == 0) {
+					iaQueuedTask[k]--;
+					if (iaQueuedTask[k] == 0) {
 						lastActivity = true;
 					} else {
 						lastActivity = false;
@@ -374,7 +374,7 @@ public class StorageMET extends GenericStorage {
 		int sum = 0;
 		// init array
 		for (int j = 0; j < iClass; j++) {
-			sum += iaCurrentLength[j];
+			sum += iaQueuedTask[j];
 		}
 		return sum;
 	}
@@ -404,9 +404,9 @@ public class StorageMET extends GenericStorage {
 	    	double tmpCompetleTime = Double.MAX_VALUE;
 		for (int i = 0; i < iClass; i++) {
 			iMinClass = (int) dmRankClass[iMinSite][i];
-			if (iaCurrentLength[iMinClass] > 0
+			if (iaQueuedTask[iMinClass] > 0
 				&& getAvailableStorage(iMinSite, dmMinminTime[iMinClass][iMinSite]) >= daStorageInput[iMinClass]+ daStorageOutput[iMinClass]) {
-				iaCurrentLength[iMinClass]--;
+				iaQueuedTask[iMinClass]--;
 				break;
 			}
 		}
@@ -422,8 +422,8 @@ public class StorageMET extends GenericStorage {
 
 	void updateMin() {
 		dmMinminTime[iMinSite][iMinCPU] += dmPrediction[iMinClass][iMinSite];
-		dmMinminCost[iMinSite][iMinCPU] += dmPricePerActivity[iMinClass][iMinSite];
-		if (iaCurrentLength[iMinClass] == 0) {
+		dmMinminCost[iMinSite][iMinCPU] += dmPricePerTask[iMinClass][iMinSite];
+		if (iaQueuedTask[iMinClass] == 0) {
 			vFairness.add(dmMinminTime[iMinSite][iMinCPU]);
 		}
 		dmDist[iMinClass][iMinSite]++;
@@ -434,24 +434,24 @@ public class StorageMET extends GenericStorage {
 		this.iSite = 2;
 
 		dmPrediction = new double[iClass][iSite];
-		iaLength = new int[iClass];
-		iaCurrentLength = new int[iClass];
+		iaTask = new int[iClass];
+		iaQueuedTask = new int[iClass];
 		dmWeight = new double[iClass][iSite];
 		dmAlloc = new double[iClass][iSite];
 		dmDist = new double[iClass][iSite];
 		dmRankResource = new double[iClass][iSite];
 		dmRankClass = new double[iSite][iClass];
-		dmPricePerActivity = new double[iClass][iSite];
+		dmPricePerTask = new double[iClass][iSite];
 		daPrice = new double[iSite];
 		iaCPU = new int[iSite];
 		dmProcessRate = new double[iClass][iSite];
 		dmExeTime = new double[iClass][iSite];
 		dmCost = new double[iClass][iSite];
 
-		iaLength[0] = 2;
-		iaLength[1] = 2;
-		iaCurrentLength[0] = 2;
-		iaCurrentLength[1] = 2;
+		iaTask[0] = 2;
+		iaTask[1] = 2;
+		iaQueuedTask[0] = 2;
+		iaQueuedTask[1] = 2;
 
 		iaCPU[0] = 2;
 		iaCPU[1] = 2;
@@ -475,26 +475,26 @@ public class StorageMET extends GenericStorage {
 		this.iSite = 3;
 
 		dmPrediction = new double[iClass][iSite];
-		iaLength = new int[iClass];
-		iaCurrentLength = new int[iClass];
+		iaTask = new int[iClass];
+		iaQueuedTask = new int[iClass];
 		dmWeight = new double[iClass][iSite];
 		dmAlloc = new double[iClass][iSite];
 		dmDist = new double[iClass][iSite];
 		dmRankResource = new double[iClass][iSite];
 		dmRankClass = new double[iSite][iClass];
-		dmPricePerActivity = new double[iClass][iSite];
+		dmPricePerTask = new double[iClass][iSite];
 		daPrice = new double[iSite];
 		iaCPU = new int[iSite];
 		dmProcessRate = new double[iClass][iSite];
 		dmExeTime = new double[iClass][iSite];
 		dmCost = new double[iClass][iSite];
 
-		iaLength[0] = 10000;
-		iaLength[1] = 10000;
-		iaLength[2] = 10000;
-		iaCurrentLength[0] = 10000;
-		iaCurrentLength[1] = 10000;
-		iaCurrentLength[2] = 10000;
+		iaTask[0] = 10000;
+		iaTask[1] = 10000;
+		iaTask[2] = 10000;
+		iaQueuedTask[0] = 10000;
+		iaQueuedTask[1] = 10000;
+		iaQueuedTask[2] = 10000;
 
 		iaCPU[0] = 10;
 		iaCPU[1] = 10;
@@ -527,7 +527,7 @@ public class StorageMET extends GenericStorage {
 		this.iSite = 100;
 
 		dmPrediction = new double[iClass][iSite];
-		iaLength = new int[iClass];
+		iaTask = new int[iClass];
 		dmWeight = new double[iClass][iSite];
 		dmAlloc = new double[iClass][iSite];
 		dmDist = new double[iClass][iSite];
@@ -537,7 +537,7 @@ public class StorageMET extends GenericStorage {
 		dmExeTime = new double[iClass][iSite];
 
 		for (int j = 0; j < iClass; j++) {
-			iaLength[j] = Math.round(Math.round(100000 * Math.random()));
+			iaTask[j] = Math.round(Math.round(100000 * Math.random()));
 		}
 		for (int j = 0; j < iSite; j++) {
 			iaCPU[j] = 64;

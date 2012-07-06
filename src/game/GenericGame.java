@@ -10,14 +10,14 @@ public class GenericGame {
 	double[][] dmPrediction;
 
 	/**
-	 * queue length of activities
+	 * number of activities
 	 */
-	int[] iaLength;
+	int[] iaTask;
 
 	/**
-	 * queue length of activities
+	 * number of queued activities
 	 */
-	int[] iaCurrentLength;
+	int[] iaQueuedTask;
 
 	/**
 	 * weight of activities on grid sites
@@ -61,7 +61,7 @@ public class GenericGame {
 	/**
 	 * sizes of data needed by each activity
 	 */
-	double[] daDataSize;
+	double[] daInputSize;
 	
 	/**
 	 * bandwidth of sites
@@ -81,7 +81,7 @@ public class GenericGame {
 	/**
 	 * Rank of resources: index of resources
 	 */
-	double[][] dmPricePerActivity;
+	double[][] dmPricePerTask;
 
 	/**
 	 * Sacrifice
@@ -159,17 +159,17 @@ public class GenericGame {
 	int iCPUMaxNum;
 
 	/**
-	 * all execution time
+	 * Execution time vector
 	 */
 	Vector<Double> vExeTime = new Vector<Double>();
 
 	/**
-	 * all execution time
+	 * Execution cost vector
 	 */
 	Vector<Double> vCost = new Vector<Double>();
 
 	/**
-	 * Fairness vector
+	 * Fairness vector vector
 	 */
 	Vector<Double> vFairness = new Vector<Double>();
 
@@ -182,8 +182,6 @@ public class GenericGame {
 	 * Epsilon: in Game-quick to control the process of optimization.
 	 */
 	double dControl = 0;
-
-
 
 	/**
 	 * matrix of cost: intermediate data
@@ -201,7 +199,7 @@ public class GenericGame {
 	double[][][] dmMinMakespan;
 
 	/**
-	 * : intermediate data
+	 * intermediate data
 	 */
 	int iMinSite, iMinCPU, iMinClass;
 	
@@ -228,10 +226,10 @@ public class GenericGame {
 	
 	public void init(){
 		dmPrediction = new double[iClass][iSite];
-		iaLength = new int[iClass];
+		iaTask = new int[iClass];
 		daBandwidth = new double[iSite];
-		daDataSize = new double[iClass];
-		iaCurrentLength = new int[iClass];
+		daInputSize = new double[iClass];
+		iaQueuedTask = new int[iClass];
 		dmWeight = new double[iClass][iSite];
 		dmAlloc = new double[iClass][iSite];
 		dmOldAlloc = new double[iClass][iSite];
@@ -240,7 +238,7 @@ public class GenericGame {
 		dmSacrifice = new double[iClass][iSite];
 		dmRankResource = new double[iClass][iSite];
 		dmRankClass = new double[iSite][iClass];
-		dmPricePerActivity = new double[iClass][iSite];
+		dmPricePerTask = new double[iClass][iSite];
 		daPrice = new double[iSite];
 		iaCPU = new int[iSite];
 		dmProcessRate = new double[iClass][iSite];
@@ -258,15 +256,14 @@ public class GenericGame {
 		setBPrint(gg.bPrint);
 		setDeadline(gg.dDeadline);
 		setDmPrediction(gg.dmPrediction);
-		setIaLength(gg.iaLength);
-		setIaCurrentLength(gg.iaLength);
+		setIaLength(gg.iaTask);
+		setIaCurrentLength(gg.iaTask);
 		setDaPrice(gg.daPrice);
 		setIaCPU(gg.iaCPU);
 		setICPUinit(gg.iaCPU);
 	}
 	
 	/**
-	 * 
 	 * @return fairness value (standard derivation)
 	 */
 	double calculateFairness() {
@@ -288,7 +285,6 @@ public class GenericGame {
 	}
 
 	/**
-	 * 
 	 * @return fairness value (standard derivation)
 	 */
 	double calculateFairnessDeviation() {
@@ -354,8 +350,6 @@ public class GenericGame {
 
 	}
 
-	
-	
 	/**
 	 * schedule the final results
 	 * 
@@ -451,13 +445,13 @@ public class GenericGame {
 	}
 
 	public int[] getIaLength() {
-		return iaLength;
+		return iaTask;
 	}
 
 	public void setIaLength(int[] iaLength) {
 		for (int j = 0; j < iClass; j++) {
-			this.iaLength[j] = iaLength[j];
-			iaCurrentLength[j] = iaLength[j];
+			this.iaTask[j] = iaLength[j];
+			iaQueuedTask[j] = iaLength[j];
 		}
 	}
 
@@ -500,13 +494,13 @@ public class GenericGame {
 	}
 
 	public int[] getIaCurrentLength() {
-		return iaCurrentLength;
+		return iaQueuedTask;
 	}
 
 	public void setIaCurrentLength(int[] ia) {
-		this.iaCurrentLength = new int[ia.length];
+		this.iaQueuedTask = new int[ia.length];
 		for (int i = 0; i < ia.length; i++) {
-			this.iaCurrentLength[i] = ia[i];
+			this.iaQueuedTask[i] = ia[i];
 		}
 
 	}
@@ -617,11 +611,11 @@ public class GenericGame {
 	}
 
 	public double[][] getDmPricePerActivity() {
-		return dmPricePerActivity;
+		return dmPricePerTask;
 	}
 
 	public void setDmPricePerActivity(double[][] dmPricePerActivity) {
-		this.dmPricePerActivity = dmPricePerActivity;
+		this.dmPricePerTask = dmPricePerActivity;
 	}
 
 	public double[][] getDmProcessRate() {
@@ -732,6 +726,4 @@ public class GenericGame {
 		this.daBandwidth = daBandwidth;
 	}
 	
-	
-
 }

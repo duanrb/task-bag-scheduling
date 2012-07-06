@@ -13,7 +13,7 @@ public class GameCost extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			tmp = 0;
 			for (int j = 0; j < iSite; j++) {
-				tmp += 1 / dmPricePerActivity[i][j];
+				tmp += 1 / dmPricePerTask[i][j];
 			}
 			daPredictionByClass[i] = tmp;
 		}
@@ -23,10 +23,10 @@ public class GameCost extends GenericGame {
 			// print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				/* the weight is 1(maximum), when the site is free */
-				if (dmPricePerActivity[i][j] == 0) {
+				if (dmPricePerTask[i][j] == 0) {
 					dmWeight[i][j] = 1;
 				} else {
-					dmWeight[i][j] = 1 / (dmPricePerActivity[i][j] * daPredictionByClass[i]);
+					dmWeight[i][j] = 1 / (dmPricePerTask[i][j] * daPredictionByClass[i]);
 				}
 				// print(dmWeight[i][j] + ", ");
 			}
@@ -55,7 +55,7 @@ public class GameCost extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			print("0Distribution[" + i + "]");
 			tmp = 0;
-			rest = iaLength[i];
+			rest = iaTask[i];
 			for (int j = 0; j < iSite; j++) {
 				if (rest != 0) {
 					// the first site to distribute
@@ -93,7 +93,7 @@ public class GameCost extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			print(iStage + " Distribution[" + i + "]");
 			tmp = 0;
-			rest = iaLength[i];
+			rest = iaTask[i];
 			for (int j = 0; j < iSite; j++) {
 				if (rest != 0) {
 					// the first site to distribute
@@ -140,7 +140,7 @@ public class GameCost extends GenericGame {
 		double lastAllocation;
 		for (int i = 0; i < iClass; i++) {
 			tmp = 0;
-			rest = iaLength[i];
+			rest = iaTask[i];
 			for (int j = 0; j < iSite; j++) {
 				if (rest != 0) {
 					// the first site to distribute
@@ -325,8 +325,8 @@ public class GameCost extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			print("PricePerActivity[" + i + "] ");
 			for (int j = 0; j < iSite; j++) {
-				dmPricePerActivity[i][j] = daPrice[j] * dmPrediction[i][j];
-				print( dmPricePerActivity[i][j] + ", ");
+				dmPricePerTask[i][j] = daPrice[j] * dmPrediction[i][j];
+				print( dmPricePerTask[i][j] + ", ");
 			}
 			println();
 		}
@@ -335,7 +335,7 @@ public class GameCost extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			// init array
 			for (int j = 0; j < iSite; j++) {
-				array[j][0] = dmPricePerActivity[i][j];
+				array[j][0] = dmPricePerTask[i][j];
 				array[j][1] = j;
 			}
 			QuickSort.sort(array, 0, iSite - 1);

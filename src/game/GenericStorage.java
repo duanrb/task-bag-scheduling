@@ -3,12 +3,6 @@ package game;
 import java.util.Iterator;
 import java.util.Vector;
 
-/**
- * 
- * @author Rubing Duan
- * 
- */
-
 public class GenericStorage extends GenericGame {
 
 	/**
@@ -41,20 +35,21 @@ public class GenericStorage extends GenericGame {
 	 */
 	Vector<ReleaseStorage> vUnreleased = new Vector<ReleaseStorage>();
 	
-	
 	public GenericStorage(int iClass, int iSite) {
 		super(iClass, iSite);
-		daStorageWeight = new double[iClass];
-		daStorageLimit = new double[iSite];
-		daStorageInput = new double[iClass];
-		daStorageOutput = new double[iClass];
-		daStorageUsed = new double[iSite];
 	}
 	
-	public GenericStorage() {
-		super();
+	@Override
+	public void init() {
+		super.init();
+		daStorageWeight = new double[iClass];
+		daStorageLimit = new double[iSite];
+		daStorageUsed = new double[iSite];
+		daStorageInput = new double[iClass];
+		daStorageOutput = new double[iClass];
 	}
-
+	
+	
 	void releaseAllStorage(int activityclass) {
 		for (int i = 0; i < iSite; i++) {
 			if (dmDist[activityclass][i] > 0) {
@@ -85,13 +80,13 @@ public class GenericStorage extends GenericGame {
 		println("size=" + size + "; iMinClass=" + iMinClass);
 		ReleaseStorage rs1 = null, rs2 = null;
 		Vector<ReleaseStorage> vRemove = new Vector<ReleaseStorage>();
+		
 		for (int i = 0; i < size; i++) {
 			rs1 = vUnreleased.elementAt(i);
 			if ((rs1.releaseTime <= time & rs1.site == site) | site == -1) {
-				daStorageUsed[rs1.site] -= daStorageInput[rs1.activityNo];// get
-																			// the
-																			// input
-																			// storage;
+				
+				// get the input storage;
+				daStorageUsed[rs1.site] -= daStorageInput[rs1.activityNo];
 				vRemove.add(rs1);
 
 				/* release space from the completed workflow */
@@ -99,26 +94,21 @@ public class GenericStorage extends GenericGame {
 					// find the last one which have been compeleted
 					for (int k = 0; k < size; k++) {
 						rs2 = vUnreleased.elementAt(k);
-						if (rs2.activityNo == rs1.activityNo
-								& rs2.releaseTime > rs1.releaseTime) {// exchange
-																		// the
-																		// position
+						
+						// exchange the position
+						if (rs2.activityNo == rs1.activityNo & rs2.releaseTime > rs1.releaseTime) {
 							rs1.lastActivity = false;
 							rs2.lastActivity = true;
 						}
 					}
-					if (rs1.lastActivity
-							|| (rs2.lastActivity & rs2.releaseTime <= time))
+					if (rs1.lastActivity || (rs2.lastActivity & rs2.releaseTime <= time))
 						for (int j = 0; j < iSite; j++) {
-							daStorageUsed[j] -= daStorageOutput[rs1.activityNo]
-									* dmDist[rs1.activityNo][j];// get
-																		// the
-																		// output
-																		// storage;
+							// get the output storage;
+							daStorageUsed[j] -= daStorageOutput[rs1.activityNo]	* dmDist[rs1.activityNo][j];
 						}
 				}
-			}// end of if
-		}// end of for
+			}
+		}
 
 		println("st0 after= " + daStorageUsed[0]);
 		println("st1 after= " + daStorageUsed[1]);
@@ -136,18 +126,15 @@ public class GenericStorage extends GenericGame {
 		for (int i = 0; i < size; i++) {
 			rs1 = vUnreleased.elementAt(i);
 			if (rs1.site == site & rs1.releaseTime <= time) {
-				result += daStorageInput[rs1.activityNo];// get the input
-															// storage;
+				result += daStorageInput[rs1.activityNo];
 			}
 
 			/* release space from the completed workflow */
 			if (rs1.lastActivity & rs1.releaseTime <= time) {
-				result += daStorageOutput[rs1.activityNo]
-						* dmDist[rs1.activityNo][site];// get the
-																// output
-																// storage;
+				// get the output storage;
+				result += daStorageOutput[rs1.activityNo] * dmDist[rs1.activityNo][site];
 			}
-		}// end of for
+		}
 
 		result = daStorageLimit[site] - daStorageUsed[site] + result;
 		println("available on site "+site+"=" + result+"time=" + time);
@@ -161,8 +148,8 @@ public class GenericStorage extends GenericGame {
 		this.setDaStorageLimit(game.daStorageLimit);
 		this.setDmPrediction(game.dmPrediction);
 		this.setDaPrice(game.daPrice);
-		this.setIaLength(game.iaLength);
-		this.setIaCurrentLength(game.iaLength);
+		this.setIaLength(game.iaTask);
+		this.setIaCurrentLength(game.iaTask);
 		this.setIaCPU(game.iaCPU);
 		this.setICPUinit(game.iaCPU);
 
@@ -172,9 +159,8 @@ public class GenericStorage extends GenericGame {
 	 * compute the storage weights of activites
 	 * 
 	 */
-	public void compStorageWeight() {
+	public void calculateStorageWeight() {
 	}
-
 
 
 	public double[] getDaStorageLimit() {
@@ -233,15 +219,7 @@ public class GenericStorage extends GenericGame {
 		vUnreleased = unreleased;
 	}
 
-	@Override
-	public void init() {
-		super.init();
-		daStorageWeight = new double[iClass];
-		daStorageLimit = new double[iSite];
-		daStorageUsed = new double[iSite];
-		daStorageInput = new double[iClass];
-		daStorageOutput = new double[iClass];
-	}
+
 	
 	
 
