@@ -186,7 +186,7 @@ public class GameCostTest {
 			MinMin minmin = new MinMin(wo.getIClass(), wo.getISite());
 			minmin.init(wo);
 			long tw9 = System.currentTimeMillis();
-			minmin.minmin();
+			minmin.schedule();
 			System.out.println("Cost%     = " + minmin.getDCost() / wo.getDCost() * 100);
 			System.out.println("Time%     = " + minmin.getDTime() / wo.getDTime() * 100);
 			System.out.println("Makespan% = " + minmin.getDFinalMakespan()

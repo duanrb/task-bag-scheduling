@@ -465,7 +465,7 @@ public class StorageMET extends GenericStorage {
 		dmPrediction[1][1] = 1.1;
 
 		for (int j = 0; j < iSite; j++) {
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 		minet();
 	}
@@ -515,7 +515,7 @@ public class StorageMET extends GenericStorage {
 		dmPrediction[2][2] = 21;
 
 		for (int j = 0; j < iSite; j++) {
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 
 		// System.out.println("=============MINMIN===================");
@@ -551,7 +551,7 @@ public class StorageMET extends GenericStorage {
 
 		for (int j = 0; j < iSite; j++) {
 			daPrice = new double[j];
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 
 		// System.out.println("=============MINMIN===================");

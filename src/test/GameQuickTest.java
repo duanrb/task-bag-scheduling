@@ -251,7 +251,8 @@ public class GameQuickTest {
 			MinMin minmin = new MinMin(gq.getIClass(),gq.getISite());
 			minmin.init(gq);
 			long tw3 = System.currentTimeMillis();
-			double t3 = minmin.minmin();
+			minmin.schedule();
+			double t3 = minmin.getDTime();
 			System.out.println("Time%     = " + t3 / t1 * 100);
 			System.out.println("Makespan% = " + minmin.getDFinalMakespan()
 					/ gq.getDFinalMakespan() * 100);

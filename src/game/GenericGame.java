@@ -101,7 +101,7 @@ public class GenericGame {
 	/**
 	 * number of CPU
 	 */
-	int iAllCPU;
+	int iSumCPU;
 
 	/**
 	 * number of CPU on each site
@@ -202,6 +202,11 @@ public class GenericGame {
 	 * intermediate data
 	 */
 	int iMinSite, iMinCPU, iMinClass;
+	
+	/**
+	 * if execute next phase
+	 */
+	boolean bNextPhase = true;
 	
 	public GenericGame() {
 		super();
@@ -352,16 +357,12 @@ public class GenericGame {
 
 	/**
 	 * schedule the final results
-	 * 
-	 * return execution time
 	 */
 	public void schedule() {
 	}
 		
 	/**
 	 * schedule the final results
-	 * 
-	 * return execution time
 	 */
 	public void scheduleOnce() {
 	}
@@ -478,9 +479,9 @@ public class GenericGame {
 	public void setIaCPU(int[] iaCPU) {
 		this.iaCPU = iaCPU;
 		/* set CPU number of all sites */
-		iAllCPU = 0;
+		iSumCPU = 0;
 		for (int j = 0; j < iSite; j++) {
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 
 		/* set Max CPU number on one site */
@@ -666,12 +667,12 @@ public class GenericGame {
 		dTotalExecutionTime = totalExecutionTime;
 	}
 
-	public int getIAllCPU() {
-		return iAllCPU;
+	public int getISumCPU() {
+		return iSumCPU;
 	}
 
-	public void setIAllCPU(int allCPU) {
-		iAllCPU = allCPU;
+	public void setISumCPU(int allCPU) {
+		iSumCPU = allCPU;
 	}
 
 	public int getIStage() {
@@ -710,20 +711,30 @@ public class GenericGame {
 		iCPUMaxNum = uinit;
 	}
 	
-	public double getdControl() {
+	public double getDControl() {
 		return dControl;
 	}
 
-	public void setdControl(double dControl) {
+	public void setDControl(double dControl) {
 		this.dControl = dControl;
 	}
 
-	public double[] getdaBandwidth() {
+	public double[] getDaBandwidth() {
 		return daBandwidth;
 	}
 
-	public void setdaBandwidth(double[] daBandwidth) {
+	public void setDaBandwidth(double[] daBandwidth) {
 		this.daBandwidth = daBandwidth;
 	}
+
+	public double[] getDaInputSize() {
+		return daInputSize;
+	}
+
+	public void setDaInputSize(double[] daInputSize) {
+		this.daInputSize = daInputSize;
+	}
+	
+	
 	
 }

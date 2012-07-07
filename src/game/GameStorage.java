@@ -4,7 +4,6 @@ import java.util.Vector;
 
 public class GameStorage extends GenericStorage {
 
-	boolean bNextPhase = true;
 	boolean bStorageProblem[];
 	
 	public GameStorage(int iClass, int iSite) {
@@ -85,9 +84,9 @@ public class GameStorage extends GenericStorage {
 		}
 
 		/* compute summed execution time */
-		System.out.println("iAllCPU = " + iAllCPU);
+		System.out.println("iAllCPU = " + iSumCPU);
 		if (lastPhaseMakespan > 0) {
-			dTotalExecutionTime = lastPhaseMakespan * iAllCPU;
+			dTotalExecutionTime = lastPhaseMakespan * iSumCPU;
 		}
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {

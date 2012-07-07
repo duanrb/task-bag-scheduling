@@ -466,7 +466,7 @@ public class MCT extends GenericGame {
 		dmPrediction[1][1] = 1.1;
 
 		for (int j = 0; j < iSite; j++) {
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 		minct();
 	}
@@ -501,7 +501,7 @@ public class MCT extends GenericGame {
 		dmPrediction[2][2] = 21;
 
 		for (int j = 0; j < iSite; j++) {
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 
 		// System.out.println("=============MINMIN===================");
@@ -529,7 +529,7 @@ public class MCT extends GenericGame {
 
 		for (int j = 0; j < iSite; j++) {
 			daPrice[j] = 1+Math.random() * 10;
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 
 		// System.out.println("=============MINMIN===================");

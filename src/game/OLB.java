@@ -455,7 +455,7 @@ public class OLB extends GenericGame {
 		dmPrediction[1][1] = 1.5;
 
 		for (int j = 0; j < iSite; j++) {
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 		sortResources();
 		calculateWeight();
@@ -510,7 +510,7 @@ public class OLB extends GenericGame {
 		dmPrediction[2][2] = 21;
 
 		for (int j = 0; j < iSite; j++) {
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 
 		olbStart();
@@ -545,7 +545,7 @@ public class OLB extends GenericGame {
 
 		for (int j = 0; j < iSite; j++) {
 			daPrice = new double[j];
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 
 		// System.out.println("=============MINMIN===================");

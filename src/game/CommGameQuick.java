@@ -6,8 +6,6 @@ public class CommGameQuick extends GenericGame {
 		super(iClass, iSite);
 	}
 
-	boolean bNextPhase = true;
-
 	/**
 	 * calculate the final distribution and allocation and consider multiple phases
 	 */
@@ -17,6 +15,7 @@ public class CommGameQuick extends GenericGame {
 		calculateWeight();
 		calculateInitDist();
 		calculateExecTime();
+		
 		double currentMakespan = 0;
 		double lastPhaseMakespan = 0;
 
@@ -48,7 +47,7 @@ public class CommGameQuick extends GenericGame {
 
 		dFinalMakespan = currentMakespan;
 
-		/* compute the cost */
+		/* calculate the cost */
 		dCost = 0;
 		for (int j = 0; j < iSite; j++) {
 			dCost += lastPhaseMakespan * daPrice[j] * iaCPU[j];
@@ -60,15 +59,14 @@ public class CommGameQuick extends GenericGame {
 			}
 		}
 
-		/* compute summed execution time */
-		System.out.println("iAllCPU = " + iAllCPU);
+		/* calculate summed execution time */
+		println("iAllCPU = " + iSumCPU);
 		if (lastPhaseMakespan > 0) {
-			dTotalExecutionTime = lastPhaseMakespan * iAllCPU;
+			dTotalExecutionTime = lastPhaseMakespan * iSumCPU;
 		}
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
-				dTotalExecutionTime += dmDist[i][j]
-						* dmPrediction[i][j];
+				dTotalExecutionTime += dmDist[i][j] * dmPrediction[i][j];
 			}
 		}
 
@@ -107,43 +105,45 @@ public class CommGameQuick extends GenericGame {
 
 		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
-			System.out.print("Weight[" + i + "]");
+			print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				dmWeight[i][j] = 1 / (dmPrediction[i][j] * daPredictionByClass[i]);
-				System.out.print(dmWeight[i][j] + ", ");
+				print(dmWeight[i][j] + ", ");
 			}
-			System.out.println();
+			println();
 		}
 	}
 
 	@Override
 	public void calculateInitDist() {
-		/* calculate processing rate of each site */
+		
 		double tmp = 0;
 		double[] daProcRateByClass = new double[iClass];
+		
+		/* calculate processing rate of each site */
 		for (int i = 0; i < iClass; i++) {
 			tmp = 0;
-			// System.out.print("ProcessRate["+i+"]");
+			print("ProcessRate["+i+"]");
 			for (int j = 0; j < iSite; j++) {
 				dmProcessRate[i][j] = iaCPU[j] / dmPrediction[i][j];
 				tmp += dmProcessRate[i][j];
-				// System.out.print(dmProcessRate[i][j] + ", ");
+				print(dmProcessRate[i][j] + ", ");
 			}
-			// System.out.println();
+			println();
 			daProcRateByClass[i] = tmp;
 		}
 
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
-				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i])
-						* iaQueuedTask[i];
-				// System.out.println("0Distribution["+i+"]["+j+"] = "+ dmDistribution[i][j]);
+				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i]) * iaQueuedTask[i];
+				
+				println("0Distribution["+i+"]["+j+"] = "+ dmDist[i][j]);
 			}
 		}
 	}
 
 	public void calculateDist() {
-		/* compute the processing rate of each site */
+		/* calculate the processing rate of each site */
 		double tmp = 0;
 		double[] daProcRateByClass = new double[iClass];
 		for (int i = 0; i < iClass; i++) {
@@ -151,19 +151,19 @@ public class CommGameQuick extends GenericGame {
 			for (int j = 0; j < iSite; j++) {
 				dmProcessRate[i][j] = dmAlloc[i][j] / dmPrediction[i][j];
 				tmp += dmProcessRate[i][j];
-				// System.out.println("ProcessRate["+i+"]["+j+"] = "+ dmProcessRate[i][j]);
+				// println("ProcessRate["+i+"]["+j+"] = "+ dmProcessRate[i][j]);
 			}
 			daProcRateByClass[i] = tmp;
 		}
 
 		for (int i = 0; i < iClass; i++) {
-			System.out.print(iStage + "Distribution[" + i + "]");
+			print(iStage + "Distribution[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i])
 						* iaQueuedTask[i];
-				System.out.print(dmDist[i][j] + ", ");
+				print(dmDist[i][j] + ", ");
 			}
-			System.out.println();
+			println();
 		}
 	}
 
@@ -177,19 +177,19 @@ public class CommGameQuick extends GenericGame {
 				tmp += dmPrediction[j][i] * dmWeight[j][i]
 						* dmDist[j][i];
 			}
-			// System.out.println("RelativeValue["+i+"] = "+ tmp);
+			// println("RelativeValue["+i+"] = "+ tmp);
 			daRelativeWeightBySite[i] = tmp;
 		}
 
 		for (int i = 0; i < iSite; i++) {
-			System.out.print(iStage + "Allocation[" + i + "]");
+			print(iStage + "Allocation[" + i + "]");
 			for (int j = 0; j < iClass; j++) {
 				dmAlloc[j][i] = (dmDist[j][i] * dmPrediction[j][i]
 						* dmWeight[j][i] * iaCPU[i])
 						/ daRelativeWeightBySite[i];
-				System.out.print(dmAlloc[j][i] + ", ");
+				print(dmAlloc[j][i] + ", ");
 			}
-			System.out.println();
+			println();
 		}
 	}
 
@@ -247,7 +247,7 @@ public class CommGameQuick extends GenericGame {
 		double maxMakespan;
 		double phaseMaxMakespan = -1;
 
-		/* compute makespan */
+		/* calculate makespan */
 
 		for (int i = 0; i < iClass; i++) {
 			print("Makespan[" + i + "] ");
@@ -297,7 +297,7 @@ public class CommGameQuick extends GenericGame {
 		}
 
 		if (counterForNextPhase > 1) {
-			System.out.println("===need next phase=== counterForNextPhase="+counterForNextPhase);
+			println("===need next phase=== counterForNextPhase="+counterForNextPhase);
 			bNextPhase = true;
 			// reorganize iaCurrentLength
 			for (int i = 0; i < iClass; i++) {
@@ -339,7 +339,7 @@ public class CommGameQuick extends GenericGame {
 			bNextPhase = false;
 
 		}
-		System.out.println("Final Makespan = "+ dMinMaxMakespan);
+		println("Final Makespan = "+ dMinMaxMakespan);
 		return dMinMaxMakespan;
 	}
 
@@ -350,7 +350,7 @@ public class CommGameQuick extends GenericGame {
 		dTime = 0;
 		dCost = 0;
 		for (int i = 0; i < iClass; i++) {
-			// System.out.print("Time["+i+"]");
+			// print("Time["+i+"]");
 			newExeTime = 0;
 			for (int j = 0; j < iSite; j++) {
 				newExeTime = (dmDist[i][j] * dmPrediction[i][j])
@@ -364,9 +364,9 @@ public class CommGameQuick extends GenericGame {
 				dTime += newExeTime;
 				dEval += dmExeTime[i][j] - newExeTime;
 				dmExeTime[i][j] = newExeTime;
-				// System.out.print(dmExeTime[i][j]+", ");
+				// print(dmExeTime[i][j]+", ");
 			}
-			// System.out.println();
+			// println();
 		}
 		
 		vExeTime.add(dTime);

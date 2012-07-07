@@ -512,7 +512,7 @@ public class StorageMinMin extends GenericStorage {
 		dmPrediction[1][1] = 1;
 
 		for (int j = 0; j < iSite; j++) {
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 		schedule();
 	}
@@ -563,7 +563,7 @@ public class StorageMinMin extends GenericStorage {
 		dmPrediction[2][2] = 21;
 
 		for (int j = 0; j < iSite; j++) {
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 
 		// System.out.println("=============MINMIN===================");
@@ -599,7 +599,7 @@ public class StorageMinMin extends GenericStorage {
 
 		for (int j = 0; j < iSite; j++) {
 			daPrice = new double[j];
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 
 		// System.out.println("=============MINMIN===================");

@@ -1,18 +1,24 @@
 package test;
 
-import game.GameQuick;
+import game.CommGameQuick;
 
 public class CommGameQuickTest {
 
-	public void testpremature() {
-		GameQuick wo = new GameQuick(2,2);
+	public void test1() {
+		CommGameQuick wo = new CommGameQuick(2,2);
 		wo.setBPrint(true);
 
-		int[] iaLength = {50,200};
-		wo.setIaTask(iaLength);
+		int[] iaTask = {50,100};
+		wo.setIaTask(iaTask);
 
 		int[] iaCPU = {10,10};
 		wo.setIaCPU(iaCPU);
+		
+		double[] daBandwidth = {10,10};
+		wo.setDaBandwidth(daBandwidth);
+		
+		double[] daInputSize = {100,200};
+		wo.setDaInputSize(daInputSize);
 
 		double[][] dmPrediction = {
 				{10,10},
@@ -24,7 +30,6 @@ public class CommGameQuickTest {
 	
 	public static void main(String[] args) {
 		CommGameQuickTest test = new CommGameQuickTest();
-		
-		test.testpremature();
+		test.test1();
 	}
 }

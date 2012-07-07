@@ -67,14 +67,13 @@ public class GameQuick extends GenericGame {
 		}
 
 		/* compute summed execution time */
-		println("iAllCPU = " + iAllCPU);
+		println("iAllCPU = " + iSumCPU);
 		if (lastPhaseMakespan > 0) {
-			dTotalExecutionTime = lastPhaseMakespan * iAllCPU;
+			dTotalExecutionTime = lastPhaseMakespan * iSumCPU;
 		}
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
-				dTotalExecutionTime += dmDist[i][j]
-						* dmPrediction[i][j];
+				dTotalExecutionTime += dmDist[i][j] * dmPrediction[i][j];
 			}
 		}
 

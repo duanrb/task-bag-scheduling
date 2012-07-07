@@ -490,7 +490,7 @@ public class CostMCT extends GenericGame {
 		dmPrediction[1][1] = 1.1;
 
 		for (int j = 0; j < iSite; j++) {
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 		minCTCost();
 	}
@@ -540,7 +540,7 @@ public class CostMCT extends GenericGame {
 		dmPrediction[2][2] = 21;
 
 		for (int j = 0; j < iSite; j++) {
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 
 		// System.out.println("=============MINMIN===================");
@@ -576,7 +576,7 @@ public class CostMCT extends GenericGame {
 
 		for (int j = 0; j < iSite; j++) {
 			daPrice = new double[j];
-			iAllCPU += iaCPU[j];
+			iSumCPU += iaCPU[j];
 		}
 
 		// System.out.println("=============MINMIN===================");
