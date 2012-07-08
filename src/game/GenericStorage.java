@@ -6,7 +6,7 @@ import java.util.Vector;
 public class GenericStorage extends GenericGame {
 
 	/**
-	 * storage weight of acitivities on grid sites [iClass]
+	 * storage weight of activities on grid sites [iClass]
 	 */
 	double[] daStorageWeight;
 
@@ -21,12 +21,12 @@ public class GenericStorage extends GenericGame {
 	double[] daStorageUsed;
 
 	/**
-	 * Storage Requirment by input: [iClass]
+	 * Storage Requirement by input: [iClass]
 	 */
 	double[] daStorageInput;
 
 	/**
-	 * Storage Requirment by output: [iClass]
+	 * Storage Requirement by output: [iClass]
 	 */
 	double[] daStorageOutput;
 
@@ -113,8 +113,8 @@ public class GenericStorage extends GenericGame {
 		println("st0 after= " + daStorageUsed[0]);
 		println("st1 after= " + daStorageUsed[1]);
 		println("===============================");
-		for (Iterator iter = vRemove.iterator(); iter.hasNext();) {
-			ReleaseStorage element = (ReleaseStorage) iter.next();
+		for (Iterator<ReleaseStorage> iter = vRemove.iterator(); iter.hasNext();) {
+			ReleaseStorage element = iter.next();
 			vUnreleased.remove(element);
 		}
 	}
@@ -219,9 +219,5 @@ public class GenericStorage extends GenericGame {
 	public void setVUnreleased(Vector<ReleaseStorage> unreleased) {
 		vUnreleased = unreleased;
 	}
-
-
-	
-	
 
 }

@@ -1,13 +1,30 @@
 package game;
 
-public class CommGameQuick extends GenericGame {
+/**
+ * 
+ * Communication aware Game-quick v1 is to consider bandwidth allocation after 
+ * Game-quick finish its job.
+ * V2: consider bandwidth allocation during the scheduling of Game-quick
+ * 
+ * TODO: 
+ * 1. preprocessing ?
+ * 
+ * @author Rubing Duan
+ *
+ */
+
+public class CommGameQuickV1 extends GenericCommGame {
 	
-	public CommGameQuick(int iClass, int iSite) {
+	double dFinalMakespan;
+
+	double[] daMaxMakespan;
+	
+	public CommGameQuickV1(int iClass, int iSite) {
 		super(iClass, iSite);
 	}
 
 	/**
-	 * calculate the final distribution and allocation and consider multiple phases
+	 * calculate the final distribution and allocation, and consider multiple phases
 	 */
 	@Override
 	public void schedule() {
@@ -60,7 +77,7 @@ public class CommGameQuick extends GenericGame {
 		}
 
 		/* calculate summed execution time */
-		println("iAllCPU = " + iSumCPU);
+		println("iSumCPU = " + iSumCPU);
 		if (lastPhaseMakespan > 0) {
 			dTotalExecutionTime = lastPhaseMakespan * iSumCPU;
 		}
@@ -125,6 +142,8 @@ public class CommGameQuick extends GenericGame {
 			tmp = 0;
 			print("ProcessRate["+i+"]");
 			for (int j = 0; j < iSite; j++) {
+				
+				
 				dmProcessRate[i][j] = iaCPU[j] / dmPrediction[i][j];
 				tmp += dmProcessRate[i][j];
 				print(dmProcessRate[i][j] + ", ");
@@ -159,8 +178,7 @@ public class CommGameQuick extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			print(iStage + "Distribution[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
-				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i])
-						* iaQueuedTask[i];
+				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i]) * iaQueuedTask[i];
 				print(dmDist[i][j] + ", ");
 			}
 			println();
@@ -174,8 +192,7 @@ public class CommGameQuick extends GenericGame {
 		for (int i = 0; i < iSite; i++) {
 			tmp = 0;
 			for (int j = 0; j < iClass; j++) {
-				tmp += dmPrediction[j][i] * dmWeight[j][i]
-						* dmDist[j][i];
+				tmp += dmPrediction[j][i] * dmWeight[j][i] * dmDist[j][i];
 			}
 			// println("RelativeValue["+i+"] = "+ tmp);
 			daRelativeWeightBySite[i] = tmp;
@@ -184,8 +201,7 @@ public class CommGameQuick extends GenericGame {
 		for (int i = 0; i < iSite; i++) {
 			print(iStage + "Allocation[" + i + "]");
 			for (int j = 0; j < iClass; j++) {
-				dmAlloc[j][i] = (dmDist[j][i] * dmPrediction[j][i]
-						* dmWeight[j][i] * iaCPU[i])
+				dmAlloc[j][i] = (dmDist[j][i] * dmPrediction[j][i] * dmWeight[j][i] * iaCPU[i])
 						/ daRelativeWeightBySite[i];
 				print(dmAlloc[j][i] + ", ");
 			}
@@ -193,9 +209,7 @@ public class CommGameQuick extends GenericGame {
 		}
 	}
 
-	double dFinalMakespan;
 
-	double[] daMaxMakespan;
 
 	public double calculateFinalResult() {
 		daMaxMakespan = new double[iClass];
@@ -215,7 +229,8 @@ public class CommGameQuick extends GenericGame {
 				}
 			}
 
-			println("Evaluation Value =========="+dEval);
+			println("Evaluation Value = "+dEval);
+			println("---------------------------");
 		} while (dEval > dControl);
 
 		for (int i = 0; i < iClass; i++) {

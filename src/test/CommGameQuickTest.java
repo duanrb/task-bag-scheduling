@@ -1,11 +1,11 @@
 package test;
 
-import game.CommGameQuick;
+import game.CommGameQuickV1;
 
 public class CommGameQuickTest {
 
 	public void test1() {
-		CommGameQuick wo = new CommGameQuick(2,2);
+		CommGameQuickV1 wo = new CommGameQuickV1(2,2);
 		wo.setBPrint(true);
 
 		int[] iaTask = {50,100};

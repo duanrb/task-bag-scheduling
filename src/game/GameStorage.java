@@ -28,7 +28,7 @@ public class GameStorage extends GenericStorage {
 		calculateStorageWeight();
 		sortStorageRequirement();
 		calculateInitDist();
-		compExecTime();
+		calculateExecTime();
 
 		double currentMakespan = 0;
 		double lastPhaseMakespan = 0;
@@ -40,7 +40,7 @@ public class GameStorage extends GenericStorage {
 
 		while (bNextPhase) {
 			lastPhaseMakespan = currentMakespan;
-			currentMakespan += compFinalResult();
+			currentMakespan += calculateFinalResult();
 
 			for (int i = 0; i < iSite; i++) {
 				bStorageProblem[i] = false;
@@ -102,11 +102,12 @@ public class GameStorage extends GenericStorage {
 		System.out.println("Stage     = " + iStage);
 	}
 
-	public void optimizeOnce() {
+	@Override
+	public void scheduleOnce() {
 		calculateWeight();
 		calculateInitDist();
-		compExecTime();
-		compFinalResult();
+		calculateExecTime();
+		calculateFinalResult();
 	}
 
 	@Override
@@ -144,8 +145,7 @@ public class GameStorage extends GenericStorage {
 		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
 			print("StorageWeight[" + i + "]");
-			daStorageWeight[i] = 1 / (daStorageInput[i] + daStorageOutput[i])
-					/ sum;
+			daStorageWeight[i] = 1 / (daStorageInput[i] + daStorageOutput[i]) / sum;
 			print(daStorageWeight[i] + ", ");
 			println();
 		}
@@ -162,10 +162,8 @@ public class GameStorage extends GenericStorage {
 			print("ProcessRate[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				dmProcessRate[i][j] = iaCPU[j] / dmPrediction[i][j];
-				if (dmProcessRate[i][j] > daStorageLimit[j]
-						/ (daStorageInput[i] + daStorageOutput[i])) {
-					dmProcessRate[i][j] = daStorageLimit[j]
-							/ (daStorageInput[i] + daStorageOutput[i]);
+				if (dmProcessRate[i][j] > daStorageLimit[j]	/ (daStorageInput[i] + daStorageOutput[i])) {
+					dmProcessRate[i][j] = daStorageLimit[j] / (daStorageInput[i] + daStorageOutput[i]);
 				}
 				tmp += dmProcessRate[i][j];
 				print(dmProcessRate[i][j] + ", ");
@@ -184,7 +182,7 @@ public class GameStorage extends GenericStorage {
 		}
 	}
 
-	public void compDistribution() {
+	public void calculateDistribution() {
 		/* calculate processing rate of each site */
 		double tmp = 0;
 		double[] daProcRateByClass = new double[iClass];
@@ -215,7 +213,7 @@ public class GameStorage extends GenericStorage {
 	 */
 	
 
-	public void compAllocation() {
+	public void calculateAllocation() {
 		/* calculate processing rate of each site */
 		double tmp = 0;
 		bStorageViolation = false;
@@ -350,21 +348,19 @@ public class GameStorage extends GenericStorage {
 
 	/**
 	 * one phase of the game
-	 * 
-	 * @return
 	 */
-	public double compFinalResult() {
+	public double calculateFinalResult() {
 		daMaxMakespan = new double[iClass];
 
 		double[][] dmLastDistribution = new double[iClass][iSite];
 
 		do {
 			iStage++;
-			compAllocation();
+			calculateAllocation();
 
-			compDistribution();
+			calculateDistribution();
 
-			compExecTime();
+			calculateExecTime();
 
 			for (int i = 0; i < iClass; i++) {
 				for (int j = 0; j < iSite; j++) {
@@ -391,7 +387,7 @@ public class GameStorage extends GenericStorage {
 			}
 			println();
 		}
-		compDistribution();
+		calculateDistribution();
 		println("==================Distribution=====================");
 		for (int i = 0; i < iClass; i++) {
 			print("FinalDistribution[" + i + "] ");
@@ -494,7 +490,7 @@ public class GameStorage extends GenericStorage {
 			reset();
 			calculateWeight();
 			calculateInitDist();
-			compExecTime();
+			calculateExecTime();
 		} else {
 			bNextPhase = false;
 
@@ -502,7 +498,7 @@ public class GameStorage extends GenericStorage {
 		return dMinMaxMakespan;
 	}
 
-	public void compExecTime() {
+	public void calculateExecTime() {
 		double newExeTime;
 		double finalExeTime = 0;
 		dEval = 0;
@@ -512,8 +508,7 @@ public class GameStorage extends GenericStorage {
 			// print("Time["+i+"]");
 			newExeTime = 0;
 			for (int j = 0; j < iSite; j++) {
-				newExeTime = (dmDist[i][j] * dmPrediction[i][j])
-						/ dmAlloc[i][j];
+				newExeTime = (dmDist[i][j] * dmPrediction[i][j]) / dmAlloc[i][j];
 
 				if (Math.round(dmAlloc[i][j] * 100) > 0) {
 					finalExeTime += (Math.round(dmDist[i][j] * 100) * dmPrediction[i][j])

@@ -33,6 +33,7 @@ public class GenericGame {
 	 * old allocation of processors of grid sites for tasks, result of game
 	 */
 	double[][] dmOldAlloc;
+	
 	/**
 	 * distribution of tasks on grid sites, result of game
 	 */
@@ -57,16 +58,6 @@ public class GenericGame {
 	 * price of resources
 	 */
 	double[] daPrice;
-	
-	/**
-	 * sizes of data needed by each activity
-	 */
-	double[] daInputSize;
-	
-	/**
-	 * bandwidth of sites
-	 */
-	double[] daBandwidth;
 
 	/**
 	 * Rank of resources: index of resources
@@ -232,8 +223,6 @@ public class GenericGame {
 	public void init(){
 		dmPrediction = new double[iClass][iSite];
 		iaTask = new int[iClass];
-		daBandwidth = new double[iSite];
-		daInputSize = new double[iClass];
 		iaQueuedTask = new int[iClass];
 		dmWeight = new double[iClass][iSite];
 		dmAlloc = new double[iClass][iSite];
@@ -719,21 +708,6 @@ public class GenericGame {
 		this.dControl = dControl;
 	}
 
-	public double[] getDaBandwidth() {
-		return daBandwidth;
-	}
-
-	public void setDaBandwidth(double[] daBandwidth) {
-		this.daBandwidth = daBandwidth;
-	}
-
-	public double[] getDaInputSize() {
-		return daInputSize;
-	}
-
-	public void setDaInputSize(double[] daInputSize) {
-		this.daInputSize = daInputSize;
-	}
 	
 	
 	
