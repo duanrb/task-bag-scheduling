@@ -26,7 +26,7 @@ public class GameStorage extends GenericStorage {
 
 		calculateWeight();
 		calculateStorageWeight();
-		sortStorageRequirement();
+//		sortStorageRequirement();
 		calculateInitDist();
 		calculateExecTime();
 
@@ -174,8 +174,7 @@ public class GameStorage extends GenericStorage {
 		println("-----------Init Distribution-----------");
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
-				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i])
-						* iaQueuedTask[i];
+				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i]) * iaQueuedTask[i];
 				println("Distribution[" + i + "][" + j + "] = " + dmDist[i][j]);
 			}
 
@@ -307,9 +306,7 @@ public class GameStorage extends GenericStorage {
 	/**
 	 * detect storage problem. allocation*storage requirement*
 	 * 
-	 * @return
-	 * 
-	 *         Two possibilities? 1. the important site 2. the unimportant site
+	 * Two possibilities? 1. the important site 2. the unimportant site
 	 */
 	double daStorageLack[];
 
