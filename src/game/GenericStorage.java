@@ -53,9 +53,7 @@ public class GenericStorage extends GenericGame {
 	void releaseAllStorage(int activityclass) {
 		for (int i = 0; i < iSite; i++) {
 			if (dmDist[activityclass][i] > 0) {
-				daStorageUsed[i] = daStorageUsed[i]
-						- daStorageOutput[activityclass]
-						* dmDist[activityclass][i];
+				daStorageUsed[i] = daStorageUsed[i] - daStorageOutput[activityclass] * dmDist[activityclass][i];
 			}
 		}
 	}
@@ -67,8 +65,7 @@ public class GenericStorage extends GenericGame {
 		rs.lastActivity = lastActivity;
 		rs.releaseTime = dmMinminTime[iMinSite][iMinCPU];
 		vUnreleased.add(rs);
-		daStorageUsed[iMinSite] += daStorageInput[iMinClass]
-				+ daStorageOutput[iMinClass];
+		daStorageUsed[iMinSite] += daStorageInput[iMinClass] + daStorageOutput[iMinClass];
 	}
 
 	void updateStorage(double time, int site) {
