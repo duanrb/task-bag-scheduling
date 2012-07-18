@@ -1,6 +1,5 @@
 package test;
 
-import game.GameQuick;
 import game.GameStorage;
 import game.StorageMCT;
 import game.StorageMaxmin;
