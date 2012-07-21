@@ -1,5 +1,6 @@
 package game;
 
+
 public class GameQuick extends GenericGame {
 	
 	double[] daMaxMakespan;
