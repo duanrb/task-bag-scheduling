@@ -15,13 +15,13 @@ public class GameQuickTest {
 		GameQuick wo = new GameQuick(2,2);
 		wo.setBPrint(true);
 		
-		int[] iaLength = {1000000,100000};
+		int[] iaLength = {1000,1000};
 		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {100,100};
 		wo.setIaCPU(iaCPU);
 		
-		double[][] dmPrediction = {{1,2},{21,20}};
+		double[][] dmPrediction = {{1,2},{2,3}};
 		wo.setDmPrediction(dmPrediction);
 
 		wo.schedule();
@@ -47,20 +47,20 @@ public class GameQuickTest {
 		GameQuick wo = new GameQuick(3,3);
 		wo.setBPrint(true);
 
-		int[] iaLength = {10000,10000,10000};
+		int[] iaLength = {1000,1000,1000};
 		wo.setIaTask(iaLength);
 
-		int[] iaCPU = {100,100,100};
+		int[] iaCPU = {10,10,10};
 		wo.setIaCPU(iaCPU);
-
-		double[] daPrice = {1.5,1.2,1};
-		wo.setDaPrice(daPrice);
+//
+//		double[] daPrice = {1.5,1.2,1};
+//		wo.setDaPrice(daPrice);
 		
-		wo.setDDeadline(600);
+//		wo.setDDeadline(600);
 
 		double[][] dmPrediction = {
 				{1,2,1},
-				{2,4,5},
+				{2,3,4},
 				{2,2,1}
 		};
 		wo.setDmPrediction(dmPrediction);
@@ -321,7 +321,7 @@ public class GameQuickTest {
 	public static void main(String[] args) {
 		GameQuickTest test = new GameQuickTest();
 		
-		test.testFinal();
+		test.test2();
 	}
 
 }
