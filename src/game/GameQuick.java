@@ -130,24 +130,25 @@ public class GameQuick extends GenericGame {
 		double[] daProcRateByClass = new double[iClass];
 		for (int i = 0; i < iClass; i++) {
 			tmp = 0;
-			// print("ProcessRate["+i+"]");
+			print("ProcessRate["+i+"]");
 			for (int j = 0; j < iSite; j++) {
 				dmProcessRate[i][j] = iaCPU[j] / dmPrediction[i][j];
 				tmp += dmProcessRate[i][j];
-				// print(dmProcessRate[i][j] + ", ");
+				print(dmProcessRate[i][j] + ", ");
 			}
-			// println();
+			println();
 			daProcRateByClass[i] = tmp;
 		}
 
 		/* calculate distribution based on processing rate */
 		for (int i = 0; i < iClass; i++) {
+			print("0 Distribution["+i+"]");
 			for (int j = 0; j < iSite; j++) {
-				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i])
-						* iaQueuedTask[i];
-				// println("0Distribution["+i+"]["+j+"] = "+
-				// dmDistribution[i][j]);
+				 dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i]) * iaQueuedTask[i];
+//				 dmDist[i][j] =  iaQueuedTask[i]/iSite;
+				 print(dmDist[i][j]+", ");
 			}
+			println();
 		}
 	}
 
