@@ -202,8 +202,7 @@ public class GameQuick extends GenericGame {
 			print(iStage + " Allocation[" + i + "]");
 			for (int j = 0; j < iClass; j++) {
 
-				dmAlloc[j][i] = (dmDist[j][i] * dmPrediction[j][i] * dmWeight[j][i] * iaCPU[i])	
-						/ daRelativeWeightBySite[i];
+				dmAlloc[j][i] = (dmDist[j][i] * dmPrediction[j][i] * dmWeight[j][i] * iaCPU[i])	/ daRelativeWeightBySite[i];
 				
 				print(dmAlloc[j][i] + ", ");
 			}
@@ -216,7 +215,6 @@ public class GameQuick extends GenericGame {
 
 		double[][] dmLastDistribution = new double[iClass][iSite];
 		do {
-			
 			iStage++;
 			
 			calculateAlloc();
@@ -270,9 +268,7 @@ public class GameQuick extends GenericGame {
 				if (dmAlloc[i][j] == 0) {
 					maxMakespan = 0;
 				} else {
-					maxMakespan = Math.round(dmDist[i][j]
-							/ dmAlloc[i][j])
-							* dmPrediction[i][j];
+					maxMakespan = Math.round(dmDist[i][j] / dmAlloc[i][j]) * dmPrediction[i][j];
 				}
 
 				if (daMaxMakespan[i] < maxMakespan) {
@@ -357,20 +353,20 @@ public class GameQuick extends GenericGame {
 
 	public void calculateExecTime() {
 		double newExeTime;
+		double newClassExetime;
 		double finalExeTime = 0;
 		dEval = 0;
 		dTime = 0;
 		dCost = 0;
 		for (int i = 0; i < iClass; i++) {
 			// print("Time["+i+"]");
-			newExeTime = 0;
+			newClassExetime = 0;
 			for (int j = 0; j < iSite; j++) {
-				newExeTime = (dmDist[i][j] * dmPrediction[i][j])
-						/ dmAlloc[i][j];
+				newClassExetime += dmDist[i][j] * dmPrediction[i][j];
+				newExeTime = dmDist[i][j] * dmPrediction[i][j] / dmAlloc[i][j];
 
 				if (Math.round(dmAlloc[i][j] * 100) > 0) {
-					finalExeTime += (Math.round(dmDist[i][j] * 100) * dmPrediction[i][j])
-							/ Math.round(dmAlloc[i][j] * 100);
+					finalExeTime += (Math.round(dmDist[i][j] * 100) * dmPrediction[i][j]) / Math.round(dmAlloc[i][j] * 100);
 				}
 
 				dTime += newExeTime;
@@ -378,6 +374,7 @@ public class GameQuick extends GenericGame {
 				dmExeTime[i][j] = newExeTime;
 				// print(dmExeTime[i][j]+", ");
 			}
+			vvExeTimes.elementAt(i).add(newClassExetime);
 			// println();
 		}
 		

@@ -153,6 +153,11 @@ public class GenericGame {
 	 * Execution time vector
 	 */
 	Vector<Double> vExeTime = new Vector<Double>();
+	
+	/**
+	 * Execution time of each class
+	 */
+	Vector<Vector> vvExeTimes = new Vector<Vector>();;
 
 	/**
 	 * Execution cost vector
@@ -198,6 +203,12 @@ public class GenericGame {
 	 * if execute next phase
 	 */
 	boolean bNextPhase = true;
+
+	/**
+	 * if the execution can meet deadline
+	 */
+	boolean bDeadline = true;
+	
 	
 	public GenericGame() {
 		super();
@@ -210,10 +221,6 @@ public class GenericGame {
 		init();
 	}
 
-	
-	/**
-	 * init the environment variable
-	 */
 	public void init(int iClass, int iSite) {
 		this.iSite = iSite;
 		this.iClass = iClass;
@@ -240,10 +247,13 @@ public class GenericGame {
 		dmCost = new double[iClass][iSite];
 		
 		dmMinminTime = new double[iClass][iSite];
+		
+		for (int i = 0; i < iClass; i++) {
+			vvExeTimes.add(new Vector<Double>());
+		}
+		
 	}
-	/**
-	 * init the environment variable
-	 */
+
 	public void init(GenericGame gg)
 	{
 		init(gg.iClass, gg.iSite);
@@ -302,12 +312,8 @@ public class GenericGame {
 		return dFairness;
 	}
 
-	/**
-	 * if the execution can meet deadline
-	 */
-	boolean bDeadline = true;
 
-	public void printAllExeTime(int steps) {
+	public void printTotalExeTime(int steps) {
 		int i = 0;
 		Enumeration<Double> enumeration = vExeTime.elements();
 		double element = 0;
@@ -318,18 +324,27 @@ public class GenericGame {
 			if (i > steps)
 				continue;
 			if ((i % 10) != 0)
-				System.out.print(Math.round(element) + "("
-						+ Math.round(element / (iClass * iSite)) + "), ");
+				System.out.print(Math.round(element) + "(" + Math.round(element / (iClass * iSite)) + "), ");
 			else
-				System.out.println(Math.round(element) + "("
-						+ Math.round(element / (iClass * iSite)) + "), ");
-
+				System.out.println(Math.round(element) + "(" + Math.round(element / (iClass * iSite)) + "), ");
 		}
 		System.out.println();
-		System.out.println("Final Execution Time: " + Math.round(element)
-				+ ". ");
+		System.out.println("Final Execution Time: " + Math.round(element) + ". ");
 
 	}
+	
+	public void printExeTimesForEachClass() {
+		int stages = vvExeTimes.elementAt(0).size();
+
+		for (int i = 0; i < stages; i++) {
+			System.out.print(i+" " );
+			for (int j = 0; j < iClass; j++) {
+				System.out.print(vvExeTimes.elementAt(j).elementAt(i)+ " ");
+			}
+			System.out.println();
+		}
+	}
+	
 
 	/**
 	 * reset allocation and distribution
@@ -341,7 +356,6 @@ public class GenericGame {
 				dmDist[i][j] = 0;
 			}
 		}
-
 	}
 
 	/**

@@ -25,6 +25,7 @@ public class GameQuickTest {
 		wo.setDmPrediction(dmPrediction);
 
 		wo.schedule();
+		wo.printExeTimesForEachClass();
 	}
 	
 	public void testpremature() {
@@ -321,7 +322,7 @@ public class GameQuickTest {
 	public static void main(String[] args) {
 		GameQuickTest test = new GameQuickTest();
 		
-		test.test2();
+		test.test1();
 	}
 
 }
