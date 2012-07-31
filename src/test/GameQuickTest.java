@@ -15,17 +15,17 @@ public class GameQuickTest {
 		GameQuick wo = new GameQuick(2,2);
 		wo.setBPrint(true);
 		
-		int[] iaLength = {1000,1000};
+		int[] iaLength = {10,10};
 		wo.setIaTask(iaLength);
 
-		int[] iaCPU = {100,100};
+		int[] iaCPU = {2,2};
 		wo.setIaCPU(iaCPU);
 		
-		double[][] dmPrediction = {{1,2},{2,3}};
+		double[][] dmPrediction = {{1,1.1},{1,1.2}};
 		wo.setDmPrediction(dmPrediction);
 
-		wo.schedule();
-		wo.printExeTimesForEachClass();
+		wo.scheduleOnce();
+//		wo.printExeTimesForEachClass();
 	}
 	
 	public void testpremature() {
@@ -67,6 +67,7 @@ public class GameQuickTest {
 		wo.setDmPrediction(dmPrediction);
 
 		wo.schedule();
+//		wo.printExeTimesForEachClass();
 	}
 
 	public void test2m() {
@@ -124,6 +125,8 @@ public class GameQuickTest {
 			}
 		}
 		wo.setDmPrediction(dmPrediction);
+		wo.schedule();
+		wo.printExeTimesForEachClass();
 
 		return wo;
 	}

@@ -41,6 +41,7 @@ public class GameQuick extends GenericGame {
 			lastPhaseMakespan = currentMakespan;
 			currentMakespan += calculateFinalResult();
 
+			
 			/* prepare data for fairness evaluation */
 			for (int i = 0; i < iClass; i++) {
 				if (iaQueuedTask[i] == 0 & tmpLength[i] > 0) {
@@ -101,6 +102,7 @@ public class GameQuick extends GenericGame {
 		calculateInitDist();
 		calculateExecTime();
 		calculateFinalResult();
+		
 
 	}
 
@@ -255,6 +257,7 @@ public class GameQuick extends GenericGame {
 			}
 			println();
 		}
+		calculateSchedulingEfficiency();
 		println("==================Makespan=====================");
 		double maxMakespan;
 		double phaseMaxMakespan = -1;

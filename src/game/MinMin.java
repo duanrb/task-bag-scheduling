@@ -22,18 +22,17 @@ public class MinMin extends GenericGame {
 
 		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
-			// System.out.print("Weight[" + i + "]");
+			print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				/* the weight is 1(maximum), when the site is free */
 				if (dmPricePerTask[i][j] == 0) {
 					dmWeight[i][j] = 1;
 				} else {
-					dmWeight[i][j] = dmPricePerTask[i][j]
-							/ daPredictionByClass[i];
+					dmWeight[i][j] = dmPricePerTask[i][j] / daPredictionByClass[i];
 				}
-				// System.out.print(dmWeight[i][j] + ", ");
+				print(dmWeight[i][j] + ", ");
 			}
-			// System.out.println();
+			println();
 		}
 	}
 
@@ -373,15 +372,7 @@ public class MinMin extends GenericGame {
 			}
 			// System.out.println();
 		}
-		// for (int i = 0; i < iClass; i++)
-		// {
-		// System.out.print(iStage + "Distribution[" + i + "]");
-		// for (int j = 0; j < iSite; j++)
-		// {
-		// System.out.print(dmDistribution[i][j] + ", ");
-		// }
-		// System.out.println();
-		// }
+		calculateOtherSchedulingEfficiency();
 		System.out.println("Fairness = " + calculateFairness());
 		System.out.println("MinMin Time= " + sumTime);
 		System.out.println("MakeSpan   = " + tmpTime);
@@ -394,7 +385,6 @@ public class MinMin extends GenericGame {
 
 	int getRestLength() {
 		int sum = 0;
-		// init array
 		for (int j = 0; j < iClass; j++) {
 			sum += iaQueuedTask[j];
 		}
@@ -435,6 +425,8 @@ public class MinMin extends GenericGame {
 		}
 
 		iaQueuedTask[iMinClass]--;
+		daAcutalExeTime[iMinClass] +=  dmPrediction[iMinClass][iMinSite];
+		
 		if (iaQueuedTask[iMinClass] == 0) {
 			vFairness.add(dmMinminTime[iMinSite][iMinCPU]);
 			for (int j = 0; j < iSite; j++) {
@@ -467,20 +459,20 @@ public class MinMin extends GenericGame {
 		dmCost = new double[iClass][iSite];
 		this.iClass = 2;
 		this.iSite = 2;
-		iaTask[0] = 2;
-		iaTask[1] = 2;
-		iaQueuedTask[0] = 2;
-		iaQueuedTask[1] = 2;
+		iaTask[0] = 10;
+		iaTask[1] = 10;
+		iaQueuedTask[0] = iaTask[0];
+		iaQueuedTask[1] = iaTask[1];
 
-		iCPUMaxNum = 2;
+		iCPUMaxNum = 4;
 
 		iaCPU[0] = 2;
 		iaCPU[1] = 2;
 
 		dmPrediction[0][0] = 1;
-		dmPrediction[0][1] = 1;
+		dmPrediction[0][1] = 1.1;
 		dmPrediction[1][0] = 1;
-		dmPrediction[1][1] = 1;
+		dmPrediction[1][1] = 1.2;
 
 		for (int j = 0; j < iSite; j++) {
 			iSumCPU += iaCPU[j];
@@ -562,7 +554,7 @@ public class MinMin extends GenericGame {
 
 	public static void main(String[] args) {
 		MinMin minmin = new MinMin(2, 2);
-		minmin.test2();
+		minmin.test1();
 	}
 
 }

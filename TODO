@@ -31,7 +31,7 @@ scheduling efficiency (se) = (s-r)/(s-f)
 se2 = 1/M (  )
 
 
-system resource fairness (rf) = (sum_1^A se_i * w_i ) / #(classes)
+system resource fairness (rf) = sum_1^A se_i * w_i 
 ------------------------------
 w_i = eveTime_i / (sum_1^A exeTime_i)
 
