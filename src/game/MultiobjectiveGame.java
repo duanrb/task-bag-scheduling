@@ -2,90 +2,8 @@ package game;
 
 public class MultiobjectiveGame extends GenericGame {
 
-	double[] daMaxMakespan;
-
-	public MultiobjectiveGame() {
-		super();
-	}
-	
 	public MultiobjectiveGame(int iClass, int iSite) {
 		super(iClass, iSite);
-	}
-
-	@Override
-	public void schedule() {
-		calculateWeight();
-		calculateInitDist();
-		calculateExecTime();
-		
-		double currentMakespan = 0;
-		double lastPhaseMakespan = 0;
-
-		double[] tmpLength = new double[iClass];
-		for (int i = 0; i < iClass; i++) {
-			tmpLength[i] = iaQueuedTask[i];
-		}
-
-		while (bNextPhase) {
-			lastPhaseMakespan = currentMakespan;
-			currentMakespan += calculateFinalResult();
-			
-			/* prepare data for fairness evaluation */
-			for (int i = 0; i < iClass; i++) {
-				if (iaQueuedTask[i] == 0 & tmpLength[i] > 0) {
-					vFairness.add(currentMakespan);
-				}
-				tmpLength[i] = iaQueuedTask[i];  
-			}
-		}
-		
-		for (int i = 0; i < iClass; i++) {
-			if (tmpLength[i] > 0) {
-				vFairness.add(currentMakespan);
-			}
-			tmpLength[i] = iaQueuedTask[i];
-		}
-
-		dFinalMakespan = currentMakespan;
-
-		/* compute the cost */
-		dCost = 0;
-		for (int j = 0; j < iSite; j++) {
-			dCost += lastPhaseMakespan * daPrice[j] * iaCPU[j];
-		}
-
-		for (int i = 0; i < iClass; i++) {
-			for (int j = 0; j < iSite; j++) {
-				dCost += dmDist[i][j] * daPrice[j];
-			}
-		}
-
-		/* compute summed execution time */
-		println("iAllCPU = " + iSumCPU);
-		if (lastPhaseMakespan > 0) {
-			dTotalExecutionTime = lastPhaseMakespan * iSumCPU;
-		}
-		for (int i = 0; i < iClass; i++) {
-			for (int j = 0; j < iSite; j++) {
-				dTotalExecutionTime += dmDist[i][j] * dmPrediction[i][j];
-			}
-		}
-
-		dTime = dTotalExecutionTime;
-		System.out.println("Fairness  = " + calculateFairness());
-		System.out.println("Game Time = " + dTotalExecutionTime);
-		System.out.println("Game Cost = " + dCost);
-		System.out.println("Makespan  = " + currentMakespan);
-		System.out.println("Stage     = " + iStage);
-
-	}
-
-	@Override
-	public void scheduleOnce() {
-		calculateWeight();
-		calculateInitDist();
-		calculateExecTime();
-		calculateFinalResult();
 	}
 
 	@Override
@@ -94,79 +12,159 @@ public class MultiobjectiveGame extends GenericGame {
 		/* calculate prediction by Class */
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
-				daPredictionByClass[i] += daPrice[j] / dmPrediction[i][j] ;
+				daPredictionByClass[i] += 1 / dmPricePerTask[i][j] ;
 			}
 		}
 
 		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
-			print("Weight[" + i + "]");
+			// print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
-				dmWeight[i][j] = daPrice[j] / (dmPrediction[i][j] * daPredictionByClass[i]);
-				print(dmWeight[i][j] + ", ");
+				/* the weight is 1(maximum), when the site is free */
+				if (dmPricePerTask[i][j] == 0) {
+					dmWeight[i][j] = 1;
+				} else {
+					dmWeight[i][j] = 1 / (dmPricePerTask[i][j] * daPredictionByClass[i]);
+				}
+				// print(dmWeight[i][j] + ", ");
 			}
-			println();
+			// println();
 		}
 	}
 
 	@Override
 	public void calculateInitDist() {
 		/* calculate processing rate of each site */
-		double tmp = 0;
+		double tmp = 0, rest = 0;
 		double[] daProcRateByClass = new double[iClass];
 		for (int i = 0; i < iClass; i++) {
-			tmp = 0;
-			print("ProcessRate["+i+"]");
+			print("ProcessRate[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				dmProcessRate[i][j] = iaCPU[j] / dmPrediction[i][j];
-				tmp += dmProcessRate[i][j];
+				daProcRateByClass[i] += dmProcessRate[i][j];
 				print(dmProcessRate[i][j] + ", ");
 			}
 			println();
-			daProcRateByClass[i] = tmp;
 		}
-
-		/* calculate distribution based on processing rate */
+		/* distribute tasks according to the sort */
+		int k;
 		for (int i = 0; i < iClass; i++) {
-			print("0 Distribution["+i+"]");
-			for (int j = 0; j < iSite; j++) {
-				 dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i]) * iaQueuedTask[i];
-//				 dmDist[i][j] =  iaQueuedTask[i]/iSite;
-				 print(dmDist[i][j]+", ");
-			}
-			println();
-		}
-	}
-
-	public void calculateDist() {
-		/* compute the processing rate of each site */
-		double tmp = 0;
-		double[] daProcRateByClass = new double[iClass];
-		for (int i = 0; i < iClass; i++) {
+			print("0Distribution[" + i + "]");
 			tmp = 0;
+			rest = iaTask[i];
 			for (int j = 0; j < iSite; j++) {
-				dmProcessRate[i][j] = dmAlloc[i][j] / dmPrediction[i][j];
-				tmp += dmProcessRate[i][j];
-				// println("ProcessRate["+i+"]["+j+"] = "+
-				// dmProcessRate[i][j]);
-			}
-			daProcRateByClass[i] = tmp;
-		}
+				if (rest != 0) {
+					// the first site to distribute
+					k = (int) dmRankResource[i][j];
+					tmp = dDeadline * iaCPU[k] / dmPrediction[i][k];
+					if (rest > tmp) {
+						dmDist[i][k] = tmp;
+						rest = rest - tmp;
+					} else {
+						dmDist[i][k] = rest;
+						rest = 0;
+					}
+				} else {
+					k = (int) dmRankResource[i][j];
+					dmDist[i][k] = 0;
+				}
 
-		for (int i = 0; i < iClass; i++) {
-			print(iStage + " Distribution[" + i + "]");
-			
+			}
 			for (int j = 0; j < iSite; j++) {
-				dmOldDist[i][j] = dmDist[i][j];
-				dmDist[i][j] = (dmProcessRate[i][j] / daProcRateByClass[i]) * iaQueuedTask[i];
-				
 				print(dmDist[i][j] + ", ");
 			}
 			println();
 		}
 	}
 
-	public void calculateAlloc() {
+
+	public boolean calculateDistribution() {
+		bDeadline = true;
+		boolean bUsedNewResource = false;
+		double tmp = 0, rest = 0;
+		/* distribute tasks according to the sort */
+		int k;
+		double lastAllocation;
+
+		for (int i = 0; i < iClass; i++) {
+			print(iStage + " Distribution[" + i + "]");
+			tmp = 0;
+			rest = iaTask[i];
+			for (int j = 0; j < iSite; j++) {
+				if (rest != 0) {
+					// the first site to distribute
+					k = (int) dmRankResource[i][j];
+					if (dmAlloc[i][k] == -1) {
+						lastAllocation = iaCPU[j];
+						bUsedNewResource = true;
+					} else {
+						lastAllocation = dmAlloc[i][k];
+					}
+					tmp = dDeadline * lastAllocation / dmPrediction[i][k];
+					if (rest > tmp) {
+						dmDist[i][k] = tmp;
+						rest = rest - tmp;
+					} else {
+						dmDist[i][k] = rest;
+						rest = 0;
+						continue;
+					}
+				} else {
+					k = (int) dmRankResource[i][j];
+					dmDist[i][k] = 0;
+				}
+			}
+			/* after distribution, the deadline can not be fulfilled */
+			if (rest > 0) {
+				bDeadline = false;
+				return true;
+			}
+			for (int j = 0; j < iSite; j++) {
+				print(dmDist[i][j] + ", ");
+			}
+			println();
+		}
+		return bUsedNewResource;
+	}
+
+	public void calculateFinalDistribution() {
+		bDeadline = true;
+		boolean bUsedNewResource = false;
+		double tmp = 0, rest = 0;
+		/* distribute tasks according to the sort */
+		int k;
+		double lastAllocation;
+		for (int i = 0; i < iClass; i++) {
+			tmp = 0;
+			rest = iaTask[i];
+			for (int j = 0; j < iSite; j++) {
+				if (rest != 0) {
+					// the first site to distribute
+					k = (int) dmRankResource[i][j];
+					if (dmAlloc[i][k] == -1) {
+						lastAllocation = iaCPU[j];
+						bUsedNewResource = true;
+					} else {
+						lastAllocation = dmAlloc[i][k];
+					}
+					tmp = dDeadline * lastAllocation / dmPrediction[i][k];
+					if (rest > tmp) {
+						dmDist[i][k] = tmp;
+						rest = rest - tmp;
+					} else {
+						dmDist[i][k] = rest;
+						rest = 0;
+						continue;
+					}
+				} else {
+					k = (int) dmRankResource[i][j];
+					dmDist[i][k] = 0;
+				}
+			}
+		}
+	}
+
+	public void calculateAllocation() {
 		/* calculate processing rate of each site */
 		double tmp = 0;
 		double[] daRelativeWeightBySite = new double[iSite];
@@ -175,47 +173,68 @@ public class MultiobjectiveGame extends GenericGame {
 			for (int j = 0; j < iClass; j++) {
 				tmp += dmPrediction[j][i] * dmWeight[j][i] * dmDist[j][i];
 			}
-			// println("RelativeValue["+i+"] = "+ tmp);
+			// System.out.println("RelativeValue["+i+"] = "+ tmp);
 			daRelativeWeightBySite[i] = tmp;
 		}
 
 		for (int i = 0; i < iSite; i++) {
-			print(iStage + " Allocation[" + i + "]");
 			for (int j = 0; j < iClass; j++) {
+				if (daRelativeWeightBySite[i] != 0) {
+					dmAlloc[j][i] = (dmDist[j][i] * dmPrediction[j][i] * dmWeight[j][i] * iaCPU[i]) / daRelativeWeightBySite[i];
+				} else {
+					dmAlloc[j][i] = -1;
+				}
 
-				dmAlloc[j][i] = (dmDist[j][i] * dmPrediction[j][i] * dmWeight[j][i] * iaCPU[i])	/ daRelativeWeightBySite[i];
-				
-				print(dmAlloc[j][i] + ", ");
+				// if the allocated resource is more than requirement,...
+				// if (dmAllocation[j][i] > dmDistribution[j][i] *
+				// dmPrediction[j][i] / dDeadline)
+				// {
+				// dmAllocation[j][i] = dmDistribution[j][i] *
+				// dmPrediction[j][i] / dDeadline;
+				// }
+			}
+		}
+
+		for (int i = 0; i < iClass; i++) {
+			print(iStage + " Allocation[" + i + "]");
+			for (int j = 0; j < iSite; j++) {
+				print(dmAlloc[i][j] + ", ");
 			}
 			println();
 		}
 	}
 
-	public double calculateFinalResult() {
-		daMaxMakespan = new double[iClass];
-
-		double[][] dmLastDistribution = new double[iClass][iSite];
+	public boolean calculateFinalResult() {
+		double tempCost = 0;
 		do {
 			iStage++;
-			
-			calculateAlloc();
-			calculateDist();
-			calculateExecTime();
-
+			calculateAllocation();
+			tempCost = 0;
 			for (int i = 0; i < iClass; i++) {
 				for (int j = 0; j < iSite; j++) {
-					dmLastDistribution[i][j] = dmDist[i][j];
+					tempCost += dmDist[i][j] * dmPrediction[i][j]
+							* daPrice[j];
 				}
 			}
+			vCost.add(tempCost);
 
-			println("Evaluation ="+dEval);
-		} while (dEval > dControl);
+			if (calculateDistribution()) {
+				/* deadline can not be satisfied */
+				if (!bDeadline) {
+					System.out.println("THE DEADLINE CAN NOT BE SATISFIED!");
+					return false;
+				} else {
+					System.out.println("\nNEW ROUND WITHOUT CHECKING:");
+					dEval = 1;
+				}
 
-		for (int i = 0; i < iClass; i++) {
-			for (int j = 0; j < iSite; j++) {
-				dmDist[i][j] = dmLastDistribution[i][j];
+			} else {
+				calculateExecTime();
 			}
-		}
+
+			// System.out.println("Evaluation Value =========="+dEval);
+		} while (dEval > 0);
+		// while (evaluateResults());
 
 		println("==================Allocation=====================");
 		for (int i = 0; i < iClass; i++) {
@@ -226,8 +245,7 @@ public class MultiobjectiveGame extends GenericGame {
 			}
 			println();
 		}
-		
-		calculateDist();
+		calculateFinalDistribution();
 		println("==================Distribution=====================");
 		for (int i = 0; i < iClass; i++) {
 			print("FinalDistribution[" + i + "] ");
@@ -237,135 +255,154 @@ public class MultiobjectiveGame extends GenericGame {
 			}
 			println();
 		}
-		
-		calculateSchedulingEfficiency();
-		
-		println("==================Makespan=====================");
-		double maxMakespan;
-		double phaseMaxMakespan = -1;
-
-		/* compute makespan */
-		for (int i = 0; i < iClass; i++) {
-			print("Makespan[" + i + "] ");
-			daMaxMakespan[i] = 0;
-			for (int j = 0; j < iSite; j++) {
-
-				if (dmAlloc[i][j] == 0) {
-					maxMakespan = 0;
-				} else {
-					maxMakespan = Math.round(dmDist[i][j] / dmAlloc[i][j]) * dmPrediction[i][j];
-				}
-
-				if (daMaxMakespan[i] < maxMakespan) {
-					daMaxMakespan[i] = maxMakespan;
-				}
-
-				print(maxMakespan + ",");
-				if (phaseMaxMakespan < maxMakespan) {
-					phaseMaxMakespan = maxMakespan;
-				}
-
-			}
-			println();
-		}
-
-		/* Decide if need next phase, and clean the completed class */
-		int counterForNextPhase = 0;
-		double dDiffMakespan = 0;
-		double dMinMaxMakespan = 0;
-		for (int i = 0; i < iClass; i++) {
-			if (daMaxMakespan[i] > 0) {
-				if (dDiffMakespan == 0) {
-					dDiffMakespan = daMaxMakespan[i];
-					counterForNextPhase++;
-				} else if (dDiffMakespan != daMaxMakespan[i]) {
-					counterForNextPhase++;
-				}
-
-				if (dMinMaxMakespan == 0) {
-					dMinMaxMakespan = daMaxMakespan[i];
-				} else if (dMinMaxMakespan > daMaxMakespan[i]) {
-					dMinMaxMakespan = daMaxMakespan[i];
-				}
-			}
-		}
-
-		if (counterForNextPhase > 1) {
-			println("===need next phase=== counterForNextPhase="+counterForNextPhase);
-			bNextPhase = true;
-			// reorganize iaCurrentLength
-			for (int i = 0; i < iClass; i++) {
-				if (dMinMaxMakespan == daMaxMakespan[i]) {
-					iaQueuedTask[i] = 0;
-				} else {
-					for (int j = 0; j < iSite; j++) {
-						if (dmAlloc[i][j] != 0) {
-							iaQueuedTask[i] = iaQueuedTask[i]
-									- (int) Math.floor(dMinMaxMakespan
-											* dmAlloc[i][j]
-											/ dmPrediction[i][j]);
-						}
-						if (iaQueuedTask[i] < 0) {
-							iaQueuedTask[i] = 0;
-						}
-					}
-				}
-			}
-
-			/* execution time */
-
-			/* the last run check */
-			int tmpNumAct = 0;
-			for (int i = 0; i < iClass; i++) {
-				tmpNumAct += iaQueuedTask[i];
-			}
-			if (tmpNumAct == 0) {
-				bNextPhase = false;
-				return phaseMaxMakespan;
-			}
-
-			// reset distribution and allocation
-			reset();
-			calculateWeight();
-			calculateInitDist();
-			calculateExecTime();
-		} else {
-			bNextPhase = false;
-		}
-		println("Final Makespan = "+ dMinMaxMakespan);
-		return dMinMaxMakespan;
+		println("==================Cost&Time=====================");
+		calculateExecTime();
+		println("Stage = " + iStage);
+		return true;
 	}
 
 	public void calculateExecTime() {
 		double newExeTime;
-		double newClassExetime;
-		double finalExeTime = 0;
+		double newCost;
 		dEval = 0;
 		dTime = 0;
 		dCost = 0;
 		for (int i = 0; i < iClass; i++) {
-			// print("Time["+i+"]");
-			newClassExetime = 0;
+			newExeTime = 0;
+			print("Cost[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
-				newClassExetime += dmDist[i][j] * dmPrediction[i][j];
-				newExeTime = dmDist[i][j] * dmPrediction[i][j] / dmAlloc[i][j];
-
-				if (Math.round(dmAlloc[i][j] * 100) > 0) {
-					finalExeTime += (Math.round(dmDist[i][j] * 100) * dmPrediction[i][j]) / Math.round(dmAlloc[i][j] * 100);
+				if (dmAlloc[i][j] != -1) {
+					if (dmAlloc[i][j] < 1) {
+						newExeTime = 0;
+					} else {
+						newExeTime = (dmDist[i][j] * dmPrediction[i][j])
+								/ dmAlloc[i][j];
+						if (newExeTime > dDeadline + 1) {
+							newExeTime = Double.MAX_VALUE;
+						}
+					}
+				}
+				if (newExeTime > dDeadline + 1) {
+					// System.out.println("newExeTime - dDeadline="+ (newExeTime
+					// - dDeadline -1));
+					newCost = Double.MAX_VALUE;
+				} else {
+					newCost = dmDist[i][j] * dmPrediction[i][j]
+							* daPrice[j];
 				}
 
-				dTime += newExeTime;
-				dEval += dmExeTime[i][j] - newExeTime;
-				dmExeTime[i][j] = newExeTime;
-				// print(dmExeTime[i][j]+", ");
-			}
-			vvExeTimes.elementAt(i).add(newClassExetime);
-			// println();
-		}
-		
-		vExeTime.add(dTime);
-		// println("AllTime = "+ dTime);
-		println("FinalExeTime = " + finalExeTime);
+				dTime += dmDist[i][j] * dmPrediction[i][j];
+				dCost += newCost;
 
+				dEval += dmCost[i][j] - newCost;
+				dmExeTime[i][j] = newExeTime;
+				dmCost[i][j] = newCost;
+				print(Math.round(dmCost[i][j]) + ", ");
+			}
+			println();
+		}
+		for (int i = 0; i < iClass; i++) {
+			print("Time[" + i + "]");
+			for (int j = 0; j < iSite; j++) {
+				print(Math.round(dmExeTime[i][j]) + ", ");
+			}
+			println();
+		}
+		dFinalMakespan = dDeadline;
+		println("My Time = " + dTime);
+		println("My Cost = " + dCost);
+	}
+
+	/**
+	 * Sort reosurces for each class and get one sorted matrix back
+	 */
+	public void sortResources() {
+		/* compute cost per acitivity */
+		for (int i = 0; i < iClass; i++) {
+			print("PricePerActivity[" + i + "] ");
+			for (int j = 0; j < iSite; j++) {
+				dmPricePerTask[i][j] = daPrice[j] * dmPrediction[i][j];
+				print( dmPricePerTask[i][j] + ", ");
+			}
+			println();
+		}
+		double[][] array = new double[iSite][2];
+		/* sort every class */
+		for (int i = 0; i < iClass; i++) {
+			// init array
+			for (int j = 0; j < iSite; j++) {
+				array[j][0] = dmPricePerTask[i][j];
+				array[j][1] = j;
+			}
+			QuickSort.sort(array, 0, iSite - 1);
+			print("RANK[" + i + "] ");
+			for (int j = 0; j < iSite; j++) {
+				dmRankResource[i][j] = array[j][1];
+				print(dmRankResource[i][j] + ", ");
+			}
+			println();
+		}
+
+	}
+
+	@Override
+	public void schedule() {
+
+		iStage = 0;
+		sortResources();
+		calculateWeight();
+		calculateInitDist();
+		calculateAllocation();
+		calculateExecTime();
+		if (!calculateFinalResult()) {
+			GameQuick opt = new GameQuick(this.iClass, this.iSite);
+			opt.init(this);
+			opt.schedule();
+			if (opt.dDeadline >= opt.dFinalMakespan) {
+				this.dCost = opt.dCost;
+				this.dTime = opt.dTime;
+				this.dFinalMakespan = opt.dFinalMakespan;
+				println("SUCCESSFULLY COMPLETE!");
+			} else {
+				System.out.println("FAILED!!! ");
+			}
+
+		} else {
+			println("FIND THE SOLUTION!!");
+		}
+		println("Deadline =" + dDeadline);
+		
+		System.out.println("Stage     = " + iStage);
+	}
+
+	public void minCostWithWorkflowOptimization() {
+
+		iStage = 0;
+		sortResources();
+		calculateWeight();
+
+		/* get first */
+		GameQuick optInit = new GameQuick(this.iClass, this.iSite);
+		optInit.init(this);
+		optInit.scheduleOnce();
+		this.setDmDistribution(optInit.dmDist);
+
+		calculateAllocation();
+		calculateExecTime();
+		if (!calculateFinalResult()) {
+			GameQuick opt = new GameQuick(this.iClass, this.iSite);
+			opt.init(this);
+			opt.schedule();
+			if (opt.dDeadline > opt.dFinalMakespan) {
+				this.dCost = opt.dCost;
+				this.dTime = opt.dTime;
+				this.dFinalMakespan = opt.dFinalMakespan;
+				System.out.println("SUCCESSFULLY COMPLETE!");
+			} else {
+				System.out.println("FAILED!!! ");
+			}
+
+		}
+		System.out.println("Deadline =" + dDeadline);
 	}
 }

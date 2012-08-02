@@ -24,15 +24,15 @@ public class GameCostTest {
 		int[] iaLength = {1000,1000};
 		wo.setIaTask(iaLength);
 
-		int[] iaCPU = {32,32};
+		int[] iaCPU = {10,10};
 		wo.setIaCPU(iaCPU);
 		
 		double[] daPrice = {1,1};
 		wo.setDaPrice(daPrice);
 
-		wo.setDDeadline(50);
+		wo.setDDeadline(150);
 		
-		double[][] dmPrediction = {{1.2,1},{1,1.2}};
+		double[][] dmPrediction = {{1,2},{1,1.2}};
 		wo.setDmPrediction(dmPrediction);
 
 		wo.schedule();
@@ -322,7 +322,7 @@ public class GameCostTest {
 
 	public static void main(String[] args) {
 		GameCostTest co = new GameCostTest();
-		co.testFinal();
+		co.test1();
 		
 	}
 }
