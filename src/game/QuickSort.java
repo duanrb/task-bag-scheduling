@@ -6,13 +6,11 @@ public class QuickSort {
 		double temp = array[i][0];
 
 		array[i][0] = array[j][0];
-
 		array[j][0] = temp;
 
 		double temp1 = array[i][1];
 
 		array[i][1] = array[j][1];
-
 		array[j][1] = temp1;
 	}
 
