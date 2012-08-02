@@ -24,7 +24,7 @@ public class GameCostTest {
 		int[] iaLength = {1000,1000};
 		wo.setIaTask(iaLength);
 
-		int[] iaCPU = {10,10};
+		int[] iaCPU = {8,8};
 		wo.setIaCPU(iaCPU);
 		
 		double[] daPrice = {1,1};
@@ -46,18 +46,18 @@ public class GameCostTest {
 		int[] iaLength = {1000,1000,1000};
 		wo.setIaTask(iaLength);
 
-		int[] iaCPU = {10,10,10};
+		int[] iaCPU = {12,12,12};
 		wo.setIaCPU(iaCPU);
 		
-		double[] daPrice = {1,2,3};
+		double[] daPrice = {1,1.2,1.5};
 		wo.setDaPrice(daPrice);
 
 		wo.setDDeadline(100);
 		
 		double[][] dmPrediction = {
 				{1,1.2,1.3},
-				{1.1,1,1.1},
-				{1.5,1.1,1},
+				{1,1.1,1.2},
+				{1,1.3,1.5},
 				};
 		wo.setDmPrediction(dmPrediction);
 
@@ -109,19 +109,19 @@ public class GameCostTest {
 
 	void testFinal() {
             double deadline =100;
-            for (int s = 1; s < 11; s++) {
+            for (int s = 1; s < 2; s++) {
                         deadline += 10;
 			GameCostTest gct = new GameCostTest();
 			GameCost wo = gct.test2();
 			System.out.println("----------------COST OPTIMIZATION--------------");
 			long tw1 = System.currentTimeMillis();
                         wo.setDeadline(deadline);
-                        wo.setBPrint(false);
+                        wo.setBPrint(true);
 			wo.schedule();
 			System.out.println("Cost      = " + wo.getDCost());
-			System.out.println("Time      = " + wo.getDTime());
-			System.out.println("AlgExeTime= "+ (System.currentTimeMillis() - tw1));
-			System.out.println("Makespan% = " + wo.getDFinalMakespan() / wo.getDDeadline() * 100);
+//			System.out.println("Time      = " + wo.getDTime());
+//			System.out.println("AlgExeTime= "+ (System.currentTimeMillis() - tw1));
+//			System.out.println("Makespan% = " + wo.getDFinalMakespan() / wo.getDDeadline() * 100);
 			System.out.println();
 
 //			System.out.println("----------------QUICK OPTIMIZATION--------------");
@@ -341,7 +341,7 @@ public class GameCostTest {
 
 	public static void main(String[] args) {
 		GameCostTest co = new GameCostTest();
-		co.test1();
+		co.testFinal();
 		
 	}
 }

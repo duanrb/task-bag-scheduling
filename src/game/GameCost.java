@@ -5,29 +5,31 @@ public class GameCost extends GenericGame {
 		super(iClass, iSite);
 	}
 
-	@Override
+
+        
+        @Override
 	public void calculateWeight() {
 		double[] daPredictionByClass = new double[iClass];
 		/* calculate prediction by Class */
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
-				daPredictionByClass[i] += 1 / dmPricePerTask[i][j] + 1 / dmPrediction[i][j];
+				daPredictionByClass[i] += 1 / dmPricePerTask[i][j] ;
 			}
 		}
 
 		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
-			// print("Weight[" + i + "]");
+			print("Weight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				/* the weight is 1(maximum), when the site is free */
 				if (dmPricePerTask[i][j] == 0) {
 					dmWeight[i][j] = 1;
 				} else {
-					dmWeight[i][j] = (1 / dmPricePerTask[i][j] + 1 / dmPrediction[i][j])/ daPredictionByClass[i];
+					dmWeight[i][j] = 1 / (dmPricePerTask[i][j] * daPredictionByClass[i]);
 				}
-				// print(dmWeight[i][j] + ", ");
+				print(dmWeight[i][j] + ", ");
 			}
-			// println();
+			println();
 		}
 	}
 
@@ -203,7 +205,7 @@ public class GameCost extends GenericGame {
 		}
 	}
 
-	public boolean calculateFinalResult() {
+        public boolean calculateFinalResult() {
 		double tempCost = 0;
 		do {
 			iStage++;
@@ -282,12 +284,10 @@ public class GameCost extends GenericGame {
 					}
 				}
 				if (newExeTime > dDeadline + 1) {
-					// System.out.println("newExeTime - dDeadline="+ (newExeTime
-					// - dDeadline -1));
+					// System.out.println("newExeTime - dDeadline="+ (newExeTime - dDeadline -1));
 					newCost = Double.MAX_VALUE;
 				} else {
-					newCost = dmDist[i][j] * dmPrediction[i][j]
-							* daPrice[j];
+					newCost = dmDist[i][j] * dmPrediction[i][j]* daPrice[j];
 				}
 
 				dTime += dmDist[i][j] * dmPrediction[i][j];
@@ -354,6 +354,7 @@ public class GameCost extends GenericGame {
 		calculateAllocation();
 		calculateExecTime();
 		if (!calculateFinalResult()) {
+                        System.out.println("CANNOT FIND!! TRY GAME QUICK!!!");
 			GameQuick opt = new GameQuick(this.iClass, this.iSite);
 			opt.init(this);
 			opt.schedule();

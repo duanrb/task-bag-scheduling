@@ -270,7 +270,7 @@ public class CostMET extends GenericGame {
 	}
 
 	/**
-	 * Sort reosurces for each class and get one sorted matrix back
+	 * Sort resources for each class and get one sorted matrix back
 	 */
 	public void sortClass() {
 		/* compute cost per acitivity */
@@ -302,7 +302,7 @@ public class CostMET extends GenericGame {
 	}
 
 	/**
-	 * Sort reosurces for each class and get one sorted matrix back
+	 * Sort resources for each class and get one sorted matrix back
 	 */
 	public void sortResources() {
 		/* compute cost per acitivity */
@@ -403,43 +403,21 @@ public class CostMET extends GenericGame {
 
 	int getRestLength() {
 		int sum = 0;
-		// init array
 		for (int j = 0; j < iClass; j++) {
 			sum += iaQueuedTask[j];
 		}
 		return sum;
 	}
 
-	void findFastestMachine() {
-		double tmpCompetleTime = Double.MAX_VALUE;
-		for (int i = 0; i < iSite; i++) {
-			if (tmpCompetleTime > dmPrediction[iMinClass][i]) {
-				iMinSite = i;
-				tmpCompetleTime = dmPrediction[iMinClass][i];
-			}
-		}
-		tmpCompetleTime = Double.MAX_VALUE;
-		for (int j = 0; j < iaCPU[iMinSite]; j++) {
-			if (tmpCompetleTime > dmMinminTime[iMinSite][j]
-					+ dmPrediction[iMinClass][iMinSite]) {
-				iMinCPU = j;
-				tmpCompetleTime = dmMinminTime[iMinSite][j]
-						+ dmPrediction[iMinClass][iMinSite];
-			}
-		}
-	}
-
 	void findMinCompleteCostCPU() {
-		// search the site with minimum price, and the selection meet the
-		// deadline
+		// search the site with minimum price, and the selection meet the deadline
 		int indexSite = 0;
 		iMinSite = -1;
 		iMinCPU = -1;
 		for (int i = 0; i < iSite; i++) {
 			indexSite = (int) dmRankResource[iMinClass][i];
 			for (int j = 0; j < iaCPU[indexSite]; j++) {
-				if (dmMinminTime[indexSite][j]
-						+ dmPrediction[iMinClass][indexSite] <= dDeadline) {
+				if (dmMinminTime[indexSite][j] + dmPrediction[iMinClass][indexSite] <= dDeadline) {
 					iMinSite = indexSite;
 					iMinCPU = j;
 					break;
@@ -452,17 +430,6 @@ public class CostMET extends GenericGame {
 
 	}
 
-	int iMinClass;
-
-	void findMinAct() {
-		for (int i = 0; i < iClass; i++) {
-			iMinClass = (int) dmRankClass[iMinSite][i];
-			if (iaQueuedTask[iMinClass] > 0) {
-				iaQueuedTask[iMinClass]--;
-				break;
-			}
-		}
-	}
 
 	void updateMin() {
 		dmMinminTime[iMinSite][iMinCPU] += dmPrediction[iMinClass][iMinSite];
