@@ -231,8 +231,7 @@ public class GameQuickTest {
 			long tw2 = System.currentTimeMillis();
 			double t2 = mt.olbStart();
 			System.out.println("Time%     = " + t2 / t1 * 100);
-			System.out.println("Makespan% = " + mt.getDFinalMakespan()
-					/ gq.getDFinalMakespan() * 100);
+			System.out.println("Makespan% = " + mt.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
 			System.out.println("Fairness% = " + mt.getDFairness() / gq.getDFairness()
 					* 100);
 			System.out.println("AlgExeTime= "
@@ -244,10 +243,8 @@ public class GameQuickTest {
 			long tw4 = System.currentTimeMillis();
 			double t4 = mctime.minct();
 			System.out.println("Time%     = " + t4 / t1 * 100);
-			System.out.println("Makespan% = " + mctime.getDFinalMakespan()
-					/ gq.getDFinalMakespan() * 100);
-			System.out.println("Fairness% = " + mctime.getDFairness() / gq.getDFairness()
-					* 100);
+			System.out.println("Makespan% = " + mctime.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
+			System.out.println("Fairness% = " + mctime.getDFairness() / gq.getDFairness() * 100);
 			System.out.println("AlgExeTime= "
 					+ (System.currentTimeMillis() - tw4));
 			System.out.println();

@@ -19,7 +19,7 @@ c. = -1 when execute on the slowest machine
 makespan fairness = jain's fairness
 -----------------
 
-standard deviation (ssd)to evaluate the quality of the scheduling.
+standard deviation (ssd)to evaluate the quality of the scheduling.??
 ------------------------------
 
 reschedule efficiency
@@ -27,3 +27,5 @@ reschedule efficiency
 how many tasks are affected?
 
 4. regret operations: only reset the game
+
+5. multi-objective scheduling
