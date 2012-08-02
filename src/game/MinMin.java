@@ -22,7 +22,7 @@ public class MinMin extends GenericGame {
 
 		/* calculate weight */
 		for (int i = 0; i < iClass; i++) {
-			print("Weight[" + i + "]");
+			print("PriceWeight[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				/* the weight is 1(maximum), when the site is free */
 				if (dmPricePerTask[i][j] == 0) {
@@ -441,26 +441,8 @@ public class MinMin extends GenericGame {
 	}
 
 	public void test1() {
-		this.iClass = 2;
-		this.iSite = 2;
-		dmPrediction = new double[iClass][iSite];
-		iaTask = new int[iClass];
-		iaQueuedTask = new int[iClass];
-		dmWeight = new double[iClass][iSite];
-		dmAlloc = new double[iClass][iSite];
-		dmDist = new double[iClass][iSite];
-		dmRankResource = new double[iClass][iSite];
-		dmRankClass = new double[iSite][iClass];
-		dmPricePerTask = new double[iClass][iSite];
-		daPrice = new double[iSite];
-		iaCPU = new int[iSite];
-		dmProcessRate = new double[iClass][iSite];
-		dmExeTime = new double[iClass][iSite];
-		dmCost = new double[iClass][iSite];
-		this.iClass = 2;
-		this.iSite = 2;
-		iaTask[0] = 10;
-		iaTask[1] = 10;
+		iaTask[0] = 100;
+		iaTask[1] = 100;
 		iaQueuedTask[0] = iaTask[0];
 		iaQueuedTask[1] = iaTask[1];
 
@@ -470,9 +452,9 @@ public class MinMin extends GenericGame {
 		iaCPU[1] = 2;
 
 		dmPrediction[0][0] = 1;
-		dmPrediction[0][1] = 1.1;
+		dmPrediction[0][1] = 1.2;
 		dmPrediction[1][0] = 1;
-		dmPrediction[1][1] = 1.2;
+		dmPrediction[1][1] = 1.5;
 
 		for (int j = 0; j < iSite; j++) {
 			iSumCPU += iaCPU[j];

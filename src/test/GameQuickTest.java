@@ -15,13 +15,13 @@ public class GameQuickTest {
 		GameQuick wo = new GameQuick(2,2);
 		wo.setBPrint(true);
 		
-		int[] iaLength = {10,10};
+		int[] iaLength = {100,100};
 		wo.setIaTask(iaLength);
 
 		int[] iaCPU = {2,2};
 		wo.setIaCPU(iaCPU);
 		
-		double[][] dmPrediction = {{1,1.1},{1,1.2}};
+		double[][] dmPrediction = {{1,1.5},{1,1.2}};
 		wo.setDmPrediction(dmPrediction);
 
 		wo.scheduleOnce();

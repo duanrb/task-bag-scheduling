@@ -287,9 +287,13 @@ public class GenericGame {
 		setICPUinit(gg.iaCPU);
 	}
 	
-	
+	/**
+	 * scheudling efficiency: [-1, +1]
+	 * 
+	 */
 	void calculateSchedulingEfficiency() {
-		double max, min, actual = 0;
+		double max, min, actual = 0, sumGain = 0;
+		double[] weight  = new double[iClass];
 		
 		System.out.println("===Scheduling Efficiency===");
 		for (int i = 0; i < iClass; i++) {
@@ -308,26 +312,35 @@ public class GenericGame {
 			daAcutalExeTime[i] = actual;
 
 			if (max > min && iaQueuedTask[i] != 0)
-				daSchedulingEfficiency[i] = (max - actual/iaQueuedTask[i]) / (max - min);
+				daSchedulingEfficiency[i] = (max+min - 2*actual/iaQueuedTask[i]) / (max - min);
 			else if (max == min)
 				daSchedulingEfficiency[i] = 1;
 			else 
 				daSchedulingEfficiency[i] = 0;
 			
+			weight[i] = (max-min) * iaQueuedTask[i] ;
+			if (weight[i] < 0) weight[i] = - weight[i];
+			
+			sumGain += weight[i];
 			System.out.println(i+" "+daSchedulingEfficiency[i]);
 		}
 		
-		
 		for (int i = 0; i < iClass; i++) {
-			dSystemEfficiency += daSchedulingEfficiency[i] ;
+			weight[i] = weight[i] / sumGain;
+			System.out.println("weight "+i +" = "+ weight[i]);
 		}
-		dSystemEfficiency /= iClass; 
+		
+		dSystemEfficiency = 0;
+		for (int i = 0; i < iClass; i++) {
+			dSystemEfficiency += daSchedulingEfficiency[i] * weight[i];
+		}
 		
 		System.out.println("System-level Efficiency = "+ dSystemEfficiency);
 	}
 	
 	void calculateOtherSchedulingEfficiency() {
-		double max, min;
+		double max, min, sumGain = 0;
+		double[] weight  = new double[iClass];
 		
 		System.out.println("===Scheduling Efficiency===");
 		for (int i = 0; i < iClass; i++) {
@@ -343,20 +356,29 @@ public class GenericGame {
 			}
 
 			if (max > min && iaTask[i] != 0)
-				daSchedulingEfficiency[i] = (max - daAcutalExeTime[i]/iaTask[i]) / (max - min);
+				daSchedulingEfficiency[i] = (max + min - 2 * daAcutalExeTime[i]/iaTask[i]) / (max - min);
 			else if (max == min)
 				daSchedulingEfficiency[i] = 1;
 			else 
 				daSchedulingEfficiency[i] = 0;
 			
+			weight[i] = (max-min) * iaTask[i];
+			if (weight[i] < 0) weight[i] = - weight[i];
+			
+			sumGain += weight[i];
+			
 			System.out.println(i+" "+daSchedulingEfficiency[i]);
 		}
 		
+		for (int i = 0; i < iClass; i++) {
+			weight[i] = weight[i] / sumGain;
+			System.out.println("weight "+i +" = "+ weight[i]);
+		}
 		
+		dSystemEfficiency = 0;
 		for (int i = 0; i < iClass; i++) {
 			dSystemEfficiency += daSchedulingEfficiency[i] ;
 		}
-		dSystemEfficiency /= iClass; 
 		
 		System.out.println("System-level Efficiency = "+ dSystemEfficiency);
 	}

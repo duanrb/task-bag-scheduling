@@ -3,46 +3,27 @@
 TODO
 
 ////////////////
-1. 3 classes, curves of three lines
-
-1,2,2
-0.99,2,2
-2,1,2
-
+1. curves of convergence lines
 
 2. redefine the resource efficiency and fairness
 
-system level efficiency =   task real exe time / exe time on site i 
-a. 0< efficiency <1
+scheduling efficiency for each class
+------------------------------------
+
+system level efficiency 
+-----------------------
+a. -1 < efficiency <1
 b. =  1 when execute on the fastest machine
-c. =~ 0 when execute on the slowest machine
-
-r=2 (actual)
-f=1 (fastest)
-s=3 (slowest)
-a=2 (avg)
-x_1 = 1
-x_2 = 2
-x_3 = 3
-
-jf = (sum x_i)^2 / (n * sum x_i^2)
-
-scheduling efficiency (se) = (s-r)/(s-f)
-se2 = 1/M (  )
-
-
-system resource fairness (rf) = sum_1^A se_i * w_i 
-------------------------------
-w_i = eveTime_i / (sum_1^A exeTime_i)
-
+c. = -1 when execute on the slowest machine
 
 makespan fairness = jain's fairness
-------------------
+-----------------
 
 standard deviation (ssd)to evaluate the quality of the scheduling.
 ------------------------------
 
+reschedule efficiency
+---------------------
+how many tasks are affected?
 
-3. show convergence of each player to 
-
-4. regret operations
+4. regret operations: only reset the game
