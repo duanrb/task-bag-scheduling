@@ -8,14 +8,11 @@ public class GameCost extends GenericGame {
 	@Override
 	public void calculateWeight() {
 		double[] daPredictionByClass = new double[iClass];
-		double tmp = 0;
 		/* calculate prediction by Class */
 		for (int i = 0; i < iClass; i++) {
-			tmp = 0;
 			for (int j = 0; j < iSite; j++) {
-				tmp += 1 / dmPricePerTask[i][j];
+				daPredictionByClass[i] += 1 / dmPricePerTask[i][j];
 			}
-			daPredictionByClass[i] = tmp;
 		}
 
 		/* calculate weight */
@@ -40,15 +37,13 @@ public class GameCost extends GenericGame {
 		double tmp = 0, rest = 0;
 		double[] daProcRateByClass = new double[iClass];
 		for (int i = 0; i < iClass; i++) {
-			tmp = 0;
 			print("ProcessRate[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
 				dmProcessRate[i][j] = iaCPU[j] / dmPrediction[i][j];
-				tmp += dmProcessRate[i][j];
+				daProcRateByClass[i] += dmProcessRate[i][j];
 				print(dmProcessRate[i][j] + ", ");
 			}
 			println();
-			daProcRateByClass[i] = tmp;
 		}
 		/* distribute tasks according to the sort */
 		int k;
