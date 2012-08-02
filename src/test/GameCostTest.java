@@ -341,7 +341,7 @@ public class GameCostTest {
 
 	public static void main(String[] args) {
 		GameCostTest co = new GameCostTest();
-		co.testFinal();
+		co.test1();
 		
 	}
 }
