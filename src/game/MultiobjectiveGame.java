@@ -1,7 +1,8 @@
 package game;
 
-public class GameCost extends GenericGame {
-	public GameCost(int iClass, int iSite) {
+public class MultiobjectiveGame extends GenericGame {
+
+	public MultiobjectiveGame(int iClass, int iSite) {
 		super(iClass, iSite);
 	}
 
@@ -11,7 +12,7 @@ public class GameCost extends GenericGame {
 		/* calculate prediction by Class */
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
-				daPredictionByClass[i] += 1 / dmPricePerTask[i][j] + 1 / dmPrediction[i][j];
+				daPredictionByClass[i] += 1 / dmPricePerTask[i][j] ;
 			}
 		}
 
@@ -23,7 +24,7 @@ public class GameCost extends GenericGame {
 				if (dmPricePerTask[i][j] == 0) {
 					dmWeight[i][j] = 1;
 				} else {
-					dmWeight[i][j] = (1 / dmPricePerTask[i][j] + 1 / dmPrediction[i][j])/ daPredictionByClass[i];
+					dmWeight[i][j] = 1 / (dmPricePerTask[i][j] * daPredictionByClass[i]);
 				}
 				// print(dmWeight[i][j] + ", ");
 			}
@@ -404,7 +405,4 @@ public class GameCost extends GenericGame {
 		}
 		System.out.println("Deadline =" + dDeadline);
 	}
-
-
-
 }

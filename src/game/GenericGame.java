@@ -209,6 +209,21 @@ public class GenericGame {
 	 */
 	boolean bDeadline = true;
 	
+	/**
+	 * scheduling efficiency of each class
+	 */
+	double[] daSchedulingEfficiency;
+	
+	/**
+	 * system-level resource efficiency
+	 */
+	double dSystemEfficiency;
+	
+	/**
+	 * actual execution time of each class
+	 */
+	double[] daAcutalExeTime;
+	
 	
 	public GenericGame() {
 		super();
@@ -252,7 +267,12 @@ public class GenericGame {
 			vvExeTimes.add(new Vector<Double>());
 		}
 		
+		daSchedulingEfficiency = new double[iClass];
+		daAcutalExeTime = new double[iClass];
+		
 	}
+	
+
 
 	public void init(GenericGame gg)
 	{
@@ -265,6 +285,102 @@ public class GenericGame {
 		setDaPrice(gg.daPrice);
 		setIaCPU(gg.iaCPU);
 		setICPUinit(gg.iaCPU);
+	}
+	
+	/**
+	 * scheudling efficiency: [-1, +1]
+	 * 
+	 */
+	void calculateSchedulingEfficiency() {
+		double max, min, actual = 0, sumGain = 0;
+		double[] weight  = new double[iClass];
+		
+		System.out.println("===Scheduling Efficiency===");
+		for (int i = 0; i < iClass; i++) {
+			max = dmPrediction[i][0];
+			min = dmPrediction[i][1];
+			actual = 0;
+			for (int j = 0; j < iSite; j++) {
+				if (max < dmPrediction[i][j]) {
+					max = dmPrediction[i][j];
+				}
+				if (min > dmPrediction[i][j]) {
+					min = dmPrediction[i][j];
+				}
+				actual += dmDist[i][j]*dmPrediction[i][j];
+			}
+			daAcutalExeTime[i] = actual;
+
+			if (max > min && iaQueuedTask[i] != 0)
+				daSchedulingEfficiency[i] = (max+min - 2*actual/iaQueuedTask[i]) / (max - min);
+			else if (max == min)
+				daSchedulingEfficiency[i] = 1;
+			else 
+				daSchedulingEfficiency[i] = 0;
+			
+			weight[i] = (max-min) * iaQueuedTask[i] ;
+			if (weight[i] < 0) weight[i] = - weight[i];
+			
+			sumGain += weight[i];
+			System.out.println(i+" "+daSchedulingEfficiency[i]);
+		}
+		
+		for (int i = 0; i < iClass; i++) {
+			weight[i] = weight[i] / sumGain;
+			System.out.println("weight "+i +" = "+ weight[i]);
+		}
+		
+		dSystemEfficiency = 0;
+		for (int i = 0; i < iClass; i++) {
+			dSystemEfficiency += daSchedulingEfficiency[i] * weight[i];
+		}
+		
+		System.out.println("System-level Efficiency = "+ dSystemEfficiency);
+	}
+	
+	void calculateOtherSchedulingEfficiency() {
+		double max, min, sumGain = 0;
+		double[] weight  = new double[iClass];
+		
+		System.out.println("===Scheduling Efficiency===");
+		for (int i = 0; i < iClass; i++) {
+			max = dmPrediction[i][0];
+			min = dmPrediction[i][1];
+			for (int j = 0; j < iSite; j++) {
+				if (max < dmPrediction[i][j]) {
+					max = dmPrediction[i][j];
+				}
+				if (min > dmPrediction[i][j]) {
+					min = dmPrediction[i][j];
+				}
+			}
+
+			if (max > min && iaTask[i] != 0)
+				daSchedulingEfficiency[i] = (max + min - 2 * daAcutalExeTime[i]/iaTask[i]) / (max - min);
+			else if (max == min)
+				daSchedulingEfficiency[i] = 1;
+			else 
+				daSchedulingEfficiency[i] = 0;
+			
+			weight[i] = (max-min) * iaTask[i];
+			if (weight[i] < 0) weight[i] = - weight[i];
+			
+			sumGain += weight[i];
+			
+			System.out.println(i+" "+daSchedulingEfficiency[i]);
+		}
+		
+		for (int i = 0; i < iClass; i++) {
+			weight[i] = weight[i] / sumGain;
+			System.out.println("weight "+i +" = "+ weight[i]);
+		}
+		
+		dSystemEfficiency = 0;
+		for (int i = 0; i < iClass; i++) {
+			dSystemEfficiency += daSchedulingEfficiency[i] ;
+		}
+		
+		System.out.println("System-level Efficiency = "+ dSystemEfficiency);
 	}
 	
 	/**
@@ -312,7 +428,6 @@ public class GenericGame {
 		return dFairness;
 	}
 
-
 	public void printTotalExeTime(int steps) {
 		int i = 0;
 		Enumeration<Double> enumeration = vExeTime.elements();
@@ -335,16 +450,21 @@ public class GenericGame {
 	
 	public void printExeTimesForEachClass() {
 		int stages = vvExeTimes.elementAt(0).size();
+		double sum = 0;
 
 		for (int i = 0; i < stages; i++) {
 			System.out.print(i+" " );
+			sum = 0;
 			for (int j = 0; j < iClass; j++) {
+				sum += Double.parseDouble(vvExeTimes.elementAt(j).elementAt(i).toString());
 				System.out.print(vvExeTimes.elementAt(j).elementAt(i)+ " ");
 			}
-			System.out.println();
+			System.out.println(sum + " "+ vExeTime.elementAt(i));
+			if (i>200) {
+				break;
+			}
 		}
 	}
-	
 
 	/**
 	 * reset allocation and distribution
@@ -721,8 +841,5 @@ public class GenericGame {
 	public void setDControl(double dControl) {
 		this.dControl = dControl;
 	}
-
-	
-	
 	
 }

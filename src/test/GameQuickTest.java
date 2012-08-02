@@ -15,17 +15,17 @@ public class GameQuickTest {
 		GameQuick wo = new GameQuick(2,2);
 		wo.setBPrint(true);
 		
-		int[] iaLength = {1000,1000};
+		int[] iaLength = {100,100};
 		wo.setIaTask(iaLength);
 
-		int[] iaCPU = {100,100};
+		int[] iaCPU = {2,2};
 		wo.setIaCPU(iaCPU);
 		
-		double[][] dmPrediction = {{1,2},{2,3}};
+		double[][] dmPrediction = {{1,1.5},{1,1.2}};
 		wo.setDmPrediction(dmPrediction);
 
-		wo.schedule();
-		wo.printExeTimesForEachClass();
+		wo.scheduleOnce();
+//		wo.printExeTimesForEachClass();
 	}
 	
 	public void testpremature() {
@@ -67,6 +67,7 @@ public class GameQuickTest {
 		wo.setDmPrediction(dmPrediction);
 
 		wo.schedule();
+//		wo.printExeTimesForEachClass();
 	}
 
 	public void test2m() {
@@ -124,6 +125,8 @@ public class GameQuickTest {
 			}
 		}
 		wo.setDmPrediction(dmPrediction);
+		wo.schedule();
+		wo.printExeTimesForEachClass();
 
 		return wo;
 	}
@@ -228,8 +231,7 @@ public class GameQuickTest {
 			long tw2 = System.currentTimeMillis();
 			double t2 = mt.olbStart();
 			System.out.println("Time%     = " + t2 / t1 * 100);
-			System.out.println("Makespan% = " + mt.getDFinalMakespan()
-					/ gq.getDFinalMakespan() * 100);
+			System.out.println("Makespan% = " + mt.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
 			System.out.println("Fairness% = " + mt.getDFairness() / gq.getDFairness()
 					* 100);
 			System.out.println("AlgExeTime= "
@@ -241,10 +243,8 @@ public class GameQuickTest {
 			long tw4 = System.currentTimeMillis();
 			double t4 = mctime.minct();
 			System.out.println("Time%     = " + t4 / t1 * 100);
-			System.out.println("Makespan% = " + mctime.getDFinalMakespan()
-					/ gq.getDFinalMakespan() * 100);
-			System.out.println("Fairness% = " + mctime.getDFairness() / gq.getDFairness()
-					* 100);
+			System.out.println("Makespan% = " + mctime.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
+			System.out.println("Fairness% = " + mctime.getDFairness() / gq.getDFairness() * 100);
 			System.out.println("AlgExeTime= "
 					+ (System.currentTimeMillis() - tw4));
 			System.out.println();
