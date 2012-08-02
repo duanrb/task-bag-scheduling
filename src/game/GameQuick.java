@@ -6,9 +6,8 @@ package game;
  */
 
 public class GameQuick extends GenericGame {
-	
+
 	double[] daMaxMakespan;
-	boolean bNextPhase = true;
 
 	public GameQuick() {
 		super();
@@ -18,10 +17,6 @@ public class GameQuick extends GenericGame {
 		super(iClass, iSite);
 	}
 
-	/**
-	 * calculate the final distribution and allocation and consider multiple phases
-	 * 
-	 */
 	@Override
 	public void schedule() {
 
@@ -92,18 +87,12 @@ public class GameQuick extends GenericGame {
 
 	}
 
-	/**
-	 * calculate the final distribution and allocation and consider only one phase
-	 */
 	@Override
 	public void scheduleOnce() {
-
 		calculateWeight();
 		calculateInitDist();
 		calculateExecTime();
 		calculateFinalResult();
-		
-
 	}
 
 	@Override

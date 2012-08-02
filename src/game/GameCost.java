@@ -82,7 +82,7 @@ public class GameCost extends GenericGame {
 	}
 
 
-	public boolean compDistribution() {
+	public boolean calculateDistribution() {
 		bDeadline = true;
 		boolean bUsedNewResource = false;
 		double tmp = 0, rest = 0;
@@ -131,7 +131,7 @@ public class GameCost extends GenericGame {
 		return bUsedNewResource;
 	}
 
-	public void compFinalDistribution() {
+	public void calculateFinalDistribution() {
 		bDeadline = true;
 		boolean bUsedNewResource = false;
 		double tmp = 0, rest = 0;
@@ -168,7 +168,7 @@ public class GameCost extends GenericGame {
 		}
 	}
 
-	public void compAllocation() {
+	public void calculateAllocation() {
 		/* calculate processing rate of each site */
 		double tmp = 0;
 		double[] daRelativeWeightBySite = new double[iSite];
@@ -208,11 +208,11 @@ public class GameCost extends GenericGame {
 		}
 	}
 
-	public boolean compFinalResult() {
+	public boolean calculateFinalResult() {
 		double tempCost = 0;
 		do {
 			iStage++;
-			compAllocation();
+			calculateAllocation();
 			tempCost = 0;
 			for (int i = 0; i < iClass; i++) {
 				for (int j = 0; j < iSite; j++) {
@@ -222,7 +222,7 @@ public class GameCost extends GenericGame {
 			}
 			vCost.add(tempCost);
 
-			if (compDistribution()) {
+			if (calculateDistribution()) {
 				/* deadline can not be satisfied */
 				if (!bDeadline) {
 					System.out.println("THE DEADLINE CAN NOT BE SATISFIED!");
@@ -233,7 +233,7 @@ public class GameCost extends GenericGame {
 				}
 
 			} else {
-				compExecTime();
+				calculateExecTime();
 			}
 
 			// System.out.println("Evaluation Value =========="+dEval);
@@ -249,7 +249,7 @@ public class GameCost extends GenericGame {
 			}
 			println();
 		}
-		compFinalDistribution();
+		calculateFinalDistribution();
 		println("==================Distribution=====================");
 		for (int i = 0; i < iClass; i++) {
 			print("FinalDistribution[" + i + "] ");
@@ -260,12 +260,12 @@ public class GameCost extends GenericGame {
 			println();
 		}
 		println("==================Cost&Time=====================");
-		compExecTime();
+		calculateExecTime();
 		println("Stage = " + iStage);
 		return true;
 	}
 
-	public void compExecTime() {
+	public void calculateExecTime() {
 		double newExeTime;
 		double newCost;
 		dEval = 0;
@@ -356,9 +356,9 @@ public class GameCost extends GenericGame {
 		sortResources();
 		calculateWeight();
 		calculateInitDist();
-		compAllocation();
-		compExecTime();
-		if (!compFinalResult()) {
+		calculateAllocation();
+		calculateExecTime();
+		if (!calculateFinalResult()) {
 			GameQuick opt = new GameQuick(this.iClass, this.iSite);
 			opt.init(this);
 			opt.schedule();
@@ -391,9 +391,9 @@ public class GameCost extends GenericGame {
 		optInit.scheduleOnce();
 		this.setDmDistribution(optInit.dmDist);
 
-		compAllocation();
-		compExecTime();
-		if (!compFinalResult()) {
+		calculateAllocation();
+		calculateExecTime();
+		if (!calculateFinalResult()) {
 			GameQuick opt = new GameQuick(this.iClass, this.iSite);
 			opt.init(this);
 			opt.schedule();
