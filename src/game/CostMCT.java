@@ -258,11 +258,11 @@ public class CostMCT extends GenericGame {
 			// System.out.println();
 		}
 		for (int i = 0; i < iClass; i++) {
-			System.out.print("Time[" + i + "]");
+			print("Time[" + i + "]");
 			for (int j = 0; j < iSite; j++) {
-				System.out.print(dmExeTime[i][j] + ", ");
+				print(dmExeTime[i][j] + ", ");
 			}
-			System.out.println();
+			println();
 		}
 
 		// System.out.println("AllTime = " + dTime + " AllCost = " + dCost);
@@ -393,15 +393,15 @@ public class CostMCT extends GenericGame {
 		// }
 		// System.out.println();
 		// }
-		System.out.println("Cost MCT Time     = " + sumTime);
-		System.out.println("Cost MCT Cost     = " + sumCost);
-		System.out.println("Cost MCT Makespan = " + tmpTime);
-		System.out.println("Cost MCT Stage    = " + iStage);
+		println("CostMCT Time     = " + sumTime);
+		println("CostMCT Cost     = " + sumCost);
+		println("CostMCT Makespan = " + tmpTime);
+		println("CostMCT Stage    = " + iStage);
 		dFinalMakespan = tmpTime;
 		dCost = sumCost;
 		dTime = sumTime;
 		if (dFinalMakespan > dDeadline) {
-			System.out.println("CANNOT MEET DEADLINE!!!");
+			System.out.println("CostMCT: CANNOT MEET DEADLINE!!!");
 		}
 		return sumTime;
 

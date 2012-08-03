@@ -181,10 +181,10 @@ public class CostMET extends GenericGame {
 			if (compDistribution()) {
 				/* deadline can not be satisfied */
 				if (!bDeadline) {
-					System.out.println("THE DEADLINE CAN NOT BE SATISFIED!");
+					System.out.println("CostMET: THE DEADLINE CAN NOT BE SATISFIED!");
 					return;
 				} else {
-					System.out.println("\nNEW ROUND WITHOUT CHECKING:");
+					println("\nNEW ROUND WITHOUT CHECKING:");
 					dEval = 1;
 				}
 
@@ -207,14 +207,14 @@ public class CostMET extends GenericGame {
 		}
 		// System.out.println("==================Allocation=====================");
 		for (int i = 0; i < iClass; i++) {
-			System.out.print("FinalAllocation[" + i + "] ");
+			print("FinalAllocation[" + i + "] ");
 			for (int j = 0; j < iSite; j++) {
 				dmAlloc[i][j] = Math.round(dmAlloc[i][j]);
-				// System.out.print(dmAllocation[i][j] + ",");
+				print(dmAlloc[i][j] + ",");
 			}
-			// System.out.println();
+			println();
 		}
-		// System.out.println("Stage = " + iStage);
+		println("Stage = " + iStage);
 	}
 
 	public void compExecTime() {
@@ -351,7 +351,7 @@ public class CostMET extends GenericGame {
 					// findFastestMachine();
 					findMinCompleteCostCPU();
 					if (iMinClass < 0 | iMinSite < 0 | iMinCPU < 0) {
-						System.out.println("CANNOT MEET DEADLINE!!");
+						System.out.println("CostMET: CANNOT MEET DEADLINE!!");
 						return 0;
 					}
 					updateMin();
@@ -387,13 +387,13 @@ public class CostMET extends GenericGame {
 		// }
 		// System.out.println();
 		// }
-		System.out.println("MET Time     = " + sumTime);
-		System.out.println("MET Cost     = " + sumCost);
-		System.out.println("MET Makespan = " + tmpTime);
-		System.out.println("MET Stage    = " + iStage);
+		println("CostMET Time     = " + sumTime);
+		println("CostMET Cost     = " + sumCost);
+		println("CostMET Makespan = " + tmpTime);
+		println("CostMET Stage    = " + iStage);
 		dFinalMakespan = tmpTime;
 		if (dFinalMakespan > dDeadline) {
-			System.out.println("CANNOT MEET DEADLINE!!!");
+			System.out.println("CostMET: CANNOT MEET DEADLINE!!!");
 		}
 		dCost = sumCost;
 		dTime = sumTime;

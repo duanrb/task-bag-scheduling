@@ -180,7 +180,7 @@ public class CostSufferage extends GenericGame {
 			if (compDistribution()) {
 				/* deadline can not be satisfied */
 				if (!bDeadline) {
-					System.out.println("THE DEADLINE CAN NOT BE SATISFIED!");
+					System.out.println("CostSufferage: THE DEADLINE CAN NOT BE SATISFIED!");
 					return;
 				} else {
 					System.out.println("\nNEW ROUND WITHOUT CHECKING:");
@@ -348,7 +348,7 @@ public class CostSufferage extends GenericGame {
 		while (getRestLength() > 0) {
 			chooseMaxSufferage();
 			if (iMinClass < 0 | iMinSite < 0 | iMinCPU < 0) {
-				System.out.println("CANNOT MEET DEADLINE!!");
+				System.out.println("CostSufferage: CANNOT MEET DEADLINE!!");
 				return 0;
 			}
 
@@ -383,13 +383,13 @@ public class CostSufferage extends GenericGame {
 		// }
 		// System.out.println();
 		// }
-		System.out.println("Sufferage  = " + sumTime);
-		System.out.println("MakeSpan   = " + tmpTime);
+		println("CostSufferage  = " + sumTime);
+		println("CostSufferage MakeSpan   = " + tmpTime);
 		dFinalMakespan = tmpTime;
 		dCost = sumCost;
 		dTime = sumTime;
 		if (dFinalMakespan > dDeadline) {
-			System.out.println("CANNOT MEET DEADLINE!!!");
+			System.out.println("CostSufferage: CANNOT MEET DEADLINE!!!");
 		}
 		return sumTime;
 

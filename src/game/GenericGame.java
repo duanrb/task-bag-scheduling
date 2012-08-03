@@ -288,14 +288,14 @@ public class GenericGame {
 	}
 	
 	/**
-	 * scheudling efficiency: [-1, +1]
+	 * Scheduling efficiency: [-1, +1]
 	 * 
 	 */
 	void calculateSchedulingEfficiency() {
 		double max, min, actual = 0, sumGain = 0;
 		double[] weight  = new double[iClass];
 		
-		System.out.println("===Scheduling Efficiency===");
+		println("===Scheduling Efficiency===");
 		for (int i = 0; i < iClass; i++) {
 			max = dmPrediction[i][0];
 			min = dmPrediction[i][1];
@@ -322,12 +322,12 @@ public class GenericGame {
 			if (weight[i] < 0) weight[i] = - weight[i];
 			
 			sumGain += weight[i];
-			System.out.println(i+" "+daSchedulingEfficiency[i]);
+			println(i+" "+daSchedulingEfficiency[i]);
 		}
 		
 		for (int i = 0; i < iClass; i++) {
 			weight[i] = weight[i] / sumGain;
-			System.out.println("weight "+i +" = "+ weight[i]);
+			println("weight "+i +" = "+ weight[i]);
 		}
 		
 		dSystemEfficiency = 0;
@@ -335,14 +335,14 @@ public class GenericGame {
 			dSystemEfficiency += daSchedulingEfficiency[i] * weight[i];
 		}
 		
-		System.out.println("System-level Efficiency = "+ dSystemEfficiency);
+		println("System-level Efficiency = "+ dSystemEfficiency);
 	}
 	
 	void calculateOtherSchedulingEfficiency() {
 		double max, min, sumGain = 0;
 		double[] weight  = new double[iClass];
 		
-		System.out.println("===Scheduling Efficiency===");
+		println("===Scheduling Efficiency===");
 		for (int i = 0; i < iClass; i++) {
 			max = dmPrediction[i][0];
 			min = dmPrediction[i][1];
@@ -367,12 +367,12 @@ public class GenericGame {
 			
 			sumGain += weight[i];
 			
-			System.out.println(i+" "+daSchedulingEfficiency[i]);
+			println(i+" "+daSchedulingEfficiency[i]);
 		}
 		
 		for (int i = 0; i < iClass; i++) {
 			weight[i] = weight[i] / sumGain;
-			System.out.println("weight "+i +" = "+ weight[i]);
+			println("weight "+i +" = "+ weight[i]);
 		}
 		
 		dSystemEfficiency = 0;
@@ -380,7 +380,7 @@ public class GenericGame {
 			dSystemEfficiency += daSchedulingEfficiency[i] ;
 		}
 		
-		System.out.println("System-level Efficiency = "+ dSystemEfficiency);
+		println("System-level Efficiency = "+ dSystemEfficiency);
 	}
 	
 	/**
@@ -679,7 +679,7 @@ public class GenericGame {
 	}
 
 	public double getDCost() {
-		return dCost;
+		return Math.round(dCost);
 	}
 
 	public void setDCost(double cost) {

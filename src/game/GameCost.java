@@ -222,10 +222,10 @@ public class GameCost extends GenericGame {
 			if (calculateDistribution()) {
 				/* deadline can not be satisfied */
 				if (!bDeadline) {
-					System.out.println("THE DEADLINE CAN NOT BE SATISFIED!");
+					System.out.println("GameCost: THE DEADLINE CAN NOT BE SATISFIED!");
 					return false;
 				} else {
-					System.out.println("\nNEW ROUND WITHOUT CHECKING:");
+					println("\nNEW ROUND WITHOUT CHECKING:");
 					dEval = 1;
 				}
 
@@ -354,7 +354,7 @@ public class GameCost extends GenericGame {
 		calculateAllocation();
 		calculateExecTime();
 		if (!calculateFinalResult()) {
-                        System.out.println("CANNOT FIND!! TRY GAME QUICK!!!");
+			System.out.println("GameCost: CANNOT FIND!! TRY GAME QUICK!!!");
 			GameQuick opt = new GameQuick(this.iClass, this.iSite);
 			opt.init(this);
 			opt.schedule();
@@ -364,7 +364,7 @@ public class GameCost extends GenericGame {
 				this.dFinalMakespan = opt.dFinalMakespan;
 				println("SUCCESSFULLY COMPLETE!");
 			} else {
-				System.out.println("FAILED!!! ");
+				System.out.println("GameCost: FAILED!!! ");
 			}
 
 		} else {
@@ -372,7 +372,7 @@ public class GameCost extends GenericGame {
 		}
 		println("Deadline =" + dDeadline);
 		
-		System.out.println("Stage     = " + iStage);
+		println("Stage     = " + iStage);
 	}
 
 	public void minCostWithWorkflowOptimization() {

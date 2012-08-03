@@ -349,11 +349,11 @@ public class MET extends GenericGame {
 		// }
 		// System.out.println();
 		// }
-		System.out.println("MET Fairness = " + calculateFairness());
-		System.out.println("MET Time     = " + sumTime);
-		System.out.println("MET Cost     = " + sumCost);
-		System.out.println("MET Makespan = " + tmpTime);
-		System.out.println("MET Stage    = " + iStage);
+		println("MET Fairness = " + calculateFairness());
+		println("MET Time     = " + sumTime);
+		println("MET Cost     = " + sumCost);
+		println("MET Makespan = " + tmpTime);
+		println("MET Stage    = " + iStage);
 		dFinalMakespan = tmpTime;
 		dCost = sumCost;
 		dTime = sumTime;

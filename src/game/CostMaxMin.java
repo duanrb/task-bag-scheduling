@@ -180,7 +180,7 @@ public class CostMaxMin extends GenericGame {
 			if (compDistribution()) {
 				/* deadline can not be satisfied */
 				if (!bDeadline) {
-					System.out.println("THE DEADLINE CAN NOT BE SATISFIED!");
+					System.out.println("CostMaxMin: THE DEADLINE CAN NOT BE SATISFIED!");
 					return;
 				} else {
 					System.out.println("\nNEW ROUND WITHOUT CHECKING:");
@@ -348,7 +348,7 @@ public class CostMaxMin extends GenericGame {
 		while (getRestLength() > 0) {
 			chooseMaxMinMakespan();
 			if (iMinClass < 0 | iMinSite < 0 | iMinCPU < 0) {
-				System.out.println("CANNOT MEET DEADLINE!!");
+				System.out.println("CostMaxMin: CANNOT MEET DEADLINE!!");
 				return 0;
 			}
 			updateMin();
@@ -379,13 +379,13 @@ public class CostMaxMin extends GenericGame {
 		// }
 		// System.out.println();
 		// }
-		System.out.println("MaxMin Time= " + sumTime);
-		System.out.println("MakeSpan   = " + tmpTime);
+		println("CostMaxMin Time       = " + sumTime);
+		println("CostMaxMin MakeSpan   = " + tmpTime);
 		dFinalMakespan = tmpTime;
 		dCost = sumCost;
 		dTime = sumTime;
 		if (dFinalMakespan > dDeadline) {
-			System.out.println("CANNOT MEET DEADLINE!!!");
+			System.out.println("CostMaxMin: CANNOT MEET DEADLINE!!!");
 		}
 		return sumTime;
 

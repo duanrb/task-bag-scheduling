@@ -206,10 +206,10 @@ public class CostMinMin2 extends GenericGame {
 			if (compDistribution()) {
 				/* deadline can not be satisfied */
 				if (!bDeadline) {
-					System.out.println("THE DEADLINE CAN NOT BE SATISFIED!");
+					System.out.println("CostMinMin2: THE DEADLINE CAN NOT BE SATISFIED!");
 					return;
 				} else {
-					System.out.println("\nNEW ROUND WITHOUT CHECKING:");
+					println("\nNEW ROUND WITHOUT CHECKING:");
 					dEval = 1;
 				}
 

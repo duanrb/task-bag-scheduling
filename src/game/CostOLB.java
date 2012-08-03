@@ -180,10 +180,10 @@ public class CostOLB extends GenericGame {
 			if (compDistribution()) {
 				/* deadline can not be satisfied */
 				if (!bDeadline) {
-					System.out.println("THE DEADLINE CAN NOT BE SATISFIED!");
+					System.out.println("CostOLB: THE DEADLINE CAN NOT BE SATISFIED!");
 					return;
 				} else {
-					System.out.println("\nNEW ROUND WITHOUT CHECKING:");
+					println("\nNEW ROUND WITHOUT CHECKING:");
 					dEval = 1;
 				}
 
@@ -337,8 +337,6 @@ public class CostOLB extends GenericGame {
 		sortClass();
 		calculateWeight();
 
-		System.out.println("SITE'S MAX CPU VALUE:" + iCPUMaxNum);
-		System.out.println("DEADLINE:" + dDeadline);
 		dmMinminCost = new double[iSite][iCPUMaxNum];
 		dmMinminTime = new double[iSite][iCPUMaxNum];
 
@@ -386,14 +384,14 @@ public class CostOLB extends GenericGame {
 			}
 			// System.out.println();
 		}
-		System.out.println("OLB Time = " + sumTime);
-		System.out.println("OLB Cost = " + sumCost);
-		System.out.println("MakeSpan = " + tmpTime);
+		println("CostOLB Time = " + sumTime);
+		println("CostOLB Cost = " + sumCost);
+		println("CostOLB MakeSpan = " + tmpTime);
 		dCost = sumCost;
 		dTime = sumTime;
 		dFinalMakespan = tmpTime;
 		if (dFinalMakespan > dDeadline) {
-			System.out.println("CANNOT MEET DEADLINE!!!");
+			System.out.println("CostOLB: CANNOT MEET DEADLINE!!!");
 		}
 
 	}
@@ -423,7 +421,7 @@ public class CostOLB extends GenericGame {
 		}
 		if (iMinSite == -1) {
 			bDeadline = false;
-			System.out.println("CAN NOT MEET DEADLINE!");
+			System.out.println("CostOLB: CAN NOT MEET DEADLINE!");
 		}
 
 	}

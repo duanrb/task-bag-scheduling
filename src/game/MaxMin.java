@@ -384,9 +384,9 @@ public class MaxMin extends GenericGame {
 		// }
 		// System.out.println();
 		// }
-		System.out.println("Fairness   = " + calculateFairness());
-		System.out.println("MaxMin Time= " + sumTime);
-		System.out.println("MakeSpan   = " + tmpTime);
+		println("Maxmin Fairness = " + calculateFairness());
+		println("MaxMin Time     = " + sumTime);
+		println("Maxmin MakeSpan = " + tmpTime);
 		dFinalMakespan = tmpTime;
 		dCost = sumCost;
 		dTime = sumTime;
