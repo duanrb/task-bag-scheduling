@@ -364,6 +364,7 @@ public class GameQuick extends GenericGame {
 
 				dTime += newExeTime;
 				dEval += dmExeTime[i][j] - newExeTime;
+//				dEval += Math.abs(dmExeTime[i][j] - newExeTime);
 				dmExeTime[i][j] = newExeTime;
 				// print(dmExeTime[i][j]+", ");
 			}
