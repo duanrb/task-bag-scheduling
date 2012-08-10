@@ -135,18 +135,18 @@ public class GameCostTest {
 	}
 
 	void testFinal() {
-            double deadline =1000;
+            double deadline =900;
             GameCostTest gct = new GameCostTest();
 			GameCost wo = gct.test3();
             
             for (int s = 1; s < 1000; s++) {
-            	deadline += 50;
+            	deadline += 100;
 			
 //			System.out.println("----------------COST OPTIMIZATION--------------");
 //            	long tw1 = System.currentTimeMillis();
-                wo.setDeadline(deadline);
-                wo.setBPrint(false);
-                wo.schedule();
+            wo.setDeadline(deadline);
+            wo.setBPrint(false);
+            wo.schedule();
 //			System.out.println("Cost      = " + wo.getDCost());
 //			System.out.println("Time      = " + wo.getDTime());
 //			System.out.println("AlgExeTime= "+ (System.currentTimeMillis() - tw1));

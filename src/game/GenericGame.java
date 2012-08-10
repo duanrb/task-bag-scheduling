@@ -118,6 +118,7 @@ public class GenericGame {
 	 * evaluation value
 	 */
 	double dEval = 1;
+	double dLastEval = 1;
 
 	/**
 	 * execution time

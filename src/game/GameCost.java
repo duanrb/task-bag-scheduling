@@ -5,15 +5,13 @@ public class GameCost extends GenericGame {
 		super(iClass, iSite);
 	}
 
-
-        
-        @Override
+	@Override
 	public void calculateWeight() {
 		double[] daPredictionByClass = new double[iClass];
 		/* calculate prediction by Class */
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
-				daPredictionByClass[i] += 1 / dmPricePerTask[i][j] ;
+				daPredictionByClass[i] += 1 / dmPricePerTask[i][j];
 			}
 		}
 
@@ -77,7 +75,6 @@ public class GameCost extends GenericGame {
 			println();
 		}
 	}
-
 
 	public boolean calculateDistribution() {
 		bDeadline = true;
@@ -181,7 +178,8 @@ public class GameCost extends GenericGame {
 		for (int i = 0; i < iSite; i++) {
 			for (int j = 0; j < iClass; j++) {
 				if (daRelativeWeightBySite[i] != 0) {
-					dmAlloc[j][i] = (dmDist[j][i] * dmPrediction[j][i] * dmWeight[j][i] * iaCPU[i]) / daRelativeWeightBySite[i];
+					dmAlloc[j][i] = (dmDist[j][i] * dmPrediction[j][i] * dmWeight[j][i] * iaCPU[i])
+							/ daRelativeWeightBySite[i];
 				} else {
 					dmAlloc[j][i] = -1;
 				}
@@ -205,16 +203,16 @@ public class GameCost extends GenericGame {
 		}
 	}
 
-        public boolean calculateFinalResult() {
+	public boolean calculateFinalResult() {
 		double tempCost = 0;
+		int countDeadlineCannotMeet = 0;
 		do {
 			iStage++;
 			calculateAllocation();
 			tempCost = 0;
 			for (int i = 0; i < iClass; i++) {
 				for (int j = 0; j < iSite; j++) {
-					tempCost += dmDist[i][j] * dmPrediction[i][j]
-							* daPrice[j];
+					tempCost += dmDist[i][j] * dmPrediction[i][j] * daPrice[j];
 				}
 			}
 			vCost.add(tempCost);
@@ -222,8 +220,11 @@ public class GameCost extends GenericGame {
 			if (calculateDistribution()) {
 				/* deadline can not be satisfied */
 				if (!bDeadline) {
-					System.out.println("GameCost: THE DEADLINE CAN NOT BE SATISFIED!");
-					return false;
+					countDeadlineCannotMeet ++;
+					if (countDeadlineCannotMeet > 100){
+						System.out.println("GameCost: THE DEADLINE CAN NOT BE SATISFIED!");
+						return false;
+					}
 				} else {
 					println("\nNEW ROUND WITHOUT CHECKING:");
 					dEval = 1;
@@ -232,10 +233,8 @@ public class GameCost extends GenericGame {
 			} else {
 				calculateExecTime();
 			}
-
-			// System.out.println("Evaluation Value =========="+dEval);
+			println("Evaluation Value = "+dEval);
 		} while (dEval > 0);
-		// while (evaluateResults());
 
 		println("==================Allocation=====================");
 		for (int i = 0; i < iClass; i++) {
@@ -276,18 +275,16 @@ public class GameCost extends GenericGame {
 					if (dmAlloc[i][j] < 1) {
 						newExeTime = 0;
 					} else {
-						newExeTime = (dmDist[i][j] * dmPrediction[i][j])
-								/ dmAlloc[i][j];
+						newExeTime = (dmDist[i][j] * dmPrediction[i][j]) / dmAlloc[i][j];
 						if (newExeTime > dDeadline + 1) {
 							newExeTime = Double.MAX_VALUE;
 						}
 					}
 				}
 				if (newExeTime > dDeadline + 1) {
-					// System.out.println("newExeTime - dDeadline="+ (newExeTime - dDeadline -1));
 					newCost = Double.MAX_VALUE;
 				} else {
-					newCost = dmDist[i][j] * dmPrediction[i][j]* daPrice[j];
+					newCost = dmDist[i][j] * dmPrediction[i][j] * daPrice[j];
 				}
 
 				dTime += dmDist[i][j] * dmPrediction[i][j];
@@ -313,15 +310,15 @@ public class GameCost extends GenericGame {
 	}
 
 	/**
-	 * Sort reosurces for each class and get one sorted matrix back
+	 * Sort resources for each class and get one sorted matrix back
 	 */
 	public void sortResources() {
-		/* compute cost per acitivity */
+		/* compute cost per activity */
 		for (int i = 0; i < iClass; i++) {
 			print("PricePerActivity[" + i + "] ");
 			for (int j = 0; j < iSite; j++) {
 				dmPricePerTask[i][j] = daPrice[j] * dmPrediction[i][j];
-				print( dmPricePerTask[i][j] + ", ");
+				print(dmPricePerTask[i][j] + ", ");
 			}
 			println();
 		}
@@ -346,13 +343,13 @@ public class GameCost extends GenericGame {
 
 	@Override
 	public void schedule() {
-
 		iStage = 0;
 		sortResources();
 		calculateWeight();
 		calculateInitDist();
 		calculateAllocation();
 		calculateExecTime();
+		
 		if (!calculateFinalResult()) {
 			System.out.println("GameCost: CANNOT FIND!! TRY GAME QUICK!!!");
 			GameQuick opt = new GameQuick(this.iClass, this.iSite);
@@ -366,12 +363,11 @@ public class GameCost extends GenericGame {
 			} else {
 				System.out.println("GameCost: FAILED!!! ");
 			}
-
 		} else {
 			println("FIND THE SOLUTION!!");
 		}
-		println("Deadline =" + dDeadline);
 		
+		println("Deadline =" + dDeadline);
 		println("Stage     = " + iStage);
 	}
 
@@ -405,7 +401,5 @@ public class GameCost extends GenericGame {
 		}
 		System.out.println("Deadline =" + dDeadline);
 	}
-
-
 
 }

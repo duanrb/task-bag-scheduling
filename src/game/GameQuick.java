@@ -36,7 +36,6 @@ public class GameQuick extends GenericGame {
 			lastPhaseMakespan = currentMakespan;
 			currentMakespan += calculateFinalResult();
 
-			
 			/* prepare data for fairness evaluation */
 			for (int i = 0; i < iClass; i++) {
 				if (iaQueuedTask[i] == 0 & tmpLength[i] > 0) {
@@ -219,7 +218,8 @@ public class GameQuick extends GenericGame {
 			}
 
 			println("Evaluation ="+dEval);
-		} while (dEval > dControl);
+//		} while (dEval > dControl);
+		} while (dEval > dControl || Math.abs(dEval) < Math.abs(dLastEval));
 
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
@@ -347,6 +347,7 @@ public class GameQuick extends GenericGame {
 		double newExeTime;
 		double newClassExetime;
 		double finalExeTime = 0;
+		dLastEval = dEval;
 		dEval = 0;
 		dTime = 0;
 		dCost = 0;

@@ -15,10 +15,10 @@ public class GameQuickTest {
 		GameQuick wo = new GameQuick(2,2);
 		wo.setBPrint(true);
 		
-		int[] iaLength = {100,100};
+		int[] iaLength = {1000,10000};
 		wo.setIaTask(iaLength);
 
-		int[] iaCPU = {2,2};
+		int[] iaCPU = {10,10};
 		wo.setIaCPU(iaCPU);
 		
 		double[][] dmPrediction = {{1,1.5},{1,1.2}};
@@ -105,13 +105,47 @@ public class GameQuickTest {
 
 		int[] iaLength = new int[wo.getIClass()];
 		for (int j = 0; j < wo.getIClass(); j++) {
-			iaLength[j] = 10000 + (int) (Math.random() * 10000);
+			iaLength[j] = 1000 + (int) (Math.random() * 1000);
 		}
 		wo.setIaTask(iaLength);
 		
 		int[] iaCPU = new int[wo.getISite()];
 		for (int j = 0; j < wo.getISite(); j++) {
-			iaCPU[j] = 64 + (int) (Math.random() * 64);
+			iaCPU[j] = 16 + (int) (Math.random() * 32);
+		}
+		wo.setIaCPU(iaCPU);
+
+		double tmpPrediciton;
+
+		double[][] dmPrediction = new double[wo.getIClass()][wo.getISite()];
+		for (int i = 0; i < wo.getIClass(); i++) {
+			tmpPrediciton = 10 + Math.random() * heteroTask * 10;
+			for (int j = 0; j < wo.getISite(); j++) {
+				dmPrediction[i][j] = tmpPrediciton * (0.5 + Math.random());
+			}
+		}
+		wo.setDmPrediction(dmPrediction);
+
+		return wo;
+	}
+	
+	public GenericGame test31() {
+		GameQuick wo = new GameQuick(10,10);
+		wo.setBPrint(true);
+
+		int heteroTask = 10;
+		int heteroMachine = 10;
+
+
+		int[] iaLength = new int[wo.getIClass()];
+		for (int j = 0; j < wo.getIClass(); j++) {
+			iaLength[j] = 1000 + (int) (Math.random() * 1000);
+		}
+		wo.setIaTask(iaLength);
+		
+		int[] iaCPU = new int[wo.getISite()];
+		for (int j = 0; j < wo.getISite(); j++) {
+			iaCPU[j] = 16 + (int) (Math.random() * 32);
 		}
 		wo.setIaCPU(iaCPU);
 
@@ -322,7 +356,7 @@ public class GameQuickTest {
 	public static void main(String[] args) {
 		GameQuickTest test = new GameQuickTest();
 		
-		test.test1();
+		test.testFinal();
 	}
 
 }
