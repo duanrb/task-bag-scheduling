@@ -220,6 +220,8 @@ public class GenericGame {
 	 */
 	double dSystemEfficiency;
 	
+
+
 	/**
 	 * actual execution time of each class
 	 */
@@ -293,6 +295,11 @@ public class GenericGame {
 	 * 
 	 */
 	void calculateSchedulingEfficiency() {
+		// only the first round efficiency
+		if (dSystemEfficiency!=0) {
+			return;
+		}
+		
 		double max, min, actual = 0, sumGain = 0;
 		double[] weight  = new double[iClass];
 		
@@ -314,7 +321,7 @@ public class GenericGame {
 
 			if (max > min && iaQueuedTask[i] != 0)
 				daSchedulingEfficiency[i] = (max+min - 2*actual/iaQueuedTask[i]) / (max - min);
-			else if (max == min)
+			else if (max == min )
 				daSchedulingEfficiency[i] = 1;
 			else 
 				daSchedulingEfficiency[i] = 0;
@@ -358,13 +365,12 @@ public class GenericGame {
 
 			if (max > min && iaTask[i] != 0)
 				daSchedulingEfficiency[i] = (max + min - 2 * daAcutalExeTime[i]/iaTask[i]) / (max - min);
-			else if (max == min)
+			else if (max == min && iaTask[i] != 0)
 				daSchedulingEfficiency[i] = 1;
 			else 
 				daSchedulingEfficiency[i] = 0;
 			
 			weight[i] = (max-min) * iaTask[i];
-			if (weight[i] < 0) weight[i] = - weight[i];
 			
 			sumGain += weight[i];
 			
@@ -378,7 +384,7 @@ public class GenericGame {
 		
 		dSystemEfficiency = 0;
 		for (int i = 0; i < iClass; i++) {
-			dSystemEfficiency += daSchedulingEfficiency[i] ;
+			dSystemEfficiency += daSchedulingEfficiency[i]*weight[i] ;
 		}
 		
 		println("System-level Efficiency = "+ dSystemEfficiency);
@@ -841,6 +847,14 @@ public class GenericGame {
 
 	public void setDControl(double dControl) {
 		this.dControl = dControl;
+	}
+	
+	public double getdSystemEfficiency() {
+		return dSystemEfficiency;
+	}
+
+	public void setdSystemEfficiency(double dSystemEfficiency) {
+		this.dSystemEfficiency = dSystemEfficiency;
 	}
 	
 }

@@ -250,13 +250,13 @@ public class GameQuickTest {
 			GameQuickTest wo = new GameQuickTest();
 			GameQuick  gq = (GameQuick) wo.test3();
 			long tw1 = System.currentTimeMillis();
+			gq.setBPrint(false);
 			gq.schedule();
 			double t1 = gq.getDTotalExecutionTime();
 			System.out.println("Makespan GQ = " +  gq.getDFinalMakespan());
-			
-			System.out.println("AlgExeTime= "
-					+ (System.currentTimeMillis() - tw1));
+			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw1));
 			System.out.println("Makespan% = " + 100);
+			System.out.println("SystemEfficiency = "  + gq.getdSystemEfficiency());
 			System.out.println();
 			
 
@@ -266,10 +266,9 @@ public class GameQuickTest {
 			double t2 = mt.olbStart();
 			System.out.println("Time%     = " + t2 / t1 * 100);
 			System.out.println("Makespan% = " + mt.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
-			System.out.println("Fairness% = " + mt.getDFairness() / gq.getDFairness()
-					* 100);
-			System.out.println("AlgExeTime= "
-					+ (System.currentTimeMillis() - tw2));
+			System.out.println("Fairness% = " + mt.getDFairness() / gq.getDFairness() * 100);
+			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw2));
+			System.out.println("SystemEfficiency = "  + mt.getdSystemEfficiency());
 			System.out.println();
 
 			MCT mctime = new MCT();
@@ -279,8 +278,8 @@ public class GameQuickTest {
 			System.out.println("Time%     = " + t4 / t1 * 100);
 			System.out.println("Makespan% = " + mctime.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
 			System.out.println("Fairness% = " + mctime.getDFairness() / gq.getDFairness() * 100);
-			System.out.println("AlgExeTime= "
-					+ (System.currentTimeMillis() - tw4));
+			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw4));
+			System.out.println("SystemEfficiency = "  + mctime.getdSystemEfficiency());
 			System.out.println();
 
 			MinMin minmin = new MinMin(gq.getIClass(),gq.getISite());
@@ -289,12 +288,10 @@ public class GameQuickTest {
 			minmin.schedule();
 			double t3 = minmin.getDTime();
 			System.out.println("Time%     = " + t3 / t1 * 100);
-			System.out.println("Makespan% = " + minmin.getDFinalMakespan()
-					/ gq.getDFinalMakespan() * 100);
-			System.out.println("Fairness% = " + minmin.getDFairness() / gq.getDFairness()
-					* 100);
-			System.out.println("AlgExeTime= "
-					+ (System.currentTimeMillis() - tw3));
+			System.out.println("Makespan% = " + minmin.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
+			System.out.println("Fairness% = " + minmin.getDFairness() / gq.getDFairness() * 100);
+			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw3));
+			System.out.println("SystemEfficiency = "  + minmin.getdSystemEfficiency());
 			System.out.println();
 
 			MaxMin mat = new MaxMin();
@@ -302,12 +299,10 @@ public class GameQuickTest {
 			long tw5 = System.currentTimeMillis();
 			double t5 = mat.maxmin();
 			System.out.println("Time%     = " + t5 / t1 * 100);
-			System.out.println("Makespan% = " + mat.getDFinalMakespan()
-					/ gq.getDFinalMakespan() * 100);
-			System.out.println("Fairness% = " + mat.getDFairness() / gq.getDFairness()
-					* 100);
-			System.out.println("AlgExeTime= "
-					+ (System.currentTimeMillis() - tw5));
+			System.out.println("Makespan% = " + mat.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
+			System.out.println("Fairness% = " + mat.getDFairness() / gq.getDFairness() * 100);
+			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw5));
+			System.out.println("SystemEfficiency = "  + mat.getdSystemEfficiency());
 			System.out.println();
 
 			Sufferage minsuff = new Sufferage(gq.getIClass(),gq.getISite());
@@ -315,12 +310,10 @@ public class GameQuickTest {
 			long tw6 = System.currentTimeMillis();
 			double t6 = minsuff.minSufferage();
 			System.out.println("Time%     = " + t6 / t1 * 100);
-			System.out.println("Makespan% = " + minsuff.getDFinalMakespan()
-					/ gq.getDFinalMakespan() * 100);
-			System.out.println("Fairness% = " + minsuff.getDFairness()
-					/ gq.getDFairness() * 100);
-			System.out.println("AlgExeTime= "
-					+ (System.currentTimeMillis() - tw6));
+			System.out.println("Makespan% = " + minsuff.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
+			System.out.println("Fairness% = " + minsuff.getDFairness() / gq.getDFairness() * 100);
+			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw6));
+			System.out.println("SystemEfficiency = "  + minsuff.getdSystemEfficiency());
 			System.out.println();
 
 			MET met = new MET(gq.getIClass(),gq.getISite());
@@ -328,12 +321,10 @@ public class GameQuickTest {
 			long tw7 = System.currentTimeMillis();
 			double t7 = met.minet();
 			System.out.println("Time%     = " + t7 / t1 * 100);
-			System.out.println("Makespan% = " + met.getDFinalMakespan()
-					/ gq.getDFinalMakespan() * 100);
-			System.out.println("Fairness% = " + met.getDFairness() / gq.getDFairness()
-					* 100);
-			System.out.println("AlgExeTime= "
-					+ (System.currentTimeMillis() - tw7));
+			System.out.println("Makespan% = " + met.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
+			System.out.println("Fairness% = " + met.getDFairness() / gq.getDFairness() * 100);
+			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw7));
+			System.out.println("SystemEfficiency = "  + met.getdSystemEfficiency());
 			System.out.println();
 		}
 	}

@@ -372,6 +372,7 @@ public class MCT extends GenericGame {
 		// }
 		// System.out.println();
 		// }
+		calculateOtherSchedulingEfficiency();
 		System.out.println("MCT Fairness = " + calculateFairness());
 		System.out.println("MCT Time     = " + sumTime);
 		System.out.println("MCT Cost     = " + sumCost);
@@ -428,6 +429,7 @@ public class MCT extends GenericGame {
 		if (iaQueuedTask[iMinClass] == 0) {
 			vFairness.add(dmMinminTime[iMinSite][iMinCPU]);
 		}
+		daAcutalExeTime[iMinClass] +=  dmPrediction[iMinClass][iMinSite];
 	}
 
 }

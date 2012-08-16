@@ -349,6 +349,7 @@ public class MET extends GenericGame {
 		// }
 		// System.out.println();
 		// }
+		calculateOtherSchedulingEfficiency();
 		println("MET Fairness = " + calculateFairness());
 		println("MET Time     = " + sumTime);
 		println("MET Cost     = " + sumCost);
@@ -408,6 +409,7 @@ public class MET extends GenericGame {
 			vFairness.add(dmMinminTime[iMinSite][iMinCPU]);
 		}
 		dmDist[iMinClass][iMinSite]++;
+		daAcutalExeTime[iMinClass] +=  dmPrediction[iMinClass][iMinSite];
 	}
 
 }

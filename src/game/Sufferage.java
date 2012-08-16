@@ -379,6 +379,7 @@ public class Sufferage extends GenericGame {
 		// }
 		// System.out.println();
 		// }
+		calculateOtherSchedulingEfficiency();
 		System.out.println("Fairness   = " + calculateFairness());
 		System.out.println("Sufferage  = " + sumTime);
 		System.out.println("MakeSpan   = " + tmpTime);
@@ -489,6 +490,7 @@ public class Sufferage extends GenericGame {
 		}
 
 		dmDist[iMinClass][iMinSite]++;
+		daAcutalExeTime[iMinClass] +=  dmPrediction[iMinClass][iMinSite];
 	}
 
 }
