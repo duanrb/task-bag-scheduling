@@ -16,7 +16,7 @@ import game.OLB;
 import game.Sufferage;
 
 public class GameCostTest {
-	public void test1() {
+	public GameCost test1() {
 		
 		GameCost wo = new GameCost(2,2);
 		wo.setBPrint(true);
@@ -35,7 +35,8 @@ public class GameCostTest {
 		double[][] dmPrediction = {{1,2},{1,1.2}};
 		wo.setDmPrediction(dmPrediction);
 
-		wo.schedule();
+//		wo.schedule();
+		return wo;
 	}
 
 	public GameCost test2() {
@@ -135,12 +136,12 @@ public class GameCostTest {
 	}
 
 	void testFinal() {
-            double deadline =900;
+            double deadline =160;
             GameCostTest gct = new GameCostTest();
-			GameCost wo = gct.test3();
+			GameCost wo = gct.test1();
             
-            for (int s = 1; s < 1000; s++) {
-            	deadline += 100;
+            for (int s = 1; s < 2; s++) {
+//            	deadline += 100;
 			
 //			System.out.println("----------------COST OPTIMIZATION--------------");
 //            	long tw1 = System.currentTimeMillis();
@@ -170,12 +171,11 @@ public class GameCostTest {
 //			olb.init(wo);
 //			long tolb = System.currentTimeMillis();
 //			olb.olbStart();
-//			System.out.println("Cost%     = " + olb.getDCost() / wo.getDCost() * 100);
-//                        System.out.println("Cost     = " + olb.getDCost() );
+//			System.out.println("Cost%     = " + olb.getDCost() / wo.getDCost() * 100); 
+//			System.out.println("Cost      = " + olb.getDCost() );
 //			System.out.println("Time%     = " + olb.getDTime() / wo.getDTime() * 100);
 //			System.out.println("Makespan% = " + olb.getDFinalMakespan() / wo.getDFinalMakespan() * 100);
-//			System.out.println("AlgExeTime= "
-//					+ (System.currentTimeMillis() - tolb));
+//			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tolb));
 //			System.out.println();
 
 //			System.out.println("----------------OLB(Cost)--------------");
@@ -184,12 +184,10 @@ public class GameCostTest {
 			long tw2 = System.currentTimeMillis();
 			colb.minOLBCost();
 //			System.out.println("Cost%     = " + colb.getDCost() / wo.getDCost() * 100);
-//                        System.out.println("Cost     = " + colb.getDCost() );
+//          System.out.println("Cost      = " + colb.getDCost() );
 //			System.out.println("Time%     = " + colb.getDTime() / wo.getDTime() * 100);
-//			System.out.println("Makespan% = " + colb.getDFinalMakespan()
-//					/ wo.getDFinalMakespan() * 100);
-//			System.out.println("AlgExeTime= "
-//					+ (System.currentTimeMillis() - tw2));
+//			System.out.println("Makespan% = " + colb.getDFinalMakespan() / wo.getDFinalMakespan() * 100);
+//			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw2));
 //			System.out.println();
 
 //			System.out.println("----------------MCT--------------");
@@ -198,12 +196,10 @@ public class GameCostTest {
 //			long tmct = System.currentTimeMillis();
 //			mct.minct();
 //			System.out.println("Cost%     = " + mct.getDCost() / wo.getDCost() * 100);
-//                        System.out.println("Cost     = " + mct.getDCost() );
+//			System.out.println("Cost     = " + mct.getDCost() );
 //			System.out.println("Time%     = " + mct.getDTime() / wo.getDTime() * 100);
-//			System.out.println("Makespan% = " + mct.getDFinalMakespan()
-//					/ wo.getDFinalMakespan() * 100);
-//			System.out.println("AlgExeTime= "
-//					+ (System.currentTimeMillis() - tmct));
+//			System.out.println("Makespan% = " + mct.getDFinalMakespan() / wo.getDFinalMakespan() * 100);
+//			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tmct));
 //			System.out.println();
 
 //			System.out.println("----------------MCT(Cost)--------------");
@@ -214,10 +210,8 @@ public class GameCostTest {
 //			System.out.println("Cost%     = " + cmct.getDCost() / wo.getDCost() * 100);
 //                        System.out.println("Cost     = " + cmct.getDCost() );
 //			System.out.println("Time%     = " + cmct.getDTime() / wo.getDTime() * 100);
-//			System.out.println("Makespan% = " + cmct.getDFinalMakespan()
-//					/ wo.getDFinalMakespan() * 100);
-//			System.out.println("AlgExeTime= "
-//					+ (System.currentTimeMillis() - tw4));
+//			System.out.println("Makespan% = " + cmct.getDFinalMakespan() / wo.getDFinalMakespan() * 100);
+//			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw4));
 //			System.out.println();
 
 //			System.out.println("----------------MinMin--------------");
@@ -226,12 +220,10 @@ public class GameCostTest {
 //			long tw9 = System.currentTimeMillis();
 //			minmin.schedule();
 //			System.out.println("Cost%     = " + minmin.getDCost() / wo.getDCost() * 100);
-//                        System.out.println("Cost     = " + minmin.getDCost() );
+//          System.out.println("Cost     = " + minmin.getDCost() );
 //			System.out.println("Time%     = " + minmin.getDTime() / wo.getDTime() * 100);
-//			System.out.println("Makespan% = " + minmin.getDFinalMakespan()
-//					/ wo.getDFinalMakespan() * 100);
-//			System.out.println("AlgExeTime= "
-//					+ (System.currentTimeMillis() - tw9));
+//			System.out.println("Makespan% = " + minmin.getDFinalMakespan() / wo.getDFinalMakespan() * 100);
+//			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw9));
 //			System.out.println();
 
 //			System.out.println("----------------MinMin(Cost)--------------");
@@ -240,12 +232,10 @@ public class GameCostTest {
 			long tw3 = System.currentTimeMillis();
 			minminc.minMinCost();
 //			System.out.println("Cost%     = " + minminc.getDCost() / wo.getDCost() * 100);
-//                        System.out.println("Cost     = " + minminc.getDCost() );
+//          System.out.println("Cost     = " + minminc.getDCost() );
 //			System.out.println("Time%     = " + minminc.getDTime() / wo.getDTime() * 100);
-//			System.out.println("Makespan% = " + minminc.getDFinalMakespan()
-//					/ wo.getDFinalMakespan() * 100);
-//			System.out.println("AlgExeTime= "
-//					+ (System.currentTimeMillis() - tw3));
+//			System.out.println("Makespan% = " + minminc.getDFinalMakespan() / wo.getDFinalMakespan() * 100);
+//			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw3));
 //			System.out.println();
 
 //			System.out.println("----------------MaxMin--------------");
@@ -254,12 +244,10 @@ public class GameCostTest {
 //			long tmax = System.currentTimeMillis();
 //			max.maxmin();
 //			System.out.println("Cost%     = " + max.getDCost() / wo.getDCost() * 100);
-//                        System.out.println("Cost     = " + max.getDCost() );
+//          System.out.println("Cost     = " + max.getDCost() );
 //			System.out.println("Time%     = " + max.getDTime() / wo.getDTime() * 100);
-//			System.out.println("Makespan% = " + max.getDFinalMakespan()
-//					/ wo.getDFinalMakespan() * 100);
-//			System.out.println("AlgExeTime= "
-//					+ (System.currentTimeMillis() - tmax));
+//			System.out.println("Makespan% = " + max.getDFinalMakespan() / wo.getDFinalMakespan() * 100);
+//			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tmax));
 //			System.out.println();
 
 //			System.out.println("----------------MaxMin(Cost)--------------");
@@ -268,12 +256,10 @@ public class GameCostTest {
 			long tw5 = System.currentTimeMillis();
 			mat.maxmin();
 //			System.out.println("Cost%     = " + mat.getDCost() / wo.getDCost() * 100);
-//                        System.out.println("Cost     = " + mat.getDCost() );
+//          System.out.println("Cost     = " + mat.getDCost() );
 //			System.out.println("Time%     = " + mat.getDTime() / wo.getDTime() * 100);
-//			System.out.println("Makespan% = " + mat.getDFinalMakespan()
-//					/ wo.getDFinalMakespan() * 100);
-//			System.out.println("AlgExeTime= "
-//					+ (System.currentTimeMillis() - tw5));
+//			System.out.println("Makespan% = " + mat.getDFinalMakespan() / wo.getDFinalMakespan() * 100);
+//			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw5));
 //			System.out.println();
 //
 //			System.out.println("----------------Sufferage--------------");
@@ -282,12 +268,10 @@ public class GameCostTest {
 //			long tsuff = System.currentTimeMillis();
 //			suff.minSufferage();
 //			System.out.println("Cost%     = " + suff.getDCost() / wo.getDCost() * 100);
-//                        System.out.println("Cost     = " + suff.getDCost() );
+//          System.out.println("Cost     = " + suff.getDCost() );
 //			System.out.println("Time%     = " + suff.getDTime() / wo.getDTime() * 100);
-//			System.out.println("Makespan% = " + suff.getDFinalMakespan()
-//					/ wo.getDFinalMakespan() * 100);
-//			System.out.println("AlgExeTime= "
-//					+ (System.currentTimeMillis() - tsuff));
+//			System.out.println("Makespan% = " + suff.getDFinalMakespan() / wo.getDFinalMakespan() * 100);
+//			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tsuff));
 //			System.out.println();
 
 //			System.out.println("----------------Sufferage(Cost)--------------");
@@ -296,12 +280,10 @@ public class GameCostTest {
 			long tw6 = System.currentTimeMillis();
 			minsuff.minSufferage();
 //			System.out.println("Cost%     = " + minsuff.getDCost() / wo.getDCost() * 100);
-//                        System.out.println("Cost     = " + minsuff.getDCost() );
+//          System.out.println("Cost     = " + minsuff.getDCost() );
 //			System.out.println("Time%     = " + minsuff.getDTime() / wo.getDTime() * 100);
-//			System.out.println("Makespan% = " + minsuff.getDFinalMakespan()
-//					/ wo.getDFinalMakespan() * 100);
-//			System.out.println("AlgExeTime= "
-//					+ (System.currentTimeMillis() - tw6));
+//			System.out.println("Makespan% = " + minsuff.getDFinalMakespan() / wo.getDFinalMakespan() * 100);
+//			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw6));
 //			System.out.println();
 
 //			System.out.println("----------------MET--------------");
@@ -310,12 +292,10 @@ public class GameCostTest {
 //			long tmet = System.currentTimeMillis();
 //			met.minet();
 //			System.out.println("Cost%     = " + met.getDCost() / wo.getDCost() * 100);
-//                        System.out.println("Cost     = " + met.getDCost() );
+//          System.out.println("Cost     = " + met.getDCost() );
 //			System.out.println("Time%     = " + met.getDTime() / wo.getDTime() * 100);
-//			System.out.println("Makespan% = " + met.getDFinalMakespan()
-//					/ wo.getDFinalMakespan() * 100);
-//			System.out.println("AlgExeTime= "
-//					+ (System.currentTimeMillis() - tmet));
+//			System.out.println("Makespan% = " + met.getDFinalMakespan() / wo.getDFinalMakespan() * 100);
+//			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tmet));
 //			System.out.println();
 
 //			System.out.println("----------------MET(Cost)--------------");
@@ -324,16 +304,18 @@ public class GameCostTest {
 			long tw7 = System.currentTimeMillis();
 			cmet.minETCost();
 //			System.out.println("Cost%     = " + cmet.getDCost() / wo.getDCost() * 100);
-//                        System.out.println("Cost     = " + cmet.getDCost() );
+//          System.out.println("Cost     = " + cmet.getDCost() );
 //			System.out.println("Time%     = " + cmet.getDTime() / wo.getDTime() * 100);
-//			System.out.println("Makespan% = " + cmet.getDFinalMakespan()
-//					/ wo.getDFinalMakespan() * 100);
+//			System.out.println("Makespan% = " + cmet.getDFinalMakespan() / wo.getDFinalMakespan() * 100);
 //			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw7));
 //			System.out.println();
                         
-//            System.out.println("==================="+s+"=============");
+//          System.out.println("==================="+s+"=============");
 			
-            System.out.println( deadline+ " "+ wo.getDCost() + " " + colb.getDCost() + " "+ cmct.getDCost() + " "+ minminc.getDCost() + " "+ mat.getDCost() + " "+ minsuff.getDCost() + " " + cmet.getDCost() );
+//            System.out.println( deadline+ " "+ wo.getDCost() + " " + colb.getDCost() + " "+ cmct.getDCost() + " "+ 
+//            		minminc.getDCost() + " "+ mat.getDCost() + " "+ minsuff.getDCost() + " " + cmet.getDCost() );
+            System.out.println( deadline+ " "+ wo.getdSystemEfficiency() + " " + colb.getdSystemEfficiency() + " "+ cmct.getdSystemEfficiency() + " "+ 
+            		minminc.getdSystemEfficiency() + " "+ mat.getdSystemEfficiency() + " "+ minsuff.getdSystemEfficiency() + " " + cmet.getdSystemEfficiency() );
 		}
             System.out.println( "# deadline  gamecost olb mct minmin maxmin sufferage met" );
 

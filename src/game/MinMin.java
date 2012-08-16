@@ -425,7 +425,6 @@ public class MinMin extends GenericGame {
 		}
 
 		iaQueuedTask[iMinClass]--;
-		daAcutalExeTime[iMinClass] +=  dmPrediction[iMinClass][iMinSite];
 		
 		if (iaQueuedTask[iMinClass] == 0) {
 			vFairness.add(dmMinminTime[iMinSite][iMinCPU]);
@@ -434,10 +433,10 @@ public class MinMin extends GenericGame {
 					dmMinMakespan[iMinClass][j][k] = Double.MAX_VALUE;
 				}
 			}
-
 		}
 
 		dmDist[iMinClass][iMinSite]++;
+		daAcutalExeTime[iMinClass] +=  dmPrediction[iMinClass][iMinSite];
 	}
 	
 }

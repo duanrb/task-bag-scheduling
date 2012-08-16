@@ -1,5 +1,7 @@
 package game;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -848,9 +850,10 @@ public class GenericGame {
 	public void setDControl(double dControl) {
 		this.dControl = dControl;
 	}
+	DecimalFormat df = new DecimalFormat("#.00");
 	
-	public double getdSystemEfficiency() {
-		return dSystemEfficiency;
+	public String getdSystemEfficiency() {
+		return df.format(dSystemEfficiency);
 	}
 
 	public void setdSystemEfficiency(double dSystemEfficiency) {

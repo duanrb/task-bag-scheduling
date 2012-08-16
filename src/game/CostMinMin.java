@@ -379,6 +379,7 @@ public class CostMinMin extends GenericGame {
 		// }
 		// System.out.println();
 		// }
+		calculateOtherSchedulingEfficiency();
 		println("CostMinMin Time= " + sumTime);
 		println("CostMinMin MakeSpan   = " + tmpTime);
 		println("CostMinMin iStage   = " + iStage);
@@ -448,6 +449,7 @@ public class CostMinMin extends GenericGame {
 		}
 
 		dmDist[iMinClass][iMinSite]++;
+		daAcutalExeTime[iMinClass] +=  dmPrediction[iMinClass][iMinSite];
 	}
 
 }

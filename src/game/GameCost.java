@@ -257,6 +257,7 @@ public class GameCost extends GenericGame {
 		}
 		println("==================Cost&Time=====================");
 		calculateExecTime();
+		calculateSchedulingEfficiency();
 		println("Stage = " + iStage);
 		return true;
 	}

@@ -387,6 +387,7 @@ public class CostMET extends GenericGame {
 		// }
 		// System.out.println();
 		// }
+		calculateOtherSchedulingEfficiency();
 		println("CostMET Time     = " + sumTime);
 		println("CostMET Cost     = " + sumCost);
 		println("CostMET Makespan = " + tmpTime);
@@ -435,6 +436,7 @@ public class CostMET extends GenericGame {
 		dmMinminTime[iMinSite][iMinCPU] += dmPrediction[iMinClass][iMinSite];
 		dmMinminCost[iMinSite][iMinCPU] += dmPricePerTask[iMinClass][iMinSite];
 		dmDist[iMinClass][iMinSite]++;
+		daAcutalExeTime[iMinClass] +=  dmPrediction[iMinClass][iMinSite];
 	}
 
 }
