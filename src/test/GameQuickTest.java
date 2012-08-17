@@ -95,14 +95,66 @@ public class GameQuickTest {
 		wo.schedule();
 	}
 
-	public GenericGame test3() {
+	public GenericGame test3consistent() {
 		GameQuick wo = new GameQuick(10,10);
 		wo.setBPrint(true);
 
-		int heteroTask = 10;
+//		int heteroTask = 1000;//HiHi
+//		int heteroMachine = 100;
+		
+		int heteroTask = 1000;//HiLo
 		int heteroMachine = 10;
+		
+//		int heteroTask = 10;//LoHi
+//		int heteroMachine = 100;
+		
+//		int heteroTask = 10;//LoLo
+//		int heteroMachine = 10;
+		
+		int[] iaLength = new int[wo.getIClass()];
+		for (int j = 0; j < wo.getIClass(); j++) {
+			iaLength[j] = 1000 + (int) (Math.random() * 1000);
+		}
+		wo.setIaTask(iaLength);
+		
+		int[] iaCPU = new int[wo.getISite()];
+		double[] iaSpeedCPU = new double[wo.getISite()];
+		for (int j = 0; j < wo.getISite(); j++) {
+			iaCPU[j] =  16 + (int) (Math.random() * 16);
+			iaSpeedCPU[j] = Math.random() * heteroMachine + 1;
+		}
+		wo.setIaCPU(iaCPU);
 
+		double tmpPrediciton;
 
+		double[][] dmPrediction = new double[wo.getIClass()][wo.getISite()];
+		for (int i = 0; i < wo.getIClass(); i++) {
+			tmpPrediciton = 10 + Math.random() * heteroTask * 10;
+			for (int j = 0; j < wo.getISite(); j++) {
+				dmPrediction[i][j] = tmpPrediciton * iaSpeedCPU[j] * (0.5 + Math.random());
+			}
+		}
+		wo.setDmPrediction(dmPrediction);
+
+		return wo;
+	}
+	
+	public GenericGame test3inconsistent() {
+		GameQuick wo = new GameQuick(10,10);
+		wo.setBPrint(true);
+
+		int heteroTask = 1000;//HiHi
+		int heteroMachine = 100;
+		
+//		int heteroTask = 1000;//HiLo
+//		int heteroMachine = 10;
+//		
+//		int heteroTask = 10;//LoHi
+//		int heteroMachine = 100;
+//		
+//		int heteroTask = 10;//LoLo
+//		int heteroMachine = 10;
+		
 		int[] iaLength = new int[wo.getIClass()];
 		for (int j = 0; j < wo.getIClass(); j++) {
 			iaLength[j] = 1000 + (int) (Math.random() * 1000);
@@ -111,7 +163,7 @@ public class GameQuickTest {
 		
 		int[] iaCPU = new int[wo.getISite()];
 		for (int j = 0; j < wo.getISite(); j++) {
-			iaCPU[j] = 16 + (int) (Math.random() * 32);
+			iaCPU[j] =  16 + (int) (Math.random() * 16);
 		}
 		wo.setIaCPU(iaCPU);
 
@@ -248,7 +300,7 @@ public class GameQuickTest {
 	void testFinal() {
 		for (int s = 0; s < 1; s++) {
 			GameQuickTest wo = new GameQuickTest();
-			GameQuick  gq = (GameQuick) wo.test3();
+			GameQuick  gq = (GameQuick) wo.test3consistent();
 			long tw1 = System.currentTimeMillis();
 			gq.setBPrint(false);
 			gq.schedule();
@@ -264,7 +316,7 @@ public class GameQuickTest {
 			mt.init(gq);
 			long tw2 = System.currentTimeMillis();
 			double t2 = mt.olbStart();
-			System.out.println("Time%     = " + t2 / t1 * 100);
+			System.out.println("OLB Time% = " + t2 / t1 * 100);
 			System.out.println("Makespan% = " + mt.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
 			System.out.println("Fairness% = " + mt.getDFairness() / gq.getDFairness() * 100);
 			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw2));
@@ -275,7 +327,7 @@ public class GameQuickTest {
 			mctime.init(gq);
 			long tw4 = System.currentTimeMillis();
 			double t4 = mctime.minct();
-			System.out.println("Time%     = " + t4 / t1 * 100);
+			System.out.println("MCT Time% = " + t4 / t1 * 100);
 			System.out.println("Makespan% = " + mctime.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
 			System.out.println("Fairness% = " + mctime.getDFairness() / gq.getDFairness() * 100);
 			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw4));
@@ -287,7 +339,7 @@ public class GameQuickTest {
 			long tw3 = System.currentTimeMillis();
 			minmin.schedule();
 			double t3 = minmin.getDTime();
-			System.out.println("Time%     = " + t3 / t1 * 100);
+			System.out.println("MinMin Time%     = " + t3 / t1 * 100);
 			System.out.println("Makespan% = " + minmin.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
 			System.out.println("Fairness% = " + minmin.getDFairness() / gq.getDFairness() * 100);
 			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw3));
@@ -298,7 +350,7 @@ public class GameQuickTest {
 			mat.init(gq);
 			long tw5 = System.currentTimeMillis();
 			double t5 = mat.maxmin();
-			System.out.println("Time%     = " + t5 / t1 * 100);
+			System.out.println("MaxMin Time% = " + t5 / t1 * 100);
 			System.out.println("Makespan% = " + mat.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
 			System.out.println("Fairness% = " + mat.getDFairness() / gq.getDFairness() * 100);
 			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw5));
@@ -309,7 +361,7 @@ public class GameQuickTest {
 			minsuff.init(gq);
 			long tw6 = System.currentTimeMillis();
 			double t6 = minsuff.minSufferage();
-			System.out.println("Time%     = " + t6 / t1 * 100);
+			System.out.println("Sufferage Time% = " + t6 / t1 * 100);
 			System.out.println("Makespan% = " + minsuff.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
 			System.out.println("Fairness% = " + minsuff.getDFairness() / gq.getDFairness() * 100);
 			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw6));
@@ -320,7 +372,7 @@ public class GameQuickTest {
 			met.init(gq);
 			long tw7 = System.currentTimeMillis();
 			double t7 = met.minet();
-			System.out.println("Time%     = " + t7 / t1 * 100);
+			System.out.println("MET Time% = " + t7 / t1 * 100);
 			System.out.println("Makespan% = " + met.getDFinalMakespan() / gq.getDFinalMakespan() * 100);
 			System.out.println("Fairness% = " + met.getDFairness() / gq.getDFairness() * 100);
 			System.out.println("AlgExeTime= " + (System.currentTimeMillis() - tw7));
@@ -331,7 +383,7 @@ public class GameQuickTest {
 
 	void testCvg() {
 		GameQuickTest wo = new GameQuickTest();
-		GameQuick gq = (GameQuick) wo.test3();
+		GameQuick gq = (GameQuick) wo.test3consistent();
 		long tw1 = System.currentTimeMillis();
 		
 		gq.scheduleOnce();

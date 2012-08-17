@@ -986,7 +986,7 @@ public class GenericGame {
 		this.dControl = dControl;
 	}
 
-	DecimalFormat df = new DecimalFormat("#.00");
+	DecimalFormat df = new DecimalFormat("0.00");
 
 	public String getdSystemEfficiency() {
 		return df.format(dSystemEfficiency);

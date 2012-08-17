@@ -97,7 +97,7 @@ public class GameCostTest {
 		int heteroPrice = 10;
 		int heteroTask = 10;
 		
-		int iClass=6, iSite = 4;
+		int iClass=10, iSite = 10;
 		
 		GameCost wo = new GameCost(iClass,iSite);
 		wo.setBPrint(false);
@@ -105,22 +105,27 @@ public class GameCostTest {
 //		wo.setDDeadline(18000);
 		
 		int[] iaLength = new int[iClass];
+		int totalAct = 0;
 		for (int j = 0; j < iClass; j++) {
-			iaLength[j] = 1000 + Math.round(Math.round(heteroTask*1000 * Math.random()));
+			iaLength[j] = 10000 + Math.round(Math.round(heteroTask*10000 * Math.random()));
+			totalAct += iaLength[j];
 		}
 		wo.setIaTask(iaLength);
+		System.out.println("Total #Activity = " + totalAct);
 
 		double[] iaSpeedCPU = new double[iSite];
 		double[] daPrice = new double[iSite];
 		int[] iaCPU = new int[iSite];
+		int totalCPU = 0;
 		for (int j = 0; j < iSite; j++) {
 			iaCPU[j] = 16 + (int) (Math.random() * 16 * heteroMachine);
+			totalCPU += iaCPU[j];
 			iaSpeedCPU[j] = Math.random() * heteroMachine + 1;
 			daPrice[j] = (1 + Math.round( heteroPrice*Math.random() ) ) / iaSpeedCPU[j];
 		}
 		wo.setDaPrice(daPrice);
 		wo.setIaCPU(iaCPU);
-		
+		System.out.println("Total #CPU = " + totalCPU);
 		
 		double tmpPrediciton;
 		double[][] dmPrediction = new double[iClass][iSite];
@@ -132,16 +137,15 @@ public class GameCostTest {
 		}
 		wo.setDmPrediction(dmPrediction);
 		return wo;
-		
 	}
 
 	void testFinal() {
-            double deadline =160;
+            double deadline =2900;
             GameCostTest gct = new GameCostTest();
-			GameCost wo = gct.test1();
+			GameCost wo = gct.test3();
             
-            for (int s = 1; s < 2; s++) {
-//            	deadline += 100;
+            for (int s = 1; s < 200; s++) {
+            	deadline += 100;
 			
 //			System.out.println("----------------COST OPTIMIZATION--------------");
 //          long tw1 = System.currentTimeMillis();
