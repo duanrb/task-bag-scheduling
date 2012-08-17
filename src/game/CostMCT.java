@@ -394,6 +394,7 @@ public class CostMCT extends GenericGame {
 		// System.out.println();
 		// }
 		calculateOtherSchedulingEfficiency();
+		calculateOtherSchedulingCostEfficiency();
 		println("CostMCT Time     = " + sumTime);
 		println("CostMCT Cost     = " + sumCost);
 		println("CostMCT Makespan = " + tmpTime);
@@ -454,5 +455,6 @@ public class CostMCT extends GenericGame {
 		dmMinminCost[iMinSite][iMinCPU] += dmPricePerTask[iMinClass][iMinSite];
 		dmDist[iMinClass][iMinSite]++;
 		daAcutalExeTime[iMinClass] +=  dmPrediction[iMinClass][iMinSite];
+		daAcutalExeCost[iMinClass] +=  dmPrediction[iMinClass][iMinSite]*daPrice[iMinSite];
 	}
 }

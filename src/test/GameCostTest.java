@@ -144,7 +144,7 @@ public class GameCostTest {
 //            	deadline += 100;
 			
 //			System.out.println("----------------COST OPTIMIZATION--------------");
-//            	long tw1 = System.currentTimeMillis();
+//          long tw1 = System.currentTimeMillis();
             wo.setDeadline(deadline);
             wo.setBPrint(false);
             wo.schedule();
@@ -316,8 +316,11 @@ public class GameCostTest {
 //            		minminc.getDCost() + " "+ mat.getDCost() + " "+ minsuff.getDCost() + " " + cmet.getDCost() );
             System.out.println( deadline+ " "+ wo.getdSystemEfficiency() + " " + colb.getdSystemEfficiency() + " "+ cmct.getdSystemEfficiency() + " "+ 
             		minminc.getdSystemEfficiency() + " "+ mat.getdSystemEfficiency() + " "+ minsuff.getdSystemEfficiency() + " " + cmet.getdSystemEfficiency() );
-		}
-            System.out.println( "# deadline  gamecost olb mct minmin maxmin sufferage met" );
+            System.out.println( deadline+ " "+ wo.getdSystemCostEfficiency() + " " + colb.getdSystemCostEfficiency() + " "+ cmct.getdSystemCostEfficiency() + " "+ 
+            		minminc.getdSystemCostEfficiency() + " "+ mat.getdSystemCostEfficiency() + " "+ minsuff.getdSystemCostEfficiency() + " " + cmet.getdSystemCostEfficiency() );
+
+        }
+        System.out.println( "# deadline  gamecost olb mct minmin maxmin sufferage met" );
 
 	}
 

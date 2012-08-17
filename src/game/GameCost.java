@@ -246,6 +246,7 @@ public class GameCost extends GenericGame {
 			println();
 		}
 		calculateFinalDistribution();
+		calculateSchedulingCostEfficiency();
 		println("==================Distribution=====================");
 		for (int i = 0; i < iClass; i++) {
 			print("FinalDistribution[" + i + "] ");

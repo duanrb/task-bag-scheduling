@@ -384,6 +384,7 @@ public class CostSufferage extends GenericGame {
 		// System.out.println();
 		// }
 		calculateOtherSchedulingEfficiency();
+		calculateOtherSchedulingCostEfficiency();
 		println("CostSufferage  = " + sumTime);
 		println("CostSufferage MakeSpan   = " + tmpTime);
 		dFinalMakespan = tmpTime;
@@ -504,5 +505,6 @@ public class CostSufferage extends GenericGame {
 
 		dmDist[iMinClass][iMinSite]++;
 		daAcutalExeTime[iMinClass] +=  dmPrediction[iMinClass][iMinSite];
+		daAcutalExeCost[iMinClass] +=  dmPrediction[iMinClass][iMinSite]*daPrice[iMinSite];
 	}
 }

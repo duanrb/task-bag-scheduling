@@ -385,6 +385,7 @@ public class CostOLB extends GenericGame {
 			// System.out.println();
 		}
 		calculateOtherSchedulingEfficiency();
+		calculateOtherSchedulingCostEfficiency();
 		println("CostOLB Time = " + sumTime);
 		println("CostOLB Cost = " + sumCost);
 		println("CostOLB MakeSpan = " + tmpTime);
@@ -446,5 +447,6 @@ public class CostOLB extends GenericGame {
 		dmMinminCost[iMinSite][iMinCPU] += dmPricePerTask[iMinClass][iMinSite];
 		dmDist[iMinClass][iMinSite]++;
 		daAcutalExeTime[iMinClass] +=  dmPrediction[iMinClass][iMinSite];
+		daAcutalExeCost[iMinClass] +=  dmPrediction[iMinClass][iMinSite]*daPrice[iMinSite];
 	}
 }

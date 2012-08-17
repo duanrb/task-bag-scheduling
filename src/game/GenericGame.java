@@ -35,12 +35,12 @@ public class GenericGame {
 	 * old allocation of processors of grid sites for tasks, result of game
 	 */
 	double[][] dmOldAlloc;
-	
+
 	/**
 	 * distribution of tasks on grid sites, result of game
 	 */
 	double[][] dmDist;
-	
+
 	/**
 	 * old distribution of tasks on grid sites, result of game
 	 */
@@ -80,7 +80,7 @@ public class GenericGame {
 	 * Sacrifice
 	 */
 	double[][] dmSacrifice;
-	
+
 	/**
 	 * number of sites
 	 */
@@ -156,7 +156,7 @@ public class GenericGame {
 	 * Execution time vector
 	 */
 	Vector<Double> vExeTime = new Vector<Double>();
-	
+
 	/**
 	 * Execution time of each class
 	 */
@@ -201,7 +201,7 @@ public class GenericGame {
 	 * intermediate data
 	 */
 	int iMinSite, iMinCPU, iMinClass;
-	
+
 	/**
 	 * if execute next phase
 	 */
@@ -211,25 +211,37 @@ public class GenericGame {
 	 * if the execution can meet deadline
 	 */
 	boolean bDeadline = true;
-	
+
 	/**
 	 * scheduling efficiency of each class
 	 */
 	double[] daSchedulingEfficiency;
-	
+
+	/**
+	 * scheduling efficiency of each class
+	 */
+	double[] daSchedulingCostEfficiency;
+
 	/**
 	 * system-level resource efficiency
 	 */
 	double dSystemEfficiency;
-	
 
+	/**
+	 * system-level cost resource efficiency
+	 */
+	double dSystemCostEfficiency;
 
 	/**
 	 * actual execution time of each class
 	 */
 	double[] daAcutalExeTime;
-	
-	
+
+	/**
+	 * actual execution cost of each class
+	 */
+	double[] daAcutalExeCost;
+
 	public GenericGame() {
 		super();
 	}
@@ -246,8 +258,8 @@ public class GenericGame {
 		this.iClass = iClass;
 		init();
 	}
-	
-	public void init(){
+
+	public void init() {
 		dmPrediction = new double[iClass][iSite];
 		iaTask = new int[iClass];
 		iaQueuedTask = new int[iClass];
@@ -265,22 +277,21 @@ public class GenericGame {
 		dmProcessRate = new double[iClass][iSite];
 		dmExeTime = new double[iClass][iSite];
 		dmCost = new double[iClass][iSite];
-		
+
 		dmMinminTime = new double[iClass][iSite];
-		
+
 		for (int i = 0; i < iClass; i++) {
 			vvExeTimes.add(new Vector<Double>());
 		}
-		
+
 		daSchedulingEfficiency = new double[iClass];
+		daSchedulingCostEfficiency = new double[iClass];
 		daAcutalExeTime = new double[iClass];
-		
+		daAcutalExeCost = new double[iClass];
+
 	}
-	
 
-
-	public void init(GenericGame gg)
-	{
+	public void init(GenericGame gg) {
 		init(gg.iClass, gg.iSite);
 		setBPrint(gg.bPrint);
 		setDeadline(gg.dDeadline);
@@ -291,20 +302,20 @@ public class GenericGame {
 		setIaCPU(gg.iaCPU);
 		setICPUinit(gg.iaCPU);
 	}
-	
+
 	/**
 	 * Scheduling efficiency: [-1, +1]
 	 * 
 	 */
 	void calculateSchedulingEfficiency() {
 		// only the first round efficiency
-		if (dSystemEfficiency!=0) {
+		if (dSystemEfficiency != 0) {
 			return;
 		}
-		
+
 		double max, min, actual = 0, sumGain = 0;
-		double[] weight  = new double[iClass];
-		
+		double[] weight = new double[iClass];
+
 		println("===Scheduling Efficiency===");
 		for (int i = 0; i < iClass; i++) {
 			max = dmPrediction[i][0];
@@ -317,97 +328,111 @@ public class GenericGame {
 				if (min > dmPrediction[i][j]) {
 					min = dmPrediction[i][j];
 				}
-				actual += dmDist[i][j]*dmPrediction[i][j];
+				actual += dmDist[i][j] * dmPrediction[i][j];
 			}
 			daAcutalExeTime[i] = actual;
 
 			if (max > min && iaQueuedTask[i] != 0)
-				daSchedulingEfficiency[i] = (max+min - 2*actual/iaQueuedTask[i]) / (max - min);
-			else if (max == min )
+				daSchedulingEfficiency[i] = (max + min - 2 * actual / iaQueuedTask[i]) / (max - min);
+			else if (max == min)
 				daSchedulingEfficiency[i] = 1;
-			else 
+			else
 				daSchedulingEfficiency[i] = 0;
-			
-			weight[i] = (max-min) * iaQueuedTask[i] ;
-			if (weight[i] < 0) weight[i] = - weight[i];
-			
+
+			weight[i] = (max - min) * iaQueuedTask[i];
+			if (weight[i] < 0)
+				weight[i] = -weight[i];
+
 			sumGain += weight[i];
-			println(i+" "+daSchedulingEfficiency[i]);
+			println(i + " " + daSchedulingEfficiency[i]);
 		}
-		
+
 		for (int i = 0; i < iClass; i++) {
 			weight[i] = weight[i] / sumGain;
-			println("weight "+i +" = "+ weight[i]);
+			println("weight " + i + " = " + weight[i]);
 		}
-		
+
 		dSystemEfficiency = 0;
 		for (int i = 0; i < iClass; i++) {
 			dSystemEfficiency += daSchedulingEfficiency[i] * weight[i];
 		}
-		
-		println("System-level Efficiency = "+ dSystemEfficiency);
+
+		println("System-level Efficiency = " + dSystemEfficiency);
 	}
-	
-        /**
+
+	/**
 	 * Scheduling efficiency: [-1, +1]
 	 * 
 	 */
-	void calculateCostSchedulingEfficiency() {
+	void calculateSchedulingCostEfficiency() {
 		// only the first round efficiency
-		if (dSystemEfficiency!=0) {
+		if (dSystemCostEfficiency != 0) {
 			return;
 		}
-		
+
 		double max, min, actual = 0, sumGain = 0;
-		double[] weight  = new double[iClass];
-		
+		double[] weight = new double[iClass];
+
 		println("===Scheduling Efficiency===");
 		for (int i = 0; i < iClass; i++) {
 			max = dmPrediction[i][0];
 			min = dmPrediction[i][1];
 			actual = 0;
 			for (int j = 0; j < iSite; j++) {
-				if (max < dmPrediction[i][j]) {
-					max = dmPrediction[i][j];
+				if (daPrice[j] == 0) {
+					if (max < dmPrediction[i][j]) {
+						max = dmPrediction[i][j];
+					}
+					if (min > dmPrediction[i][j]) {
+						min = dmPrediction[i][j];
+					}
+					actual += dmDist[i][j] * dmPrediction[i][j];
+				} else {
+					if (max < dmPrediction[i][j] * daPrice[j]) {
+						max = dmPrediction[i][j] * daPrice[j];
+					}
+					if (min > dmPrediction[i][j] * daPrice[j]) {
+						min = dmPrediction[i][j] * daPrice[j];
+					}
+
+					actual += dmDist[i][j] * dmPrediction[i][j] * daPrice[j];
 				}
-				if (min > dmPrediction[i][j]) {
-					min = dmPrediction[i][j];
-				}
-				actual += dmDist[i][j]*dmPrediction[i][j];
+
 			}
-			daAcutalExeTime[i] = actual;
+			daAcutalExeCost[i] = actual;
 
 			if (max > min && iaQueuedTask[i] != 0)
-				daSchedulingEfficiency[i] = (max+min - 2*actual/iaQueuedTask[i]) / (max - min);
-			else if (max == min )
-				daSchedulingEfficiency[i] = 1;
-			else 
-				daSchedulingEfficiency[i] = 0;
-			
-			weight[i] = (max-min) * iaQueuedTask[i] ;
-			if (weight[i] < 0) weight[i] = - weight[i];
-			
+				daSchedulingCostEfficiency[i] = (max + min - 2 * actual / iaQueuedTask[i]) / (max - min);
+			else if (max == min)
+				daSchedulingCostEfficiency[i] = 1;
+			else
+				daSchedulingCostEfficiency[i] = 0;
+
+			weight[i] = (max - min) * iaQueuedTask[i];
+			if (weight[i] < 0)
+				weight[i] = -weight[i];
+
 			sumGain += weight[i];
-			println(i+" "+daSchedulingEfficiency[i]);
+			println(i + " " + daSchedulingCostEfficiency[i]);
 		}
-		
+
 		for (int i = 0; i < iClass; i++) {
 			weight[i] = weight[i] / sumGain;
-			println("weight "+i +" = "+ weight[i]);
+			println("weight " + i + " = " + weight[i]);
 		}
-		
-		dSystemEfficiency = 0;
+
+		dSystemCostEfficiency = 0;
 		for (int i = 0; i < iClass; i++) {
-			dSystemEfficiency += daSchedulingEfficiency[i] * weight[i];
+			dSystemCostEfficiency += daSchedulingCostEfficiency[i] * weight[i];
 		}
-		
-		println("System-level Efficiency = "+ dSystemEfficiency);
+
+		println("System-level Cost Efficiency = " + dSystemEfficiency);
 	}
-        
+
 	void calculateOtherSchedulingEfficiency() {
 		double max, min, sumGain = 0;
-		double[] weight  = new double[iClass];
-		
+		double[] weight = new double[iClass];
+
 		println("===Scheduling Efficiency===");
 		for (int i = 0; i < iClass; i++) {
 			max = dmPrediction[i][0];
@@ -422,32 +447,86 @@ public class GenericGame {
 			}
 
 			if (max > min && iaTask[i] != 0)
-				daSchedulingEfficiency[i] = (max + min - 2 * daAcutalExeTime[i]/iaTask[i]) / (max - min);
+				daSchedulingEfficiency[i] = (max + min - 2 * daAcutalExeTime[i] / iaTask[i]) / (max - min);
 			else if (max == min && iaTask[i] != 0)
 				daSchedulingEfficiency[i] = 1;
-			else 
+			else
 				daSchedulingEfficiency[i] = 0;
-			
-			weight[i] = (max-min) * iaTask[i];
-			
+
+			weight[i] = (max - min) * iaTask[i];
+
 			sumGain += weight[i];
-			
-			println(i+" "+daSchedulingEfficiency[i]);
+
+			println(i + " " + daSchedulingEfficiency[i]);
 		}
-		
+
 		for (int i = 0; i < iClass; i++) {
 			weight[i] = weight[i] / sumGain;
-			println("weight "+i +" = "+ weight[i]);
+			println("weight " + i + " = " + weight[i]);
 		}
-		
+
 		dSystemEfficiency = 0;
 		for (int i = 0; i < iClass; i++) {
-			dSystemEfficiency += daSchedulingEfficiency[i]*weight[i] ;
+			dSystemEfficiency += daSchedulingEfficiency[i] * weight[i];
 		}
-		
-		println("System-level Efficiency = "+ dSystemEfficiency);
+
+		println("System-level Efficiency = " + dSystemEfficiency);
 	}
-	
+
+	void calculateOtherSchedulingCostEfficiency() {
+		double max, min, sumGain = 0;
+		double[] weight = new double[iClass];
+
+		println("===Scheduling Efficiency===");
+		for (int i = 0; i < iClass; i++) {
+			max = dmPrediction[i][0];
+			min = dmPrediction[i][1];
+			for (int j = 0; j < iSite; j++) {
+				
+				if (daPrice[j] == 0) {
+					if (max < dmPrediction[i][j]) {
+						max = dmPrediction[i][j];
+					}
+					if (min > dmPrediction[i][j]) {
+						min = dmPrediction[i][j];
+					}
+				} else {
+					if (max < dmPrediction[i][j] * daPrice[j]) {
+						max = dmPrediction[i][j] * daPrice[j];
+					}
+					if (min > dmPrediction[i][j] * daPrice[j]) {
+						min = dmPrediction[i][j] * daPrice[j];
+					}
+				}
+			}
+
+			if (max > min && iaTask[i] != 0)
+				daSchedulingCostEfficiency[i] = (max + min - 2 * daAcutalExeCost[i] / iaTask[i]) / (max - min);
+			else if (max == min && iaTask[i] != 0)
+				daSchedulingCostEfficiency[i] = 1;
+			else
+				daSchedulingCostEfficiency[i] = 0;
+
+			weight[i] = (max - min) * iaTask[i];
+
+			sumGain += weight[i];
+
+			println(i + " " + daSchedulingCostEfficiency[i]);
+		}
+
+		for (int i = 0; i < iClass; i++) {
+			weight[i] = weight[i] / sumGain;
+			println("weight " + i + " = " + weight[i]);
+		}
+
+		dSystemCostEfficiency = 0;
+		for (int i = 0; i < iClass; i++) {
+			dSystemCostEfficiency += daSchedulingCostEfficiency[i] * weight[i];
+		}
+
+		println("System-level Cost Efficiency = " + dSystemCostEfficiency);
+	}
+
 	/**
 	 * @return fairness value (standard derivation)
 	 */
@@ -512,20 +591,20 @@ public class GenericGame {
 		System.out.println("Final Execution Time: " + Math.round(element) + ". ");
 
 	}
-	
+
 	public void printExeTimesForEachClass() {
 		int stages = vvExeTimes.elementAt(0).size();
 		double sum = 0;
 
 		for (int i = 0; i < stages; i++) {
-			System.out.print(i+" " );
+			System.out.print(i + " ");
 			sum = 0;
 			for (int j = 0; j < iClass; j++) {
 				sum += Double.parseDouble(vvExeTimes.elementAt(j).elementAt(i).toString());
-				System.out.print(vvExeTimes.elementAt(j).elementAt(i)+ " ");
+				System.out.print(vvExeTimes.elementAt(j).elementAt(i) + " ");
 			}
-			System.out.println(sum + " "+ vExeTime.elementAt(i));
-			if (i>200) {
+			System.out.println(sum + " " + vExeTime.elementAt(i));
+			if (i > 200) {
 				break;
 			}
 		}
@@ -548,7 +627,7 @@ public class GenericGame {
 	 */
 	public void schedule() {
 	}
-		
+
 	/**
 	 * schedule the final results
 	 */
@@ -898,7 +977,7 @@ public class GenericGame {
 	public void setICPUMaxNum(int uinit) {
 		iCPUMaxNum = uinit;
 	}
-	
+
 	public double getDControl() {
 		return dControl;
 	}
@@ -906,14 +985,19 @@ public class GenericGame {
 	public void setDControl(double dControl) {
 		this.dControl = dControl;
 	}
+
 	DecimalFormat df = new DecimalFormat("#.00");
-	
+
 	public String getdSystemEfficiency() {
 		return df.format(dSystemEfficiency);
+	}
+
+	public String getdSystemCostEfficiency() {
+		return df.format(dSystemCostEfficiency);
 	}
 
 	public void setdSystemEfficiency(double dSystemEfficiency) {
 		this.dSystemEfficiency = dSystemEfficiency;
 	}
-	
+
 }
