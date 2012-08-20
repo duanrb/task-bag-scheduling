@@ -419,9 +419,9 @@ public class CostMinMin extends GenericGame {
 		for (int i = 0; i < iClass; i++) {
 			for (int j = 0; j < iSite; j++) {
 				for (int k = 0; k < iaCPU[j]; k++) {
-					if (tmpMinMakespan > dmMinMakespan[i][j][k]
-							& tmpMinCost > daPrice[j] * dmPrediction[i][j]
-							& dDeadline > dmMinMakespan[i][j][k]) {
+					if (tmpMinMakespan >= dmMinMakespan[i][j][k]
+							& tmpMinCost >= daPrice[j] * dmPrediction[i][j]
+							& dDeadline >= dmMinMakespan[i][j][k]) {
 						iMinClass = i;
 						iMinSite = j;
 						iMinCPU = k;

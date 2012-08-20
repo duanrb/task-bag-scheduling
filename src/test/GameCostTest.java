@@ -79,7 +79,33 @@ public class GameCostTest {
 		double[] daPrice = {2,1.5,1};
 		wo.setDaPrice(daPrice);
 
-		wo.setDDeadline(1000);
+//		wo.setDDeadline(1000);
+		
+		double[][] dmPrediction = {
+				{1,1.2,1.3},
+				{1.0,1.5,2.0},
+				{1.2,1.3,1.4},
+				};
+		wo.setDmPrediction(dmPrediction);
+
+		return wo;
+	}
+        
+        public GameCost test22() {
+		
+		GameCost wo = new GameCost(3,3);
+		wo.setBPrint(true);
+		
+		int[] iaLength = {10000,10000,10000};
+		wo.setIaTask(iaLength);
+
+		int[] iaCPU = {24,24,24};
+		wo.setIaCPU(iaCPU);
+		
+		double[] daPrice = {1.2,1.1,1};
+		wo.setDaPrice(daPrice);
+
+//		wo.setDDeadline(1000);
 		
 		double[][] dmPrediction = {
 				{1,1.2,1.3},
@@ -140,12 +166,12 @@ public class GameCostTest {
 	}
 
 	void testFinal() {
-            double deadline =2900;
+            double deadline =300;
             GameCostTest gct = new GameCostTest();
-			GameCost wo = gct.test3();
+			GameCost wo = gct.test22();
             
-            for (int s = 1; s < 200; s++) {
-            	deadline += 100;
+            for (int s = 1; s < 100; s++) {
+            	deadline += 10;
 			
 //			System.out.println("----------------COST OPTIMIZATION--------------");
 //          long tw1 = System.currentTimeMillis();
@@ -316,12 +342,12 @@ public class GameCostTest {
                         
 //          System.out.println("==================="+s+"=============");
 			
-//            System.out.println( deadline+ " "+ wo.getDCost() + " " + colb.getDCost() + " "+ cmct.getDCost() + " "+ 
-//            		minminc.getDCost() + " "+ mat.getDCost() + " "+ minsuff.getDCost() + " " + cmet.getDCost() );
-            System.out.println( deadline+ " "+ wo.getdSystemEfficiency() + " " + colb.getdSystemEfficiency() + " "+ cmct.getdSystemEfficiency() + " "+ 
-            		minminc.getdSystemEfficiency() + " "+ mat.getdSystemEfficiency() + " "+ minsuff.getdSystemEfficiency() + " " + cmet.getdSystemEfficiency() );
-            System.out.println( deadline+ " "+ wo.getdSystemCostEfficiency() + " " + colb.getdSystemCostEfficiency() + " "+ cmct.getdSystemCostEfficiency() + " "+ 
-            		minminc.getdSystemCostEfficiency() + " "+ mat.getdSystemCostEfficiency() + " "+ minsuff.getdSystemCostEfficiency() + " " + cmet.getdSystemCostEfficiency() );
+            System.out.println( deadline+ " "+ wo.getDCost() + " " + colb.getDCost() + " "+ cmct.getDCost() + " "+ 
+            		minminc.getDCost() + " "+ mat.getDCost() + " "+ minsuff.getDCost() + " " + cmet.getDCost() );
+//            System.out.println( deadline+ " "+ wo.getdSystemEfficiency() + " " + colb.getdSystemEfficiency() + " "+ cmct.getdSystemEfficiency() + " "+ 
+//            		minminc.getdSystemEfficiency() + " "+ mat.getdSystemEfficiency() + " "+ minsuff.getdSystemEfficiency() + " " + cmet.getdSystemEfficiency() );
+//            System.out.println( deadline+ " "+ wo.getdSystemCostEfficiency() + " " + colb.getdSystemCostEfficiency() + " "+ cmct.getdSystemCostEfficiency() + " "+ 
+//            		minminc.getdSystemCostEfficiency() + " "+ mat.getdSystemCostEfficiency() + " "+ minsuff.getdSystemCostEfficiency() + " " + cmet.getdSystemCostEfficiency() );
 
         }
         System.out.println( "# deadline  gamecost olb mct minmin maxmin sufferage met" );
