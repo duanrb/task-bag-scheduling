@@ -3,4 +3,9 @@
         Game-theory based scheduling algorithms
 
 ////////////////////////////////////////////////////////////////
+The following algorithms have been implemented:
 
+- Game-quick
+- Game-cost
+- Hungarian algorithm
+- Quick sort
